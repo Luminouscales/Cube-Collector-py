@@ -1,1 +1,2 @@
-Coins	100	
+Coins	10
+Basic Box	41
