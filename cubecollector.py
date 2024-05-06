@@ -3,6 +3,7 @@ import os, sys, random, time, atexit
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
+verdate = "06.05.24"
 
 # Read the inventory and output it into the "inventory" var
 inventory = []
@@ -31,7 +32,7 @@ def saveinv():
 def savereg():
     with open( registrypath, 'w' ) as file:
         for row in registry:
-            row_str = '\t'.join(map(str, row)) # What the fuck is map() ?
+            row_str = '\t'.join(map(str, row))
             file.write( row_str + '\n')
 
 # Add cube to registry
@@ -93,3 +94,27 @@ def addcube( cube ):
     # Add to reg
     addreg( cube )
     print( "You got a brand new " + cube + "!" )
+
+# When the player inputs "help". Lists an explanation of the game and commands.
+def helpguide():
+    inputs1( input("You're on your own! ") )
+
+# List of inputs for the player to utilise.
+# What inputs should we have?
+    # Check inventory, check registry
+    # Open box
+    # Sell cube
+    # Check balance
+player_inputs = {
+    "help": helpguide
+}
+
+# Input def for main inputs
+def inputs1( player_input ):
+    if player_input in player_inputs:
+        player_inputs[player_input]()
+    else:
+        player_input = inputs1( input("Meow, I don't get what you're saying... ") )
+
+# Start message
+inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help". ' ) )
