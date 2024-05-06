@@ -12,6 +12,9 @@ if os.path.exists(inventorypath):
         for line in file:
             row = line.strip().split('\t') # What?
             inventory.append( row )
+            # Turn every amount number into int
+            row[1] = int( row[1] )
+
 
 # Load registry. The registry is a list of all ever unboxed cubes
 registry = []
@@ -20,6 +23,8 @@ if os.path.exists( registrypath ):
         for line in file:
             row = line.strip().split('\t')
             registry.append( row )
+            row[1] = int( row[1] )
+            row[2] = int( row[2] )
 
 # Take all cubes from inventory var and save it as inventory.txt
 def saveinv():
@@ -40,13 +45,13 @@ def addreg( cube ):
     for row in registry:
         # If cube already in registry add one more to count and end function
         if row[0] == cube:
-            row[1] = int( row[1] ) + 1
+            row[1] = row[1] + 1
             savereg()
             return 
     # If new, add to reg
     # First one is name, second one is number of times found, second is unique ID.
     # Unique ID is counted by adding one to last cube's ID. Let's just hope it's sorted correctly.
-    registry.append( [ cube, '1', int( registry[len(registry) - 1][2] ) + 1 ] )
+    registry.append( [ cube, 1, registry[len(registry) - 1][2] + 1 ] )
     savereg()
 
 # Import list of prefixes
@@ -82,14 +87,14 @@ def addcube( cube ):
     for row in inventory:
         # If cube already in inventory add one more to count and end function
         if row[0] == cube:
-            row[1] = int( row[1] ) + 1
+            row[1] = row[1] + 1
             print( "You got a " + cube + "!" )
             saveinv()
             # Add to reg
             addreg( cube )
             return 
     # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
-    inventory.append( [cube, '1'] )
+    inventory.append( [cube, 1] )
     saveinv()
     # Add to reg
     addreg( cube )
@@ -100,7 +105,7 @@ def additem( cube, count ):
     for row in inventory:
         # If cube already in inventory add one more to count and end function
         if row[0] == cube:
-            row[1] = int( row[1] ) + count
+            row[1] = row[1] + count
             saveinv()
             return 
     # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
@@ -138,9 +143,10 @@ def inp_store():
                 # Calc price and check if we have the funds
                 price = storebuy1 * store_prices[ storeinput1 ]
                 if input( "That will be " + str( price ) + " credits. [buy or exit] " ) == "buy":
-                    if int( inventory[0][1] ) >= price:
+                    cash = inventory[0][1]
+                    if cash >= price:
                         # Add to inv; name and amount; remove cash
-                        inventory[0][1] = int( inventory[0][1] ) - price
+                        inventory[0][1] -= cash - price
                         additem( storeinput1, storebuy1 )
                         input("Thanks for buying!")
                     else:
