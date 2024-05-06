@@ -127,24 +127,29 @@ def inp_store():
     # First check if such a cube exists, then ask how many
     if storeinput1 in store_inputs:
         storebuy1 = input( "And how many would you like?\n" )
-        storebuy1 = int(storebuy1)
-        # If it's a number, if it's bigger than 0 and if it's whole
-        if type(storebuy1) == type(1) and storebuy1 > 0 and storebuy1 % 1 == 0:
-            # Calc price and check if we have the funds
-            price = storebuy1 * store_prices[ storeinput1 ]
-            if input( "That will be " + str( price ) + " credits. [buy or exit] " ) == "buy":
-                if int( inventory[0][1] ) >= price:
-                    # Add to inv; name and amount; remove cash
-                    inventory[0][1] = int( inventory[0][1] ) - price
-                    additem( storeinput1, storebuy1 )
-                    input("Thanks for buying!")
-                else:
-                    print( "You can't afford that." )
+        # Exception check if you input something that's not a number
+        try:
+            storebuy1 = int(storebuy1)
+        except:
+            print( "That's not valid." )
         else:
-            print( type(storebuy1 ) )
-            print( "You can't buy like that." )
+            # If it's bigger than 0 and if it's whole
+            if storebuy1 > 0 and storebuy1 % 1 == 0:
+                # Calc price and check if we have the funds
+                price = storebuy1 * store_prices[ storeinput1 ]
+                if input( "That will be " + str( price ) + " credits. [buy or exit] " ) == "buy":
+                    if int( inventory[0][1] ) >= price:
+                        # Add to inv; name and amount; remove cash
+                        inventory[0][1] = int( inventory[0][1] ) - price
+                        additem( storeinput1, storebuy1 )
+                        input("Thanks for buying!")
+                    else:
+                        print( "You can't afford that." )
     else:
         print( "We don't sell that here." )
+
+def inp_store_buy():
+    pass
 
 # input func for the store
 def inputs_store1( input ):
