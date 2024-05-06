@@ -97,17 +97,67 @@ def addcube( cube ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("You're on your own! ") )
+    inputs1( input("Available commands: \niventory\nregistry ") )
+
+# "inventory" input that prints owned cubes
+def inp_inv():
+    print( inventory )
+    inputs1( input("") )
+
+# "registry" input
+def inp_reg():
+    print( registry )
+    inputs1( input("") )
+
+# "store" input
+def inp_store():
+    storeinput1 = input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n")
+    # First check if such a cube exists, then ask how many
+    if storeinput1 in store_inputs:
+        storebuy1 = input( "And how many would you like?" )
+        # if it's a number, if it's bigger than 0 and if it's whole
+        if type(storebuy1) == type(1) and storebuy1 > 0 and storebuy1 % 1 == 0:
+            pass
+        else:
+            print( "You can't buy like that." )
+    else:
+        print( "We don't sell that here." )
+
+# input func for the store
+def inputs_store1( input ):
+    if input in store_inputs:
+        store_inputs[input]()
+    else:
+        player_inputs = inputs1( input("Hmm, I don't think you can buy that. ") )
 
 # List of inputs for the player to utilise.
 # What inputs should we have?
     # Check inventory, check registry
     # Open box
+    # Store
     # Sell cube
     # Check balance
 player_inputs = {
-    "help": helpguide
+    "help": helpguide,
+    "inventory": inp_inv,
+    "inv": inp_inv,
+    "registry": inp_reg,
+    "reg": inp_reg,
+    "store": inp_store
 }
+
+def basicbox():
+    pass
+
+
+store_inputs = {
+    "Basic Box": basicbox,
+    "Prefixed Box": prefbox,
+    "Double Prefixed Box": dprefbox,
+    "Triple Prefixed Box": tprefbox,
+    "Quadruple Prefixed Box": qprefbox,
+}
+
 
 # Input def for main inputs
 def inputs1( player_input ):
