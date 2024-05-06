@@ -95,6 +95,18 @@ def addcube( cube ):
     addreg( cube )
     print( "You got a brand new " + cube + "!" )
 
+# Function that adds an item to inventory
+def additem( cube, count ):
+    for row in inventory:
+        # If cube already in inventory add one more to count and end function
+        if row[0] == cube:
+            row[1] = int( row[1] ) + count
+            saveinv()
+            return 
+    # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
+    inventory.append( [cube, count] )
+    saveinv()
+
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
     inputs1( input("Available commands: \niventory\nregistry ") )
@@ -114,11 +126,22 @@ def inp_store():
     storeinput1 = input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n")
     # First check if such a cube exists, then ask how many
     if storeinput1 in store_inputs:
-        storebuy1 = input( "And how many would you like?" )
-        # if it's a number, if it's bigger than 0 and if it's whole
+        storebuy1 = input( "And how many would you like?\n" )
+        storebuy1 = int(storebuy1)
+        # If it's a number, if it's bigger than 0 and if it's whole
         if type(storebuy1) == type(1) and storebuy1 > 0 and storebuy1 % 1 == 0:
-            pass
+            # Calc price and check if we have the funds
+            price = storebuy1 * store_prices[ storeinput1 ]
+            if input( "That will be " + str( price ) + " credits. [buy or exit] " ) == "buy":
+                if int( inventory[0][1] ) >= price:
+                    # Add to inv; name and amount; remove cash
+                    inventory[0][1] = int( inventory[0][1] ) - price
+                    additem( storeinput1, storebuy1 )
+                    input("Thanks for buying!")
+                else:
+                    print( "You can't afford that." )
         else:
+            print( type(storebuy1 ) )
             print( "You can't buy like that." )
     else:
         print( "We don't sell that here." )
@@ -149,6 +172,17 @@ player_inputs = {
 def basicbox():
     pass
 
+def prefbox():
+    pass
+
+def dprefbox():
+    pass
+
+def tprefbox():
+    pass
+
+def qprefbox():
+    pass
 
 store_inputs = {
     "Basic Box": basicbox,
@@ -156,6 +190,15 @@ store_inputs = {
     "Double Prefixed Box": dprefbox,
     "Triple Prefixed Box": tprefbox,
     "Quadruple Prefixed Box": qprefbox,
+}
+
+
+store_prices = {
+    "Basic Box": 10,
+    "Prefixed Box": 100,
+    "Double Prefixed Box": 1000,
+    "Triple Prefixed Box": 10000,
+    "Quadruple Prefixed Box": 100000,
 }
 
 
