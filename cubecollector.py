@@ -5,6 +5,8 @@ inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
 verdate = "06.05.24"
 
+# In the future we could use subprocess to slice up the code into more accessible chunks and run only what we need.
+
 # Read the inventory and output it into the "inventory" var
 inventory = []
 if os.path.exists(inventorypath):
@@ -126,36 +128,55 @@ def inp_reg():
     print( registry )
     inputs1( input("") )
 
-# "store" input
-def inp_store():
-    storeinput1 = input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n")
-    # First check if such a cube exists, then ask how many
-    if storeinput1 in store_inputs:
-        storebuy1 = input( "And how many would you like?\n" )
-        # Exception check if you input something that's not a number
+# Input in store for buying a certain amount
+def inp_store_buy_count( pl_input ):
+    # Exception check if you input something that's not a number
+    if pl_input == "exit":
+        mainmenu()
+    else:
         try:
-            storebuy1 = int(storebuy1)
+            pl_input = int(pl_input)
         except:
-            print( "That's not valid." )
+            inp_store_buy_count( "That's not valid.\n" )
         else:
             # If it's bigger than 0 and if it's whole
-            if storebuy1 > 0 and storebuy1 % 1 == 0:
+            if pl_input > 0 and pl_input % 1 == 0:
                 # Calc price and check if we have the funds
-                price = storebuy1 * store_prices[ storeinput1 ]
-                if input( "That will be " + str( price ) + " credits. [buy or exit] " ) == "buy":
+                price = pl_input * store_prices[ setcube ]
+                locinput = input( "That will be " + str( price ) + " credits. [buy or exit] " )
+                if locinput == "buy":
                     cash = inventory[0][1]
                     if cash >= price:
                         # Add to inv; name and amount; remove cash
                         inventory[0][1] -= cash - price
-                        additem( storeinput1, storebuy1 )
-                        input("Thanks for buying!")
+                        additem( setcube, pl_input )
+                        inp_store_buy( input("Thanks for buying! Anything else?\n") )
                     else:
-                        print( "You can't afford that." )
-    else:
-        print( "We don't sell that here." )
+                        inp_store_buy( input( "You can't afford that. Anything else?\n" ) )
+                else:
+                    mainmenu()
+                
 
-def inp_store_buy():
-    pass
+# Input in store for buying
+def inp_store_buy( pl_input ):
+    if pl_input == "exit":
+        mainmenu()
+    else:
+        # First check if such a cube exists, then ask how many
+        if pl_input in store_inputs:
+            # setcube is name of cube, used in next function
+            global setcube
+            setcube = pl_input
+            inp_store_buy_count( input( "And how many would you like?\n" ) )
+        else:
+            inp_store_buy( input( "We don't sell that here.\n" ) )
+
+# "store" input
+def inp_store():
+    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
+    
+
+
 
 # input func for the store
 def inputs_store1( input ):
@@ -221,4 +242,9 @@ def inputs1( player_input ):
         player_input = inputs1( input("Meow, I don't get what you're saying... ") )
 
 # Start message
-inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help". ' ) )
+def mainmenu():
+    inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help". ' ) )
+    
+    
+
+mainmenu()
