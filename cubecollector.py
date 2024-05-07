@@ -63,18 +63,19 @@ with open( selfpath + "/prefixes.txt", 'r' ) as file:
     prefixmax = len(prefixtable) - 1
 
 # Primitive roll function
-def rollcube():
+def rollcube( tier ):
+    # Tier is value of box. 0 is standard. 1 is single prefix. 2 is double prefix and so on
     # Roll for single prefix
-    if random.randint( 1, 2 ) == 1:
+    if tier > 0 or random.randint( 1, 2 ) == 1:
         prefixes = prefixtable[ random.randint( 0, prefixmax ) ]
-        # Roll for second prefix
-        if random.randint( 1, 3 ) == 1:
+        # Roll for second prefix if tier is 2
+        if tier > 1 or random.randint( 1, 3 ) == 1:
             prefix2 = prefixtable[ random.randint( 0, prefixmax ) ]
             prefixes = prefixes + " " + prefix2
-            if random.randint( 1, 4 ) == 1:
+            if tier > 2 or random.randint( 1, 4 ) == 1:
                 prefix3 = prefixtable[ random.randint( 0, prefixmax ) ]
                 prefixes = prefixes + " " + prefix3
-                if random.randint( 1, 5 ) == 1:
+                if tier > 3 or random.randint( 1, 5 ) == 1:
                     prefix4 = prefixtable[ random.randint( 0, prefixmax ) ]
                     prefixes = prefixes + " " + prefix4
         gotcube = prefixes + " Cube"
@@ -112,7 +113,6 @@ def additem( cube, count ):
             row[1] = row[1] + count
             saveinv()
             return 
-    # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
     inventory.append( [cube, count] )
     saveinv()
 
@@ -125,7 +125,26 @@ def inp_inv():
     print( "Your inventory contains:" )
     for row in inventory:
         print( row[0] + "\t" + str( row[1] ) )
-    inputs1( input("\n") )
+    invinput = input("Commands: use, delete, info, exit\n").lower()
+    if invinput == "exit":
+        mainmenu()
+    elif invinput == "use":
+        invuse = input("Which item would you like to use?\n").lower()
+        if invuse in inventory and invuse != "credits" :
+            if inventory[invuse][1] == 1:
+                inventory[invuse]()
+            else:
+                invusecount = input( "How many of these would you like to use?" )
+                
+
+        else:
+            print( "You don't have such an item." )
+            inp_inv()
+    elif invinput == "info":
+        pass
+    else:
+        inp_inv( input("Invalid input." ) )
+
 
 # "registry" input
 def inp_reg():
@@ -171,7 +190,7 @@ def inp_store_buy( pl_input ):
         inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
     else:
         # First check if such a cube exists, then ask how many
-        if pl_input in store_inputs:
+        if pl_input in store_prices:
             # setcube is name of cube, used in next function
             global setcube
             setcube = pl_input
@@ -182,13 +201,6 @@ def inp_store_buy( pl_input ):
 # "store" input
 def inp_store():
     inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
-
-# input func for the store
-def inputs_store1( input ):
-    if input in store_inputs:
-        store_inputs[input]()
-    else:
-        inputs1( input("Hmm, I don't think you can buy that. ") )
 
 # List of inputs for the player to utilise.
 # What inputs should we have?
@@ -206,6 +218,7 @@ player_inputs = {
     "store": inp_store
 }
 
+
 def basicbox():
     pass
 
@@ -221,12 +234,12 @@ def tprefbox():
 def qprefbox():
     pass
 
-store_inputs = {
-    "basic box": basicbox,
-    "prefixed box": prefbox,
-    "double prefixed box": dprefbox,
-    "triple prefixed box": tprefbox,
-    "quadruple prefixed box": qprefbox,
+inv_inputs = {
+    "basic box": 0,
+    "prefixed box": 1,
+    "double prefixed box": 2,
+    "triple prefixed box": 3,
+    "quadruple prefixed box": 4,
 }
 
 
@@ -237,6 +250,7 @@ store_prices = {
     "triple prefixed box": 10000,
     "quadruple prefixed box": 100000,
 }
+
 
 
 # Input def for main inputs
