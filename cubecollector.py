@@ -3,7 +3,7 @@ import os, sys, random, time, atexit
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
-verdate = "06.05.24"
+verdate = "07.05.24"
 
 # In the future we could use subprocess to slice up the code into more accessible chunks and run only what we need.
 
@@ -104,6 +104,8 @@ def addcube( cube ):
 
 # Function that adds an item to inventory
 def additem( cube, count ):
+    # Make cube name capitalised for consistency
+    cube = cube.upper()
     for row in inventory:
         # If cube already in inventory add one more to count and end function
         if row[0] == cube:
@@ -116,20 +118,21 @@ def additem( cube, count ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \niventory\nregistry ") )
+    inputs1( input("Available commands: \nbalance\niventory\nregistry\nstore\n") )
 
 # "inventory" input that prints owned cubes
 def inp_inv():
     print( inventory )
-    inputs1( input("") )
+    inputs1( input("\n") )
 
 # "registry" input
 def inp_reg():
     print( registry )
-    inputs1( input("") )
+    inputs1( input("\n") )
 
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
+    pl_input = pl_input.lower()
     # Exception check if you input something that's not a number
     if pl_input == "exit":
         mainmenu()
@@ -137,7 +140,7 @@ def inp_store_buy_count( pl_input ):
         try:
             pl_input = int(pl_input)
         except:
-            inp_store_buy_count( "That's not valid.\n" )
+            inp_store_buy_count( input( "That's not valid.\n" ) )
         else:
             # If it's bigger than 0 and if it's whole
             if pl_input > 0 and pl_input % 1 == 0:
@@ -154,13 +157,16 @@ def inp_store_buy_count( pl_input ):
                     else:
                         inp_store_buy( input( "You can't afford that. Anything else?\n" ) )
                 else:
-                    mainmenu()
+                    inp_store_buy( input( "Alright. Anything else?\n" ) )
                 
 
 # Input in store for buying
 def inp_store_buy( pl_input ):
+    pl_input = pl_input.lower()
     if pl_input == "exit":
         mainmenu()
+    elif pl_input == "balance":
+        inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
     else:
         # First check if such a cube exists, then ask how many
         if pl_input in store_inputs:
@@ -174,16 +180,13 @@ def inp_store_buy( pl_input ):
 # "store" input
 def inp_store():
     inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
-    
-
-
 
 # input func for the store
 def inputs_store1( input ):
     if input in store_inputs:
         store_inputs[input]()
     else:
-        player_inputs = inputs1( input("Hmm, I don't think you can buy that. ") )
+        inputs1( input("Hmm, I don't think you can buy that. ") )
 
 # List of inputs for the player to utilise.
 # What inputs should we have?
@@ -217,25 +220,26 @@ def qprefbox():
     pass
 
 store_inputs = {
-    "Basic Box": basicbox,
-    "Prefixed Box": prefbox,
-    "Double Prefixed Box": dprefbox,
-    "Triple Prefixed Box": tprefbox,
-    "Quadruple Prefixed Box": qprefbox,
+    "basic box": basicbox,
+    "prefixed box": prefbox,
+    "double prefixed box": dprefbox,
+    "triple prefixed box": tprefbox,
+    "quadruple prefixed box": qprefbox,
 }
 
 
 store_prices = {
-    "Basic Box": 10,
-    "Prefixed Box": 100,
-    "Double Prefixed Box": 1000,
-    "Triple Prefixed Box": 10000,
-    "Quadruple Prefixed Box": 100000,
+    "basic box": 10,
+    "prefixed box": 100,
+    "double prefixed box": 1000,
+    "triple prefixed box": 10000,
+    "quadruple prefixed box": 100000,
 }
 
 
 # Input def for main inputs
 def inputs1( player_input ):
+    player_input = player_input.lower() # .lower() for ignoring capitalisation
     if player_input in player_inputs:
         player_inputs[player_input]()
     else:
@@ -244,7 +248,5 @@ def inputs1( player_input ):
 # Start message
 def mainmenu():
     inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help". ' ) )
-    
-    
 
 mainmenu()

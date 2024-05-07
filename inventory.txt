@@ -1,2 +1,2 @@
 Coins	10
-Basic Box	41
+BASIC BOX	1
