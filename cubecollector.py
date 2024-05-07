@@ -122,7 +122,9 @@ def helpguide():
 
 # "inventory" input that prints owned cubes
 def inp_inv():
-    print( inventory )
+    print( "Your inventory contains:" )
+    for row in inventory:
+        print( row[0] + "\t" + str( row[1] ) )
     inputs1( input("\n") )
 
 # "registry" input
@@ -133,10 +135,10 @@ def inp_reg():
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
     pl_input = pl_input.lower()
-    # Exception check if you input something that's not a number
     if pl_input == "exit":
         mainmenu()
     else:
+        # Exception check if you input something that's not a number
         try:
             pl_input = int(pl_input)
         except:
