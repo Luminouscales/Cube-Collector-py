@@ -127,21 +127,31 @@ def inp_inv():
     invinput = input("Commands: use, delete, info, exit\n").lower()
     if invinput == "exit":
         mainmenu()
+    # Input for using an object
     elif invinput == "use":
+        # Yes, .lower() for everything to compare string not based on capitalisation
         invuse = input("Which item would you like to use?\n").lower()
         # You have to iterate like that
         found = False
         for row in inventory:
             if invuse == row[0].lower():
                 found = True
+                #rowd to underline the item we're focusing on
                 rowd = row
                 break
-        if found and invuse in inv_inputs and invuse != "credits":
+        # If it was found, if it's usable
+        if found and invuse in inv_inputs:
+            # If it's only one, use immediately, if not - ask
             if rowd[1] == 1:
+                # Remove one use from the object; if it's last, remove it from inv
+                rowd[1] -= 1
+                if rowd[1] == 0:
+                    inventory.pop(inventory.index(rowd))
                 rollcube( inv_inputs[invuse] )
                 inp_inv()
             else:
                 invusecount = input( "How many of these would you like to use?\n" )
+                # Typical try check to prevent crash
                 try:
                     invusecount = int(invusecount)
                 except:
@@ -151,6 +161,10 @@ def inp_inv():
                     # Check if it's more than 0, whole number and if you have enough
                     if invusecount > 0 and invusecount % 1 == 0 and invusecount <= rowd[1]:
                         for i in range( invusecount ):
+                            # Remove one use from the object; if it's last, remove it from inv
+                            rowd[1] -= 1
+                            if rowd[1] == 0:
+                                inventory.pop(inventory.index(rowd))
                             rollcube( inv_inputs[invuse] )
                             time.sleep(0.5)
                         inp_inv()
@@ -160,6 +174,7 @@ def inp_inv():
         else:
             print( "You can't use that." )
             inp_inv()
+    # Give information about object. //FIX
     elif invinput == "info":
         pass
     else:
@@ -239,22 +254,6 @@ player_inputs = {
     "store": inp_store
 }
 
-
-def basicbox():
-    pass
-
-def prefbox():
-    pass
-
-def dprefbox():
-    pass
-
-def tprefbox():
-    pass
-
-def qprefbox():
-    pass
-
 inv_inputs = {
     "basic box": 0,
     "prefixed box": 1,
@@ -271,8 +270,6 @@ store_prices = {
     "triple prefixed box": 10000,
     "quadruple prefixed box": 100000,
 }
-
-
 
 # Input def for main inputs
 def inputs1( player_input ):
