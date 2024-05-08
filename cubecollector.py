@@ -95,11 +95,10 @@ def addcube( cube ):
             saveinv()
             # Add to reg
             addreg( cube )
-            return 
+            return
     # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
     inventory.append( [cube, 1] )
-    saveinv()
-    # Add to reg
+    saveinv()   
     addreg( cube )
     print( "You got a brand new " + cube + "!" )
 
@@ -130,20 +129,42 @@ def inp_inv():
         mainmenu()
     elif invinput == "use":
         invuse = input("Which item would you like to use?\n").lower()
-        if invuse in inventory and invuse != "credits" :
-            if inventory[invuse][1] == 1:
-                inventory[invuse]()
+        # You have to iterate like that
+        found = False
+        for row in inventory:
+            if invuse == row[0].lower():
+                found = True
+                rowd = row
+                break
+        if found and invuse in inv_inputs and invuse != "credits":
+            if rowd[1] == 1:
+                rollcube( inv_inputs[invuse] )
+                inp_inv()
             else:
-                invusecount = input( "How many of these would you like to use?" )
-                
-
+                invusecount = input( "How many of these would you like to use?\n" )
+                try:
+                    invusecount = int(invusecount)
+                except:
+                    print( "That's not valid.\n")
+                    inp_inv()
+                else:   
+                    # Check if it's more than 0, whole number and if you have enough
+                    if invusecount > 0 and invusecount % 1 == 0 and invusecount <= rowd[1]:
+                        for i in range( invusecount ):
+                            rollcube( inv_inputs[invuse] )
+                            time.sleep(0.5)
+                        inp_inv()
+                    else:
+                        print( "That's not valid.\n" )
+                        inp_inv()
         else:
-            print( "You don't have such an item." )
+            print( "You can't use that." )
             inp_inv()
     elif invinput == "info":
         pass
     else:
-        inp_inv( input("Invalid input." ) )
+        print( "Invalid input." )
+        inp_inv()
 
 
 # "registry" input
