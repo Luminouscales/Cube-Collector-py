@@ -121,9 +121,12 @@ def helpguide():
 
 # "inventory" input that prints owned cubes
 def inp_inv():
+
     print( "Your inventory contains:" )
+    print("--------------------------------------------")
     for row in inventory:
-        print( row[0] + "\t" + str( row[1] ) )
+        print( " - " + row[0] + "\t" + str( row[1] ) )
+    print("--------------------------------------------")
     invinput = input("Commands: use, delete, info, exit\n").lower()
     if invinput == "exit":
         mainmenu()
@@ -236,7 +239,7 @@ def inp_store_buy( pl_input ):
 
 # "store" input
 def inp_store():
-    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
+    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
 
 # List of inputs for the player to utilise.
 # What inputs should we have?
@@ -281,6 +284,6 @@ def inputs1( player_input ):
 
 # Start message
 def mainmenu():
-    inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help". ' ) )
+    inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help".\n' ) )
 
 mainmenu()
