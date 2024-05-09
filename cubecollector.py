@@ -180,6 +180,46 @@ def inp_inv():
     # Give information about object. //FIX
     elif invinput == "info":
         pass
+
+    # I shouldn't run it with elifs like that..
+    elif invinput == "delete" or invinput == "del":
+        invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
+        found = False
+        for row in inventory:
+            if invuse == row[0].lower():
+                found = True
+                #rowd to underline the item we're focusing on
+                rowd = row
+                break
+        # If it was found and it's not credits
+        if found and rowd[0] != "CREDITS":
+            # If there is more than one, ask how many
+            if rowd[1] > 1:
+                delcount = input( "How many of these would you like to delete?\n")
+                # int check again.. should make it a function
+                try:
+                    delcount = int(delcount) # //FIX ?
+                except:
+                    print( "That's not valid.\n")
+                    inp_inv()
+                else:   
+                    # Delete if right
+                    rowd[1] -= delcount
+                    print( "Items deleted." )
+                    # If empty, delete from inv
+                    if rowd[1] == 0:
+                        inventory.pop( inventory.index(rowd) )
+                    saveinv()
+                    inp_inv()
+            # If delete only one
+            else:
+                inventory.pop( inventory.index(rowd) )
+                print( "Items deleted." )
+                saveinv()
+                inp_inv()
+        else:
+            print( "You don't have that item." )
+            inp_inv()
     else:
         print( "Invalid input." )
         inp_inv()
