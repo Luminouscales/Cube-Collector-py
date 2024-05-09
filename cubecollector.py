@@ -119,6 +119,13 @@ def additem( cube, count ):
 def helpguide():
     inputs1( input("Available commands: \nbalance\niventory\nregistry\nstore\n") )
 
+# Function for checking if the given item is in the inventory
+def checkinv(item):
+    for row in inventory:
+        if item.lower() == row[0].lower():
+            return { True, row.index() }
+    return False
+
 # "inventory" input that prints owned cubes
 def inp_inv():
 
@@ -136,12 +143,12 @@ def inp_inv():
         invuse = input("Which item would you like to use?\n").lower()
         # You have to iterate like that
         found = False
-        for row in inventory:
-            if invuse == row[0].lower():
-                found = True
-                #rowd to underline the item we're focusing on
-                rowd = row
-                break
+        if checkinv( invuse ):
+            found = True
+            rowd = row
+        else:
+            print( "You don't have that." )
+            inp_inv()
         # If it was found, if it's usable
         if found and invuse in inv_inputs:
             # If it's only one, use immediately, if not - ask
@@ -184,21 +191,17 @@ def inp_inv():
     # I shouldn't run it with elifs like that..
     elif invinput == "delete" or invinput == "del":
         invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
-        found = False
-        for row in inventory:
-            if invuse == row[0].lower():
-                found = True
-                #rowd to underline the item we're focusing on
-                rowd = row
-                break
-        # If it was found and it's not credits
-        if found and rowd[0] != "CREDITS":
+        # If in inventory
+        # Shouldn't rowd/row be invalid? But it works //FIX
+        checktable = checkinv( invuse )
+        if checktable[0]:
+            rowd = row
             # If there is more than one, ask how many
             if rowd[1] > 1:
                 delcount = input( "How many of these would you like to delete?\n")
                 # int check again.. should make it a function
                 try:
-                    delcount = int(delcount) # //FIX ?
+                    delcount = int(delcount)
                 except:
                     print( "That's not valid.\n")
                     inp_inv()
@@ -206,24 +209,29 @@ def inp_inv():
                     # Delete if right
                     rowd[1] -= delcount
                     print( "Items deleted." )
-                    # If empty, delete from inv
-                    if rowd[1] == 0:
+                    # If empty, delete from inv; don't delete completely if it's money
+                    if rowd[1] == 0 and rowd[0] != "CREDITS":
                         inventory.pop( inventory.index(rowd) )
                     saveinv()
                     inp_inv()
             # If delete only one
             else:
-                inventory.pop( inventory.index(rowd) )
+                # If it's cash, don't remove whole line, just set to 0 or else the game will break
+                if rowd[0] == "CREDITS":
+                    rowd[0] == 0
+                else:
+                    inventory.pop( inventory.index(rowd) )
                 print( "Items deleted." )
                 saveinv()
                 inp_inv()
         else:
-            print( "You don't have that item." )
+            print( "You don't have that." )
             inp_inv()
     else:
         print( "Invalid input." )
         inp_inv()
 
+# //FIX make inventory neater
 
 # "registry" input
 def inp_reg():
@@ -267,7 +275,7 @@ def inp_store_buy( pl_input ):
         mainmenu()
     elif pl_input == "balance":
         inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
-    else:
+    elif pl_input == "buy":
         # First check if such a cube exists, then ask how many
         if pl_input in store_prices:
             # setcube is name of cube, used in next function
@@ -276,6 +284,10 @@ def inp_store_buy( pl_input ):
             inp_store_buy_count( input( "And how many would you like?\n" ) )
         else:
             inp_store_buy( input( "We don't sell that here.\n" ) )
+    # For selling
+    else:
+        sellitem = input( "What would you like to sell?\n" )
+        
 
 # "store" input
 def inp_store():
