@@ -123,8 +123,8 @@ def helpguide():
 def checkinv(item):
     for row in inventory:
         if item.lower() == row[0].lower():
-            return { True, row.index() }
-    return False
+            return { "found": True, "index": inventory.index( row ) }
+    return { "found": False }
 
 # "inventory" input that prints owned cubes
 def inp_inv():
@@ -142,10 +142,14 @@ def inp_inv():
         # Yes, .lower() for everything to compare string not based on capitalisation
         invuse = input("Which item would you like to use?\n").lower()
         # You have to iterate like that
+        # checkinv() returns if found and index row where the item is
         found = False
-        if checkinv( invuse ):
+        checktable = checkinv( invuse )
+        if checktable[ "found" ]:
             found = True
             rowd = row
+            rowindex = checktable[ "index" ]
+            row = inventory[ rowindex ]
         else:
             print( "You don't have that." )
             inp_inv()
@@ -191,13 +195,16 @@ def inp_inv():
     # I shouldn't run it with elifs like that..
     elif invinput == "delete" or invinput == "del":
         invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
-        # If in inventory
-        # Shouldn't rowd/row be invalid? But it works //FIX
+        # checkinv() returns if found and index row where the item is
+        found = False
         checktable = checkinv( invuse )
-        if checktable[0]:
-            rowd = row
+
+        # If in inventory
+        if checktable["found"]:
+            rowindex = checktable[ "index" ]
+            row = inventory[ rowindex ]
             # If there is more than one, ask how many
-            if rowd[1] > 1:
+            if row[1] > 1:
                 delcount = input( "How many of these would you like to delete?\n")
                 # int check again.. should make it a function
                 try:
@@ -207,20 +214,20 @@ def inp_inv():
                     inp_inv()
                 else:   
                     # Delete if right
-                    rowd[1] -= delcount
+                    inventory[rowindex][1] -= delcount
                     print( "Items deleted." )
                     # If empty, delete from inv; don't delete completely if it's money
-                    if rowd[1] == 0 and rowd[0] != "CREDITS":
-                        inventory.pop( inventory.index(rowd) )
+                    if row[1] == 0 and row[0] != "CREDITS":
+                        inventory.pop( rowindex )
                     saveinv()
                     inp_inv()
             # If delete only one
             else:
                 # If it's cash, don't remove whole line, just set to 0 or else the game will break
-                if rowd[0] == "CREDITS":
-                    rowd[0] == 0
+                if row[0] == "CREDITS":
+                    inventory[rowindex][0] == 0
                 else:
-                    inventory.pop( inventory.index(rowd) )
+                    inventory.pop( rowindex )
                 print( "Items deleted." )
                 saveinv()
                 inp_inv()
