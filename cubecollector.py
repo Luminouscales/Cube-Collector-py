@@ -124,7 +124,7 @@ def checkinv(item):
     for row in inventory:
         if item.lower() == row[0].lower():
             return { "found": True, "index": inventory.index( row ) }
-    return { "found": False }
+    return False
 
 # "inventory" input that prints owned cubes
 def inp_inv():
@@ -143,13 +143,12 @@ def inp_inv():
         invuse = input("Which item would you like to use?\n").lower()
         # You have to iterate like that
         # checkinv() returns if found and index row where the item is
-        found = False
         checktable = checkinv( invuse )
-        if checktable[ "found" ]:
+        rowindex = checktable[ "index" ]
+        row = inventory[ rowindex ]
+        if checktable( "found" ): # FIX FROM HERE
             found = True
             rowd = row
-            rowindex = checktable[ "index" ]
-            row = inventory[ rowindex ]
         else:
             print( "You don't have that." )
             inp_inv()
@@ -196,13 +195,11 @@ def inp_inv():
     elif invinput == "delete" or invinput == "del":
         invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
         # checkinv() returns if found and index row where the item is
-        found = False
         checktable = checkinv( invuse )
-
+        rowindex = checktable[ "index" ]
+        row = inventory[ rowindex ]
         # If in inventory
         if checktable["found"]:
-            rowindex = checktable[ "index" ]
-            row = inventory[ rowindex ]
             # If there is more than one, ask how many
             if row[1] > 1:
                 delcount = input( "How many of these would you like to delete?\n")
@@ -242,7 +239,9 @@ def inp_inv():
 
 # "registry" input
 def inp_reg():
-    print( registry )
+    print( "The registry contains:\n--------------------------------------------")
+    for row in registry:
+        print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
     inputs1( input("\n") )
 
 # Input in store for buying a certain amount
@@ -301,12 +300,6 @@ def inp_store():
     inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
 
 # List of inputs for the player to utilise.
-# What inputs should we have?
-    # Check inventory, check registry
-    # Open box
-    # Store
-    # Sell cube
-    # Check balance
 player_inputs = {
     "help": helpguide,
     "inventory": inp_inv,
