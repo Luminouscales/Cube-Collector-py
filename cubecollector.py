@@ -52,7 +52,7 @@ def addreg( cube ):
             return 
     # If new, add to reg
     # First one is name, second one is number of times found, second is unique ID.
-    # Unique ID is counted by adding one to last cube's ID. Let's just hope it's sorted correctly.
+    # Unique ID is counted by adding one to last cube's ID.
     registry.append( [ cube, 1, registry[len(registry) - 1][2] + 1 ] )
     savereg()
 
@@ -117,18 +117,25 @@ def additem( cube, count ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \nbalance\niventory\nregistry\nstore\n") )
+    inputs1( input("Available commands: \niventory\nregistry\nstore\n") )
 
 # Function for checking if the given item is in the inventory
 def checkinv(item):
     for row in inventory:
         if item.lower() == row[0].lower():
+            # Scripts using checkinv() can read this table to get the bool and the item's row
             return { "found": True, "index": inventory.index( row ) }
     return { "found": False  }
 
+# For checking if the cube is in the registry, meaning if it's a cube
+def checkreg(item):
+    for row in registry:
+        if item.lower() == row[0].lower():
+            return True
+    return False
+
 # "inventory" input that prints owned cubes
 def inp_inv():
-
     print( "Your inventory contains:" )
     print("--------------------------------------------")
     for row in inventory:
@@ -151,6 +158,7 @@ def inp_inv():
             rowd = inventory[ rowindex ]
         else:
             print( "You don't have that." )
+            time.sleep(1)
             inp_inv()
         # If it was found, if it's usable
         if found and invuse in inv_inputs:
@@ -167,6 +175,7 @@ def inp_inv():
                 # Typical try check to prevent crash
                 if checkifproperint( invusecount ) == False:
                     print( "That's not valid.\n" )
+                    time.sleep(1)
                     inp_inv()
                 else:
                     invusecount = int(invusecount)   
@@ -182,9 +191,11 @@ def inp_inv():
                         inp_inv()
                     else:
                         print( "You don't have enough of those.\n" )
+                        time.sleep(1)
                         inp_inv()
         else:
             print( "You can't use that." )
+            time.sleep(1)
             inp_inv()
     # Give information about object. //FIX
     elif invinput == "info":
@@ -205,6 +216,7 @@ def inp_inv():
                 # int check again.. should make it a function
                 if checkifproperint( delcount ) == False:
                     print( "That's not valid.\n" )
+                    time.sleep(1)
                     inp_inv()
                 else:
                     delcount = int(delcount)   
@@ -228,9 +240,11 @@ def inp_inv():
                 inp_inv()
         else:
             print( "You don't have that." )
+            time.sleep(1)
             inp_inv()
     else:
         print( "Invalid input." )
+        time.sleep(1)
         inp_inv()
 
 # //FIX add pages/categories to inventory
@@ -248,8 +262,6 @@ def checkifproperint( number ):
             return True
         else:
             return False
-        
-
 
 def printreg( page, maxpages ):
     # So we print a certain range in the list. First one is 1 - 50, then 51 - 101, then 151 - 201
@@ -315,6 +327,24 @@ def inp_store_buy_count( pl_input ):
                 else:
                     inp_store_buy( input( "Alright. Anything else?\n" ) )
                 
+# Used in selling to get price of sold cube based on prefixes
+def get_cube_cost(prefixes):
+    match prefixes:
+        case 0:
+            return 10
+        case 1:
+            return 30
+        case 2:
+            return 300
+        case 3:
+            return 3000
+        case 4:
+            return 30000
+        case 5:
+            return 60000
+        # Quad prefix with affix? Should be expensive.
+        case 6:
+            return 200000
 
 # Input in store for buying
 def inp_store_buy( pl_input ):
@@ -333,8 +363,71 @@ def inp_store_buy( pl_input ):
         else:
             inp_store_buy( input( "We don't sell that here.\n" ) )
     # For selling
+    elif pl_input == "sell":
+        sellitem = input( "What would you like to sell?\n" ).lower()
+        # credits, available, cube
+        # We have to check if the item is available, if it's sellable and if it's a cube
+        # There are two sellables: cubes and items. You can't sell credits.
+        checktable = checkinv( sellitem )
+        # If the item is not inventory
+        if checktable["found"] == False:
+            inp_store_buy( input( "You don't have that.\n" ) )
+        else:
+            # Amount of items
+            count = inventory[ checktable["index"] ][1]
+            if sellitem == "credits":
+                inp_store_buy( input( "You can't sell that.\n" ) )
+            # If the item is valid
+            else:
+                # If it's a store item, sell it at 75% price
+                if sellitem in store_prices:
+                    price = math.ceil( store_prices[sellitem] * 0.75 )
+                # If an item not found in store
+                elif sellitem in item_sellprices:
+                    price = math.ceil( item_sellprices[ sellitem ] )
+                # If cube
+                else:
+                    # Now, this may get tricky. We calculate price of cube based on the amount of prefixes.
+                    # For that we iterate over the string and get the number of spaces. Each space = one prefix.
+                    # Yes, this means that an affix "upgrades" the cost of the cube by two levels. That works out.
+                    # You can have 0-6 spaces. 0 is Cube, 1 is one prefix etc.
+                    spaces = 0
+                    for letter in sellitem:
+                        if letter == " ":
+                            spaces += 1
+                    price = get_cube_cost( spaces )
+                # Now we return and ask to sell
+                # If more than 1, ask how many
+                if count > 1:
+                    ask2 = input( "How many of those would you like to sell? You have " + str( count ) + "\n" )
+                    if checkifproperint( ask2 ) and int( ask2 ) <= count:
+                        # If valid count
+                        ask2 = int(ask2)
+                        price *= ask2
+                        proceed = True
+                    else:
+                        proceed = False
+                        inp_store_buy( input( "That's not valid. Anything else?\n" ) )
+                # No matter the count, ask to sell, assuming we didn't input an invalid count value previously
+                if proceed:
+                    ask = input( "That'll get you " + str( price ) + " credits. Would you like to sell? [sell or exit]\n" ).lower()
+                    if ask == "sell":
+                        # If sold all, delete
+                        if ask2 == count:
+                            inventory.pop( checktable["index"] )
+                        # If not, delete only the chosen amount
+                        else:
+                            inventory[checktable["index"]][1] -= ask2
+                        inventory[0][1] += price
+                        saveinv()
+                        inp_store_buy( input( "Thanks! Anything else?\n" ) )
+                    else:
+                        inp_store_buy( input( "That's cool. Anything else?\n" ) )
+
     else:
-        sellitem = input( "What would you like to sell?\n" )
+        inp_store_buy( input( "Pardon?\n" ) )   
+
+
         
 
 # "store" input
@@ -359,13 +452,17 @@ inv_inputs = {
     "quadruple prefixed box": 4,
 }
 
-
 store_prices = {
     "basic box": 10,
     "prefixed box": 100,
     "double prefixed box": 1000,
     "triple prefixed box": 10000,
     "quadruple prefixed box": 100000,
+}
+
+# For convenient selling of items that aren't in the store
+item_sellprices = {
+    "placeholder": 999999
 }
 
 # Input def for main inputs
