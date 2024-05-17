@@ -1,4 +1,4 @@
-import os, sys, random, time, atexit
+import os, sys, random, time, math
 
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
@@ -124,7 +124,7 @@ def checkinv(item):
     for row in inventory:
         if item.lower() == row[0].lower():
             return { "found": True, "index": inventory.index( row ) }
-    return False
+    return { "found": False  }
 
 # "inventory" input that prints owned cubes
 def inp_inv():
@@ -144,11 +144,11 @@ def inp_inv():
         # You have to iterate like that
         # checkinv() returns if found and index row where the item is
         checktable = checkinv( invuse )
-        rowindex = checktable[ "index" ]
-        row = inventory[ rowindex ]
-        if checktable( "found" ): # FIX FROM HERE
+
+        if checktable[ "found" ]:
             found = True
-            rowd = row
+            rowindex = checktable[ "index" ]
+            rowd = inventory[ rowindex ]
         else:
             print( "You don't have that." )
             inp_inv()
@@ -159,30 +159,29 @@ def inp_inv():
                 # Remove one use from the object; if it's last, remove it from inv
                 rowd[1] -= 1
                 if rowd[1] == 0:
-                    inventory.pop(inventory.index(rowd))
+                    inventory.pop(rowindex)
                 rollcube( inv_inputs[invuse] )
                 inp_inv()
             else:
-                invusecount = input( "How many of these would you like to use?\n" )
+                invusecount = input( "How many of those would you like to use?\n" )
                 # Typical try check to prevent crash
-                try:
-                    invusecount = int(invusecount)
-                except:
-                    print( "That's not valid.\n")
+                if checkifproperint( invusecount ) == False:
+                    print( "That's not valid.\n" )
                     inp_inv()
-                else:   
-                    # Check if it's more than 0, whole number and if you have enough
-                    if invusecount > 0 and invusecount % 1 == 0 and invusecount <= rowd[1]:
+                else:
+                    invusecount = int(invusecount)   
+                    # Check if you have enough
+                    if invusecount <= rowd[1]:
                         for i in range( invusecount ):
                             # Remove one use from the object; if it's last, remove it from inv
                             rowd[1] -= 1
                             if rowd[1] == 0:
-                                inventory.pop(inventory.index(rowd))
+                                inventory.pop(rowindex)
                             rollcube( inv_inputs[invuse] )
                             time.sleep(0.5)
                         inp_inv()
                     else:
-                        print( "That's not valid.\n" )
+                        print( "You don't have enough of those.\n" )
                         inp_inv()
         else:
             print( "You can't use that." )
@@ -196,20 +195,19 @@ def inp_inv():
         invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
         # checkinv() returns if found and index row where the item is
         checktable = checkinv( invuse )
-        rowindex = checktable[ "index" ]
-        row = inventory[ rowindex ]
         # If in inventory
         if checktable["found"]:
+            rowindex = checktable[ "index" ]
+            row = inventory[ rowindex ]
             # If there is more than one, ask how many
             if row[1] > 1:
                 delcount = input( "How many of these would you like to delete?\n")
                 # int check again.. should make it a function
-                try:
-                    delcount = int(delcount)
-                except:
-                    print( "That's not valid.\n")
+                if checkifproperint( delcount ) == False:
+                    print( "That's not valid.\n" )
                     inp_inv()
-                else:   
+                else:
+                    delcount = int(delcount)   
                     # Delete if right
                     inventory[rowindex][1] -= delcount
                     print( "Items deleted." )
@@ -235,14 +233,50 @@ def inp_inv():
         print( "Invalid input." )
         inp_inv()
 
-# //FIX make inventory neater
+# //FIX add pages/categories to inventory
+
+# Function to check if it's an int, if it's whole and bigger than 0
+def checkifproperint( number ):
+    # Is it int?
+    try:
+        number = int(number)
+    except:
+        return False
+    # Is it whole and bigger than 0?
+    else:
+        if number % 1 == 0 and number > 0:
+            return True
+        else:
+            return False
+        
+
+
+def printreg( page, maxpages ):
+    # So we print a certain range in the list. First one is 1 - 50, then 51 - 101, then 151 - 201
+    range1 = ( page - 1 ) * 50
+    range2 = page * 50 + ( page - 1 ) * 50
+    for row in registry[range1:range2]:
+        print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
+    print( "Page " + str( page ) + " of " + str(maxpages) )
 
 # "registry" input
 def inp_reg():
+    # Calculate number of pages
+    # registry length
+    reglen = len(registry)
+    # pages, rounded up is full amount
+    pages = math.ceil( reglen / 50 )
     print( "The registry contains:\n--------------------------------------------")
-    for row in registry:
-        print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
-    inputs1( input("\n") )
+    # First ID, then cube, then amount 
+    printreg( 1, pages )
+    reginput = input("Input page or 'exit'")
+    # try:
+    #     reginput = int( reginput )
+    # except:
+    #     "Invalid input."
+    #     inp_reg()
+    # else:
+
 
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
