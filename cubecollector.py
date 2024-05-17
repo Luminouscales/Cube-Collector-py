@@ -259,6 +259,21 @@ def printreg( page, maxpages ):
         print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
     print( "Page " + str( page ) + " of " + str(maxpages) )
 
+# registry input part 2, internal, to maintain flow
+def inp_reg2( pages ):
+    reginput = input("Input page or 'exit'\n")
+    if reginput.lower() == "exit":
+        mainmenu()
+    # Must be proper int and not more than max pages
+    elif checkifproperint( reginput ) == False or int(reginput) > pages:
+        print( "Incorrect input." )
+        time.sleep( 1 )
+        inp_reg()
+    else:
+        reginput = int(reginput)
+        printreg( reginput, pages )
+    inp_reg2(pages)
+
 # "registry" input
 def inp_reg():
     # Calculate number of pages
@@ -269,14 +284,7 @@ def inp_reg():
     print( "The registry contains:\n--------------------------------------------")
     # First ID, then cube, then amount 
     printreg( 1, pages )
-    reginput = input("Input page or 'exit'")
-    # try:
-    #     reginput = int( reginput )
-    # except:
-    #     "Invalid input."
-    #     inp_reg()
-    # else:
-
+    inp_reg2( pages )
 
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
