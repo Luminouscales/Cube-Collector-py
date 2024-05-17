@@ -98,9 +98,13 @@ def addcube( cube ):
             return
     # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
     inventory.append( [cube, 1] )
-    saveinv()   
+    saveinv()
+    # If it's not in reg yet, say it's brand new.
+    if checkreg( cube ):
+        print( "You got a " + cube + "!" )
+    else:
+        print( "You got a brand new " + cube + "!" )
     addreg( cube )
-    print( "You got a brand new " + cube + "!" )
 
 # Function that adds an item to inventory
 def additem( cube, count ):
@@ -266,8 +270,13 @@ def checkifproperint( number ):
 
 def printreg( page, maxpages ):
     # So we print a certain range in the list. First one is 1 - 50, then 51 - 101, then 151 - 201
-    range1 = ( page - 1 ) * 50
-    range2 = page * 50 + ( page - 1 ) * 50
+    # I'd love to do a cool, smooth calculation here but this is much easier. I'm a poet.
+    if page == 1:
+        range1 = 0
+    else:
+        range1 = 50 * ( page - 1 )
+    range2 = 50 * page
+
     for row in registry[range1:range2]:
         print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
     print( "Page " + str( page ) + " of " + str(maxpages) )
@@ -431,12 +440,8 @@ def inp_store_buy( pl_input ):
                             inp_store_buy( input( "Thanks! Anything else?\n" ) )
                     else:
                         inp_store_buy( input( "That's cool. Anything else?\n" ) )
-
     else:
         inp_store_buy( input( "Pardon?\n" ) )   
-
-
-        
 
 # "store" input
 def inp_store():
