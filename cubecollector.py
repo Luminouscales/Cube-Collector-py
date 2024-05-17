@@ -136,7 +136,7 @@ def checkreg(item):
 
 # "inventory" input that prints owned cubes
 def inp_inv():
-    print( "Your inventory contains:" )
+    print( "\nYour inventory contains:" )
     print("--------------------------------------------")
     for row in inventory:
         print( " - " + row[0] + "\t" + str( row[1] ) )
@@ -188,6 +188,7 @@ def inp_inv():
                                 inventory.pop(rowindex)
                             rollcube( inv_inputs[invuse] )
                             time.sleep(0.5)
+                        time.sleep( 1.5 )
                         inp_inv()
                     else:
                         print( "You don't have enough of those.\n" )
@@ -305,7 +306,7 @@ def inp_store_buy_count( pl_input ):
         mainmenu()
     else:
         # Exception check if you input something that's not a number
-        try:
+        try: # //FIX use best function
             pl_input = int(pl_input)
         except:
             inp_store_buy_count( input( "That's not valid.\n" ) )
@@ -319,7 +320,7 @@ def inp_store_buy_count( pl_input ):
                     cash = inventory[0][1]
                     if cash >= price:
                         # Add to inv; name and amount; remove cash
-                        inventory[0][1] -= cash - price
+                        inventory[0][1] -= price
                         additem( setcube, pl_input )
                         inp_store_buy( input("Thanks for buying! Anything else?\n") )
                     else:
@@ -355,6 +356,7 @@ def inp_store_buy( pl_input ):
         inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
     elif pl_input == "buy":
         # First check if such a cube exists, then ask how many
+        pl_input = input( "What would you like?\n" )
         if pl_input in store_prices:
             # setcube is name of cube, used in next function
             global setcube
@@ -398,6 +400,7 @@ def inp_store_buy( pl_input ):
                     price = get_cube_cost( spaces )
                 # Now we return and ask to sell
                 # If more than 1, ask how many
+                proceed = True
                 if count > 1:
                     ask2 = input( "How many of those would you like to sell? You have " + str( count ) + "\n" )
                     if checkifproperint( ask2 ) and int( ask2 ) <= count:
@@ -412,15 +415,20 @@ def inp_store_buy( pl_input ):
                 if proceed:
                     ask = input( "That'll get you " + str( price ) + " credits. Would you like to sell? [sell or exit]\n" ).lower()
                     if ask == "sell":
-                        # If sold all, delete
-                        if ask2 == count:
-                            inventory.pop( checktable["index"] )
-                        # If not, delete only the chosen amount
-                        else:
+                        # Checking if ask2 exists. It exists if we sold more than 1 item
+                        # Meaning if it doesn't exist, we're removing one item
+                        try:
+                            ask2 = int(ask2)
+                        except:
+                            ask2 = 1
+                        finally:
                             inventory[checktable["index"]][1] -= ask2
-                        inventory[0][1] += price
-                        saveinv()
-                        inp_store_buy( input( "Thanks! Anything else?\n" ) )
+                            # If sold all, delete
+                            if inventory[ checktable["index"] ][1] == 0:
+                                inventory.pop( checktable["index"] )
+                            inventory[0][1] += price
+                            saveinv()
+                            inp_store_buy( input( "Thanks! Anything else?\n" ) )
                     else:
                         inp_store_buy( input( "That's cool. Anything else?\n" ) )
 
