@@ -139,15 +139,24 @@ def checkreg(item):
     return False
 
 # "inventory" input that prints owned cubes
-def inp_inv():
-    print( "\nYour inventory contains:" )
-    print("--------------------------------------------")
-    for row in inventory:
-        print( " - " + row[0] + "\t" + str( row[1] ) )
-    print("--------------------------------------------")
-    invinput = input("Commands: use, delete, info, exit\n").lower()
+# printinv is a bool that decides if we should print the inventory or not
+def inp_inv( printinv ):
+    pages = math.ceil( len( inventory )/50 )
+    if printinv:
+        print( "\nYour inventory contains:" )
+        print("--------------------------------------------")
+        # We'll nowe use printreg() to show the inventory in pages.
+        printreg( 1, pages, inventory )
+        # for row in inventory:
+        #     print( "[" + str(inventory.index( row )) + "] " + row[0] + "\t" + str( row[1] ) )
+        print("--------------------------------------------")
+    invinput = input("Commands: use, delete, info, exit, [page number]\n").lower()
     if invinput == "exit":
         mainmenu()
+    # If page number
+    elif checkifproperint( invinput ) and int( invinput ) <= pages:
+        printreg( int( invinput ), pages, inventory )
+        inp_inv( False )
     # Input for using an object
     elif invinput == "use":
         # Yes, .lower() for everything to compare string not based on capitalisation
@@ -163,7 +172,7 @@ def inp_inv():
         else:
             print( "You don't have that." )
             time.sleep(1)
-            inp_inv()
+            inp_inv( False )
         # If it was found, if it's usable
         if found and invuse in inv_inputs:
             # If it's only one, use immediately, if not - ask
@@ -173,14 +182,14 @@ def inp_inv():
                 if rowd[1] == 0:
                     inventory.pop(rowindex)
                 rollcube( inv_inputs[invuse] )
-                inp_inv()
+                inp_inv( True )
             else:
                 invusecount = input( "How many of those would you like to use?\n" )
                 # Typical try check to prevent crash
                 if checkifproperint( invusecount ) == False:
                     print( "That's not valid.\n" )
                     time.sleep(1)
-                    inp_inv()
+                    inp_inv( False )
                 else:
                     invusecount = int(invusecount)   
                     # Check if you have enough
@@ -193,15 +202,15 @@ def inp_inv():
                             rollcube( inv_inputs[invuse] )
                             time.sleep(0.5)
                         time.sleep( 1.5 )
-                        inp_inv()
+                        inp_inv( True )
                     else:
                         print( "You don't have enough of those.\n" )
                         time.sleep(1)
-                        inp_inv()
+                        inp_inv( False )
         else:
             print( "You can't use that." )
             time.sleep(1)
-            inp_inv()
+            inp_inv( False )
     # Give information about object. //FIX
     elif invinput == "info":
         pass
@@ -222,7 +231,7 @@ def inp_inv():
                 if checkifproperint( delcount ) == False:
                     print( "That's not valid.\n" )
                     time.sleep(1)
-                    inp_inv()
+                    inp_inv( False )
                 else:
                     delcount = int(delcount)   
                     # Delete if right
@@ -232,7 +241,7 @@ def inp_inv():
                     if row[1] == 0 and row[0] != "CREDITS":
                         inventory.pop( rowindex )
                     saveinv()
-                    inp_inv()
+                    inp_inv( True )
             # If delete only one
             else:
                 # If it's cash, don't remove whole line, just set to 0 or else the game will break
@@ -242,15 +251,15 @@ def inp_inv():
                     inventory.pop( rowindex )
                 print( "Items deleted." )
                 saveinv()
-                inp_inv()
+                inp_inv( True )
         else:
             print( "You don't have that." )
             time.sleep(1)
-            inp_inv()
+            inp_inv( False )
     else:
         print( "Invalid input." )
         time.sleep(1)
-        inp_inv()
+        inp_inv( False )
 
 # //FIX add pages/categories to inventory
 
@@ -268,7 +277,7 @@ def checkifproperint( number ):
         else:
             return False
 
-def printreg( page, maxpages ):
+def printreg( page, maxpages, table ):
     # So we print a certain range in the list. First one is 1 - 50, then 51 - 101, then 151 - 201
     # I'd love to do a cool, smooth calculation here but this is much easier. I'm a poet.
     if page == 1:
@@ -277,8 +286,13 @@ def printreg( page, maxpages ):
         range1 = 50 * ( page - 1 )
     range2 = 50 * page
 
-    for row in registry[range1:range2]:
-        print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
+    # Different approach for reg and inv
+    if table[1] == registry[1]:
+        for row in table[range1:range2]:
+            print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
+    else: # If inventory
+        for row in table[range1 + 1:range2 + 1]:
+            print( "[" + str( table.index( row ) ) + "] " + row[0] + " " + str( row[1] ) )
     print( "Page " + str( page ) + " of " + str(maxpages) )
 
 # registry input part 2, internal, to maintain flow
@@ -293,7 +307,7 @@ def inp_reg2( pages ):
         inp_reg()
     else:
         reginput = int(reginput)
-        printreg( reginput, pages )
+        printreg( reginput, pages, registry )
     inp_reg2(pages)
 
 # "registry" input
@@ -305,7 +319,7 @@ def inp_reg():
     pages = math.ceil( reglen / 50 )
     print( "The registry contains:\n--------------------------------------------")
     # First ID, then cube, then amount 
-    printreg( 1, pages )
+    printreg( 1, pages, registry )
     inp_reg2( pages )
 
 # Input in store for buying a certain amount
@@ -355,6 +369,8 @@ def get_cube_cost(prefixes):
         # Quad prefix with affix? Should be expensive.
         case 6:
             return 200000
+        case _:
+            return 20^prefixes
 
 # Input in store for buying
 def inp_store_buy( pl_input ):
@@ -416,7 +432,6 @@ def inp_store_buy( pl_input ):
                         # If valid count
                         ask2 = int(ask2)
                         price *= ask2
-                        proceed = True
                     else:
                         proceed = False
                         inp_store_buy( input( "That's not valid. Anything else?\n" ) )
@@ -445,7 +460,11 @@ def inp_store_buy( pl_input ):
 
 # "store" input
 def inp_store():
-    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n") )
+    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
+
+# "debug" input to make the program close so I can run commands
+def debug():
+    pass
 
 # List of inputs for the player to utilise.
 player_inputs = {
@@ -454,7 +473,8 @@ player_inputs = {
     "inv": inp_inv,
     "registry": inp_reg,
     "reg": inp_reg,
-    "store": inp_store
+    "store": inp_store,
+    "debug": debug
 }
 
 inv_inputs = {
@@ -482,7 +502,11 @@ item_sellprices = {
 def inputs1( player_input ):
     player_input = player_input.lower() # .lower() for ignoring capitalisation
     if player_input in player_inputs:
-        player_inputs[player_input]()
+        # Check if it's inventory to apply its bool correctly
+        if player_input == "inv" or player_input == "inventory":
+            player_inputs[player_input]( True )
+        else:
+            player_inputs[player_input]()
     else:
         player_input = inputs1( input("Meow, I don't get what you're saying... ") )
 
