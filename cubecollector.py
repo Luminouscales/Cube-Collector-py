@@ -3,7 +3,9 @@ import os, sys, random, time, math
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
-verdate = "07.05.24"
+verdate = "18.05.24"
+# For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
+limit = 20
 
 # In the future we could use subprocess to slice up the code into more accessible chunks and run only what we need.
 
@@ -145,7 +147,7 @@ def checkreg(item):
 # "inventory" input that prints owned cubes
 # printinv is a bool that decides if we should print the inventory or not
 def inp_inv( printinv ):
-    pages = math.ceil( len( inventory )/50 )
+    pages = math.ceil( len( inventory )/limit )
     if printinv:
         print( "\nYour inventory contains:" )
         print("--------------------------------------------")
@@ -260,13 +262,15 @@ def inp_inv( printinv ):
             inp_inv( False )
     # sorting
     elif invinput == "sort":
-        type = input( "How do you want to sort? [alph, value] " )
+        type = input( "How do you want to sort? [alph, value, count] " )
         # Sort alphabetically
         if type == "alph":
             inventory.sort( key=lambda x: x[0] )
         # Sort by value
         elif type == "value":
             inventory.sort( key=lambda x: getprice( x[0] ), reverse=True )
+        elif type == "count":
+            inventory.sort( key=lambda x: x[1], reverse=True )
         # In any case, we have to find credits and cube and insert them into the beginning of the table
         for row in inventory:
             if row[0].lower() == "credits":
@@ -280,7 +284,7 @@ def inp_inv( printinv ):
     elif checkinv( invinput )["found"]:
         checktable = checkinv( invinput )
         row = inventory[( checktable["index"] )]
-        loc = math.ceil( checktable["index"] / 50 )
+        loc = math.ceil( checktable["index"] / limit )
         print( "Found " + str( row[1] ) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "], page " + str( loc ) )
         inp_inv( False )
     else:
@@ -305,13 +309,13 @@ def checkifproperint( number ):
             return False
 
 def printreg( page, maxpages, table ):
-    # So we print a certain range in the list. First one is 1 - 50, then 51 - 101, then 151 - 201
+    # So we print a certain range in the list. First one is 1 - limit, then 51 - 101, then 151 - 201
     # I'd love to do a cool, smooth calculation here but this is much easier. I'm a poet.
     if page == 1:
         range1 = 0
     else:
-        range1 = 50 * ( page - 1 )
-    range2 = 50 * page
+        range1 = limit * ( page - 1 )
+    range2 = limit * page
 
     # Different approach for reg and inv
     if table[1] == registry[1]:
@@ -364,7 +368,7 @@ def inp_reg():
     # registry length
     reglen = len(registry)
     # pages, rounded up is full amount
-    pages = math.ceil( reglen / 50 )
+    pages = math.ceil( reglen / limit )
     print( "The registry contains:\n--------------------------------------------")
     # First ID, then cube, then amount 
     printreg( 1, pages, registry )
