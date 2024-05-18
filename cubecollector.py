@@ -135,8 +135,8 @@ def checkinv(item):
 def checkreg(item):
     for row in registry:
         if item.lower() == row[0].lower():
-            return True
-    return False
+            return { "found": True, "index": registry.index( row ) }
+    return { "found": False  }
 
 
 # Honestly these inventory inputs have become so nested it would be much more hygienic to split them up into functions and
@@ -324,9 +324,30 @@ def printreg( page, maxpages, table ):
 
 # registry input part 2, internal, to maintain flow
 def inp_reg2( pages ):
-    reginput = input("Input page or 'exit'\n")
+    reginput = input("Input page, cube name, 'sort' or 'exit'\n")
     if reginput.lower() == "exit":
         mainmenu()
+    # Check if exists
+    elif checkreg( reginput )["found"]:
+        checktable = checkreg(reginput)
+        row = registry[ checktable["index"] ]
+        print( "Found " + str(row[1]) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "] with ID " + str( row[2] ) )
+        inp_reg2( pages )
+    elif reginput == "sort":
+        type = input( "How do you want to sort? [alph, value, id, count] " )
+        # Sort alphabetically
+        if type == "alph":
+            registry.sort( key=lambda x: x[0] )
+        # Sort by value
+        elif type == "value":
+            registry.sort( key=lambda x: getprice( x[0] ), reverse=True )
+        elif type == "id":
+            registry.sort( key=lambda x: x[2] )
+        elif type == "count":
+            registry.sort( key=lambda x: x[1], reverse=True )
+        # Now return
+        savereg()
+        inp_reg()
     # Must be proper int and not more than max pages
     elif checkifproperint( reginput ) == False or int(reginput) > pages:
         print( "Incorrect input." )
