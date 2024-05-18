@@ -138,6 +138,10 @@ def checkreg(item):
             return True
     return False
 
+
+# Honestly these inventory inputs have become so nested it would be much more hygienic to split them up into functions and
+# to throw them into a case match. //FIX
+
 # "inventory" input that prints owned cubes
 # printinv is a bool that decides if we should print the inventory or not
 def inp_inv( printinv ):
@@ -148,7 +152,7 @@ def inp_inv( printinv ):
         # We'll nowe use printreg() to show the inventory in pages.
         printreg( 1, pages, inventory )
         print("--------------------------------------------")
-    invinput = input("Commands: use, delete, info, exit, sort, [page number]\n").lower()
+    invinput = input("Commands: use, delete, info, exit, sort, [cube name], [page number]\n").lower()
     if invinput == "exit":
         mainmenu()
     # If page number
@@ -272,6 +276,13 @@ def inp_inv( printinv ):
         # Now return
         saveinv()
         inp_inv( True )
+    # If it's a cube name, return if this cube exists
+    elif checkinv( invinput )["found"]:
+        checktable = checkinv( invinput )
+        row = inventory[( checktable["index"] )]
+        loc = math.ceil( checktable["index"] / 50 )
+        print( "Found " + str( row[1] ) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "], page " + str( loc ) )
+        inp_inv( False )
     else:
         print( "Invalid input." )
         time.sleep(1)
@@ -343,29 +354,24 @@ def inp_store_buy_count( pl_input ):
     pl_input = pl_input.lower()
     if pl_input == "exit":
         mainmenu()
-    else:
-        # Exception check if you input something that's not a number
-        try: # //FIX use best function
-            pl_input = int(pl_input)
-        except:
-            inp_store_buy_count( input( "That's not valid.\n" ) )
+    elif checkifproperint( pl_input ):
+        # If it's bigger than 0 and if it's whole
+        # Calc price and check if we have the funds
+        price = pl_input * store_prices[ setcube ]
+        locinput = input( "That will be " + str( price ) + " credits. [buy or exit] " )
+        if locinput == "buy":
+            cash = inventory[0][1]
+            if cash >= price:
+                # Add to inv; name and amount; remove cash
+                inventory[0][1] -= price
+                additem( setcube, pl_input )
+                inp_store_buy( input("Thanks for buying! Anything else?\n") )
+            else:
+                inp_store_buy( input( "You can't afford that. Anything else?\n" ) )
         else:
-            # If it's bigger than 0 and if it's whole
-            if pl_input > 0 and pl_input % 1 == 0:
-                # Calc price and check if we have the funds
-                price = pl_input * store_prices[ setcube ]
-                locinput = input( "That will be " + str( price ) + " credits. [buy or exit] " )
-                if locinput == "buy":
-                    cash = inventory[0][1]
-                    if cash >= price:
-                        # Add to inv; name and amount; remove cash
-                        inventory[0][1] -= price
-                        additem( setcube, pl_input )
-                        inp_store_buy( input("Thanks for buying! Anything else?\n") )
-                    else:
-                        inp_store_buy( input( "You can't afford that. Anything else?\n" ) )
-                else:
-                    inp_store_buy( input( "Alright. Anything else?\n" ) )
+            inp_store_buy( input( "Alright. Anything else?\n" ) )
+    else:
+        inp_store_buy( input( "Invalid input." ) )
                 
 # Used in selling to get price of sold cube based on prefixes
 def get_cube_cost(prefixes):
@@ -406,8 +412,6 @@ def getprice( sellitem ):
             if letter == " ":
                 spaces += 1
         return get_cube_cost( spaces )
-
-# use inventory.sort( key=lambda x: getprice( x[0] ) ) for sorting
 
 # Input in store for buying
 def inp_store_buy( pl_input ):
