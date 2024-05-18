@@ -147,10 +147,8 @@ def inp_inv( printinv ):
         print("--------------------------------------------")
         # We'll nowe use printreg() to show the inventory in pages.
         printreg( 1, pages, inventory )
-        # for row in inventory:
-        #     print( "[" + str(inventory.index( row )) + "] " + row[0] + "\t" + str( row[1] ) )
         print("--------------------------------------------")
-    invinput = input("Commands: use, delete, info, exit, [page number]\n").lower()
+    invinput = input("Commands: use, delete, info, exit, sort, [page number]\n").lower()
     if invinput == "exit":
         mainmenu()
     # If page number
@@ -256,6 +254,24 @@ def inp_inv( printinv ):
             print( "You don't have that." )
             time.sleep(1)
             inp_inv( False )
+    # sorting
+    elif invinput == "sort":
+        type = input( "How do you want to sort? [alph, value] " )
+        # Sort alphabetically
+        if type == "alph":
+            inventory.sort( key=lambda x: x[0] )
+        # Sort by value
+        elif type == "value":
+            inventory.sort( key=lambda x: getprice( x[0] ), reverse=True )
+        # In any case, we have to find credits and cube and insert them into the beginning of the table
+        for row in inventory:
+            if row[0].lower() == "credits":
+                cash = row[1]
+                inventory.pop( inventory.index(row) )
+                inventory.insert( 0, ["Credits", cash] )
+        # Now return
+        saveinv()
+        inp_inv( True )
     else:
         print( "Invalid input." )
         time.sleep(1)
@@ -291,7 +307,7 @@ def printreg( page, maxpages, table ):
         for row in table[range1:range2]:
             print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
     else: # If inventory
-        for row in table[range1 + 1:range2 + 1]:
+        for row in table[range1:range2 + 1]:
             print( "[" + str( table.index( row ) ) + "] " + row[0] + " " + str( row[1] ) )
     print( "Page " + str( page ) + " of " + str(maxpages) )
 
@@ -372,6 +388,27 @@ def get_cube_cost(prefixes):
         case _:
             return 20^prefixes
 
+def getprice( sellitem ):
+    # If it's a store item, sell it at 75% price
+    if sellitem in store_prices:
+        return math.ceil( store_prices[sellitem] * 0.75 )
+    # If an item not found in store
+    elif sellitem in item_sellprices:
+        return math.ceil( item_sellprices[ sellitem ] )
+    # If cube
+    else:
+        # Now, this may get tricky. We calculate price of cube based on the amount of prefixes.
+        # For that we iterate over the string and get the number of spaces. Each space = one prefix.
+        # Yes, this means that an affix "upgrades" the cost of the cube by two levels. That works out.
+        # You can have 0-6 spaces. 0 is Cube, 1 is one prefix etc.
+        spaces = 0
+        for letter in sellitem:
+            if letter == " ":
+                spaces += 1
+        return get_cube_cost( spaces )
+
+# use inventory.sort( key=lambda x: getprice( x[0] ) ) for sorting
+
 # Input in store for buying
 def inp_store_buy( pl_input ):
     pl_input = pl_input.lower()
@@ -406,23 +443,7 @@ def inp_store_buy( pl_input ):
                 inp_store_buy( input( "You can't sell that.\n" ) )
             # If the item is valid
             else:
-                # If it's a store item, sell it at 75% price
-                if sellitem in store_prices:
-                    price = math.ceil( store_prices[sellitem] * 0.75 )
-                # If an item not found in store
-                elif sellitem in item_sellprices:
-                    price = math.ceil( item_sellprices[ sellitem ] )
-                # If cube
-                else:
-                    # Now, this may get tricky. We calculate price of cube based on the amount of prefixes.
-                    # For that we iterate over the string and get the number of spaces. Each space = one prefix.
-                    # Yes, this means that an affix "upgrades" the cost of the cube by two levels. That works out.
-                    # You can have 0-6 spaces. 0 is Cube, 1 is one prefix etc.
-                    spaces = 0
-                    for letter in sellitem:
-                        if letter == " ":
-                            spaces += 1
-                    price = get_cube_cost( spaces )
+                price = getprice( sellitem )
                 # Now we return and ask to sell
                 # If more than 1, ask how many
                 proceed = True
