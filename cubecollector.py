@@ -127,17 +127,33 @@ def helpguide():
 
 # Function for checking if the given item is in the inventory
 def checkinv(item):
-    for row in inventory:
-        if item.lower() == row[0].lower():
-            # Scripts using checkinv() can read this table to get the bool and the item's row
-            return { "found": True, "index": inventory.index( row ) }
+    # We can input either int (for index) or string (for name)
+    if checkifproperint( item ):
+        try:
+            return { "found": True, "index": int( item ) }
+        except:
+            return{ "found": False }
+    # If it's a string
+    else:
+        for row in inventory:
+            if item.lower() == row[0].lower():
+                # Scripts using checkinv() can read this table to get the bool and the item's row
+                return { "found": True, "index": inventory.index( row ) }
     return { "found": False  }
 
 # For checking if the cube is in the registry, meaning if it's a cube
 def checkreg(item):
-    for row in registry:
-        if item.lower() == row[0].lower():
-            return { "found": True, "index": registry.index( row ) }
+    # We can input either int (for index) or string (for name)
+    if checkifproperint( item ):
+        try:
+            return { "found": True, "index": int( item ) }
+        except:
+            return{ "found": False }
+    # If it's a string
+    else:
+        for row in registry:
+            if item.lower() == row[0].lower():
+                return { "found": True, "index": registry.index( row ) }
     return { "found": False  }
 
 
@@ -168,17 +184,10 @@ def inp_inv( printinv ):
         # You have to iterate like that
         # checkinv() returns if found and index row where the item is
         checktable = checkinv( invuse )
-
-        if checktable[ "found" ]:
-            found = True
+        # If it was found, if it's usable
+        if checktable[ "found" ] and invuse in inv_inputs:
             rowindex = checktable[ "index" ]
             rowd = inventory[ rowindex ]
-        else:
-            print( "You don't have that." )
-            time.sleep(1)
-            inp_inv( False )
-        # If it was found, if it's usable
-        if found and invuse in inv_inputs:
             # If it's only one, use immediately, if not - ask
             if rowd[1] == 1:
                 # Remove one use from the object; if it's last, remove it from inv
@@ -461,11 +470,16 @@ def inp_store_buy( pl_input ):
             inp_store_buy( input( "We don't sell that here.\n" ) )
     # For selling
     elif pl_input == "sell":
-        sellitem = input( "What would you like to sell?\n" ).lower()
+        sellitem = input( "What would you like to sell? [cube name or inventory index\n" ).lower()
         # credits, available, cube
         # We have to check if the item is available, if it's sellable and if it's a cube
         # There are two sellables: cubes and items. You can't sell credits.
         checktable = checkinv( sellitem )
+        # If an index was input, change sellitem from int to item name
+        if checktable["found"] and checkifproperint( sellitem ):
+            sellitem = int(sellitem)
+            print( "That's the " + inventory[ sellitem ][0] )
+            sellitem = inventory[ sellitem ][0]
         # If the item is not inventory
         if checktable["found"] == False:
             inp_store_buy( input( "You don't have that.\n" ) )
