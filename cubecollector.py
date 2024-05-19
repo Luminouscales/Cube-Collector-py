@@ -184,7 +184,11 @@ def inp_inv( printinv ):
         # You have to iterate like that
         # checkinv() returns if found and index row where the item is
         checktable = checkinv( invuse )
-        # If it was found, if it's usable
+        # If it's an index
+        if checktable["found"] and checkifproperint( invuse ):
+            print( inventory[int(invuse)][0] )
+            invuse = inventory[int(invuse)][0].lower()
+        # If it was found, if it's usable   
         if checktable[ "found" ] and invuse in inv_inputs:
             rowindex = checktable[ "index" ]
             rowd = inventory[ rowindex ]
@@ -233,6 +237,10 @@ def inp_inv( printinv ):
         invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
         # checkinv() returns if found and index row where the item is
         checktable = checkinv( invuse )
+        # If index
+        if checktable["found"] and checkifproperint( invuse ):
+            print( inventory[int(invuse)][0] )
+            invuse = inventory[int(invuse)][0].lower()
         # If in inventory
         if checktable["found"]:
             rowindex = checktable[ "index" ]
@@ -581,5 +589,11 @@ def inputs1( player_input ):
 # Start message
 def mainmenu():
     inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help".\n' ) )
+
+print( "           __..--''``---....___   _..._    __" )
+print(  "/// //_.-'    .-/';  `        ``<._  ``.''_ `. / // /" )
+print( '///_.-" _..--."_    |                    `( ) ) // //' )
+print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
+print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
 
 mainmenu()
