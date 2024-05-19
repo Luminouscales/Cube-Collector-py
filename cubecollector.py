@@ -244,6 +244,8 @@ def inp_inv( printinv ):
                     # If empty, delete from inv; don't delete completely if it's money
                     if row[1] == 0 and row[0] != "CREDITS":
                         inventory.pop( rowindex )
+                    if row[0] == "CREDITS":
+                        inventory[rowindex][0] == 0
                     saveinv()
                     inp_inv( True )
             # If delete only one
@@ -382,7 +384,9 @@ def inp_store_buy_count( pl_input ):
     elif checkifproperint( pl_input ):
         # If it's bigger than 0 and if it's whole
         # Calc price and check if we have the funds
+        pl_input = int( pl_input )
         price = pl_input * store_prices[ setcube ]
+        price = int(price)
         locinput = input( "That will be " + str( price ) + " credits. [buy or exit] " )
         if locinput == "buy":
             cash = inventory[0][1]
