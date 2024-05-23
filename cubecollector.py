@@ -71,13 +71,13 @@ def rollcube( tier ):
     if tier > 0 or random.randint( 1, 2 ) == 1:
         prefixes = prefixtable[ random.randint( 0, prefixmax ) ]
         # Roll for second prefix if tier is 2
-        if tier > 1 or random.randint( 1, 3 ) == 1:
+        if tier > 1 or random.randint( 1, 8 ) == 1:
             prefix2 = prefixtable[ random.randint( 0, prefixmax ) ]
             prefixes = prefixes + " " + prefix2
-            if tier > 2 or random.randint( 1, 4 ) == 1:
+            if tier > 2 or random.randint( 1, 9 ) == 1:
                 prefix3 = prefixtable[ random.randint( 0, prefixmax ) ]
                 prefixes = prefixes + " " + prefix3
-                if tier > 3 or random.randint( 1, 5 ) == 1:
+                if tier > 3 or random.randint( 1, 10 ) == 1:
                     prefix4 = prefixtable[ random.randint( 0, prefixmax ) ]
                     prefixes = prefixes + " " + prefix4
         gotcube = prefixes + " Cube"
@@ -123,7 +123,7 @@ def additem( cube, count ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \niventory\nregistry\nstore\n") )
+    inputs1( input("Available commands: \ninventory\nregistry\nstore\n") )
 
 # Function for checking if the given item is in the inventory
 def checkinv(item):
@@ -141,13 +141,17 @@ def checkinv(item):
                 return { "found": True, "index": inventory.index( row ) }
     return { "found": False  }
 
+
+#//FIX inputting int in reg gives you weird row index and ID returns. Make int in reg be ID and not row index | 23.05
 # For checking if the cube is in the registry, meaning if it's a cube
 def checkreg(item):
     # We can input either int (for index) or string (for name)
     if checkifproperint( item ):
-        try:
-            return { "found": True, "index": int( item ) }
-        except:
+        item = int(item)
+        # Don't allow int index higher than length of registry
+        if item <= len(registry):
+            return { "found": True, "index": int( item ) - 1 }
+        else:
             return{ "found": False }
     # If it's a string
     else:
@@ -170,93 +174,91 @@ def inp_inv( printinv ):
         # We'll nowe use printreg() to show the inventory in pages.
         printreg( 1, pages, inventory )
         print("--------------------------------------------")
-    invinput = input("Commands: use, delete, info, exit, sort, [cube name], [page number]\n").lower()
-    if invinput == "exit":
+    invinput = input("Commands: use, delete, info, exit, sort [alph, value, count], [cube name], page [number]\n").lower()
+    invinput = invinput.strip().split('\t')
+    command = invinput[0].lower()
+    argument1 = "nil" 
+    argument2 = 1
+    if len( invinput ) > 1:
+        argument1 = invinput[1]
+        if len(invinput) > 2:
+            argument2 = invinput[2]
+    if command == "exit":
         mainmenu()
-    # If page number
-    elif checkifproperint( invinput ) and int( invinput ) <= pages:
-        printreg( int( invinput ), pages, inventory )
-        inp_inv( False )
+    # If page and page number; argument1 is page number
+    elif command == "page" and checkifproperint( argument1 ):
+        if int( argument1 ) <= pages:
+            printreg( int( argument1 ), pages, inventory )
+            inp_inv( False )
+        else:
+            print( "Invalid page." )
+            time.sleep(1)
+            inp_inv( False )
     # Input for using an object
-    elif invinput == "use":
-        # Yes, .lower() for everything to compare string not based on capitalisation
-        invuse = input("Which item would you like to use?\n").lower()
-        # You have to iterate like that
+    elif command == "use":
+        # argument1 is cube name or index
         # checkinv() returns if found and index row where the item is
-        checktable = checkinv( invuse )
+        checktable = checkinv( argument1 )
         # If it's an index
-        if checktable["found"] and checkifproperint( invuse ):
-            print( inventory[int(invuse)][0] )
-            invuse = inventory[int(invuse)][0].lower()
+        if checktable["found"] and checkifproperint( argument1 ):
+            print( inventory[int(argument1)][0] )
+            argument1 = inventory[int(argument1)][0].lower()
         # If it was found, if it's usable   
-        if checktable[ "found" ] and invuse in inv_inputs:
+        if checktable[ "found" ] and argument1 in inv_inputs:
             rowindex = checktable[ "index" ]
             rowd = inventory[ rowindex ]
-            # If it's only one, use immediately, if not - ask
-            if rowd[1] == 1:
-                # Remove one use from the object; if it's last, remove it from inv
-                rowd[1] -= 1
-                if rowd[1] == 0:
-                    inventory.pop(rowindex)
-                rollcube( inv_inputs[invuse] )
-                inp_inv( True )
+            # argument2 is how many we use
+            if checkifproperint( argument2 ) == False:
+                print( "That's not valid.\n" )
+                time.sleep(1)
+                inp_inv( False )
             else:
-                invusecount = input( "How many of those would you like to use?\n" )
-                # Typical try check to prevent crash
-                if checkifproperint( invusecount ) == False:
-                    print( "That's not valid.\n" )
+                argument2 = int(argument2)   
+                # Check if you have enough
+                if argument2 <= rowd[1]:
+                    for i in range( argument2 ):
+                        # Remove one use from the object; if it's last, remove it from inv
+                        rowd[1] -= 1
+                        if rowd[1] == 0:
+                            inventory.pop(rowindex)
+                        rollcube( inv_inputs[argument1] )
+                        time.sleep(0.5)
+                    time.sleep( 1.5 )
+                    inp_inv( True )
+                else:
+                    print( "You don't have enough of those.\n" )
                     time.sleep(1)
                     inp_inv( False )
-                else:
-                    invusecount = int(invusecount)   
-                    # Check if you have enough
-                    if invusecount <= rowd[1]:
-                        for i in range( invusecount ):
-                            # Remove one use from the object; if it's last, remove it from inv
-                            rowd[1] -= 1
-                            if rowd[1] == 0:
-                                inventory.pop(rowindex)
-                            rollcube( inv_inputs[invuse] )
-                            time.sleep(0.5)
-                        time.sleep( 1.5 )
-                        inp_inv( True )
-                    else:
-                        print( "You don't have enough of those.\n" )
-                        time.sleep(1)
-                        inp_inv( False )
         else:
             print( "You can't use that." )
             time.sleep(1)
             inp_inv( False )
     # Give information about object. //FIX
-    elif invinput == "info":
+    elif command == "info":
         pass
 
     # I shouldn't run it with elifs like that..
-    elif invinput == "delete" or invinput == "del":
-        invuse = input("Which item would you like to delete? Remember that this cannot be undone. Make sure you're deleting the right item.\n").lower()
+    elif command == "delete" or command == "del":
         # checkinv() returns if found and index row where the item is
-        checktable = checkinv( invuse )
+        checktable = checkinv( argument1 )
         # If index
-        if checktable["found"] and checkifproperint( invuse ):
+        if checktable["found"] and checkifproperint( argument1 ):
             print( inventory[int(invuse)][0] )
             invuse = inventory[int(invuse)][0].lower()
         # If in inventory
         if checktable["found"]:
             rowindex = checktable[ "index" ]
             row = inventory[ rowindex ]
-            # If there is more than one, ask how many
+            # If there is more than one of the item
             if row[1] > 1:
-                delcount = input( "How many of these would you like to delete?\n")
-                # int check again.. should make it a function
-                if checkifproperint( delcount ) == False:
+                if checkifproperint( argument2 ) == False:
                     print( "That's not valid.\n" )
                     time.sleep(1)
                     inp_inv( False )
                 else:
-                    delcount = int(delcount)   
+                    argument2 = int(argument2)   
                     # Delete if right
-                    inventory[rowindex][1] -= delcount
+                    inventory[rowindex][1] -= argument2
                     print( "Items deleted." )
                     # If empty, delete from inv; don't delete completely if it's money
                     if row[1] == 0 and row[0] != "CREDITS":
@@ -274,21 +276,21 @@ def inp_inv( printinv ):
                     inventory.pop( rowindex )
                 print( "Items deleted." )
                 saveinv()
+                time.sleep( 1 )
                 inp_inv( True )
         else:
             print( "You don't have that." )
             time.sleep(1)
             inp_inv( False )
     # sorting
-    elif invinput == "sort":
-        type = input( "How do you want to sort? [alph, value, count] " )
+    elif command == "sort":
         # Sort alphabetically
-        if type == "alph":
+        if argument1 == "alph":
             inventory.sort( key=lambda x: x[0] )
         # Sort by value
-        elif type == "value":
+        elif argument1 == "value":
             inventory.sort( key=lambda x: getprice( x[0] ), reverse=True )
-        elif type == "count":
+        elif argument1 == "count":
             inventory.sort( key=lambda x: x[1], reverse=True )
         # In any case, we have to find credits and cube and insert them into the beginning of the table
         for row in inventory:
@@ -296,12 +298,13 @@ def inp_inv( printinv ):
                 cash = row[1]
                 inventory.pop( inventory.index(row) )
                 inventory.insert( 0, ["Credits", cash] )
+                break
         # Now return
         saveinv()
         inp_inv( True )
     # If it's a cube name, return if this cube exists
-    elif checkinv( invinput )["found"]:
-        checktable = checkinv( invinput )
+    elif checkinv( command )["found"]:
+        checktable = checkinv( command )
         row = inventory[( checktable["index"] )]
         loc = math.ceil( checktable["index"] / limit )
         print( "Found " + str( row[1] ) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "], page " + str( loc ) )
@@ -311,7 +314,7 @@ def inp_inv( printinv ):
         time.sleep(1)
         inp_inv( False )
 
-# //FIX add pages/categories to inventory
+# //FIX add categories to inventory
 
 # Function to check if it's an int, if it's whole and bigger than 0
 def checkifproperint( number ):
@@ -337,7 +340,7 @@ def printreg( page, maxpages, table ):
     range2 = limit * page
 
     # Different approach for reg and inv
-    if table[1] == registry[1]:
+    if table == registry:
         for row in table[range1:range2]:
             print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
     else: # If inventory
@@ -347,38 +350,42 @@ def printreg( page, maxpages, table ):
 
 # registry input part 2, internal, to maintain flow
 def inp_reg2( pages ):
-    reginput = input("Input page, cube name, 'sort' or 'exit'\n")
-    if reginput.lower() == "exit":
+    reginput = input("Input page [number], cube name, sort [alph, value, id, count] or exit\n")
+    reginput = reginput.strip().split('\t')
+    command = reginput[0].lower()
+    argument1 = "nil" 
+    if len( reginput ) > 1:
+        argument1 = reginput[1]
+    if command == "exit":
         mainmenu()
     # Check if exists
-    elif checkreg( reginput )["found"]:
-        checktable = checkreg(reginput)
+    elif checkreg( command )["found"]:
+        checktable = checkreg(command)
         row = registry[ checktable["index"] ]
         print( "Found " + str(row[1]) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "] with ID " + str( row[2] ) )
         inp_reg2( pages )
-    elif reginput == "sort":
-        type = input( "How do you want to sort? [alph, value, id, count] " )
+    elif command == "sort":
         # Sort alphabetically
-        if type == "alph":
+        if argument1 == "alph":
             registry.sort( key=lambda x: x[0] )
         # Sort by value
-        elif type == "value":
+        elif argument1 == "value":
             registry.sort( key=lambda x: getprice( x[0] ), reverse=True )
-        elif type == "id":
+        elif argument1 == "id":
             registry.sort( key=lambda x: x[2] )
-        elif type == "count":
+        elif argument1 == "count":
             registry.sort( key=lambda x: x[1], reverse=True )
         # Now return
         savereg()
         inp_reg()
     # Must be proper int and not more than max pages
-    elif checkifproperint( reginput ) == False or int(reginput) > pages:
+    elif command == "page" and checkifproperint( argument1 ) and int(argument1) <= pages:
+        argument1 = int(argument1)
+        printreg( argument1, pages, registry )
+    else:
         print( "Incorrect input." )
         time.sleep( 1 )
         inp_reg()
-    else:
-        reginput = int(reginput)
-        printreg( reginput, pages, registry )
     inp_reg2(pages)
 
 # "registry" input
@@ -395,16 +402,13 @@ def inp_reg():
 
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
-    pl_input = pl_input.lower()
-    if pl_input == "exit":
-        mainmenu()
-    elif checkifproperint( pl_input ):
+    if checkifproperint( pl_input ):
         # If it's bigger than 0 and if it's whole
         # Calc price and check if we have the funds
         pl_input = int( pl_input )
         price = pl_input * store_prices[ setcube ]
         price = int(price)
-        locinput = input( "That will be " + str( price ) + " credits. [buy or exit] " )
+        locinput = input( str(pl_input) + " of " + setcube + " costs " + str( price ) + " credits. [buy or exit] " )
         if locinput == "buy":
             cash = inventory[0][1]
             if cash >= price:
@@ -461,74 +465,80 @@ def getprice( sellitem ):
 
 # Input in store for buying
 def inp_store_buy( pl_input ):
-    pl_input = pl_input.lower()
-    if pl_input == "exit":
+    # Save as table, [1] is command [2] is argument
+    pl_input = pl_input.strip().split('\t')
+    command = pl_input[0].lower()
+    print(pl_input)
+    print(command)
+
+    if len( pl_input ) > 1:
+        argument = pl_input[1]
+    else:
+        # Make argument incorrect if blank
+        argument = "nil"
+
+    # Argument 2 is usually the amount you want to buy/sell
+    if len( pl_input ) == 3:
+        argument2 = pl_input[2]
+    else:
+        argument2 = 1
+
+    if command == "exit":
         mainmenu()
-    elif pl_input == "balance":
+    elif command == "balance":
         inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
-    elif pl_input == "buy":
+    elif command == "buy":
         # First check if such a cube exists, then ask how many
-        pl_input = input( "What would you like?\n" )
-        if pl_input in store_prices:
+        if argument in store_prices:
             # setcube is name of cube, used in next function
             global setcube
-            setcube = pl_input
-            inp_store_buy_count( input( "And how many would you like?\n" ) )
+            setcube = argument
+            inp_store_buy_count( argument2 )
         else:
             inp_store_buy( input( "We don't sell that here.\n" ) )
     # For selling
-    elif pl_input == "sell":
-        sellitem = input( "What would you like to sell? [cube name or inventory index\n" ).lower()
+    elif command == "sell":
         # credits, available, cube
         # We have to check if the item is available, if it's sellable and if it's a cube
         # There are two sellables: cubes and items. You can't sell credits.
-        checktable = checkinv( sellitem )
+        checktable = checkinv( argument )
         # If an index was input, change sellitem from int to item name
-        if checktable["found"] and checkifproperint( sellitem ):
-            sellitem = int(sellitem)
-            print( "That's the " + inventory[ sellitem ][0] )
-            sellitem = inventory[ sellitem ][0]
+        if checktable["found"] and checkifproperint( argument ):
+            argument = int(argument)
+            print( "That's the " + inventory[ argument ][0] )
+            argument = inventory[ argument ][0]
         # If the item is not inventory
         if checktable["found"] == False:
             inp_store_buy( input( "You don't have that.\n" ) )
         else:
             # Amount of items
             count = inventory[ checktable["index"] ][1]
-            if sellitem == "credits":
+            if argument == "credits":
                 inp_store_buy( input( "You can't sell that.\n" ) )
             # If the item is valid
             else:
-                price = getprice( sellitem )
+                price = getprice( argument )
                 # Now we return and ask to sell
                 # If more than 1, ask how many
                 proceed = True
-                if count > 1:
-                    ask2 = input( "How many of those would you like to sell? You have " + str( count ) + "\n" )
-                    if checkifproperint( ask2 ) and int( ask2 ) <= count:
-                        # If valid count
-                        ask2 = int(ask2)
-                        price *= ask2
-                    else:
-                        proceed = False
-                        inp_store_buy( input( "That's not valid. Anything else?\n" ) )
+                if checkifproperint( argument2 ) and int( argument2 ) <= count:
+                    # If valid count
+                    argument2 = int(argument2)
+                    price *= argument2
+                else:
+                    proceed = False
+                    inp_store_buy( input( "That's not valid. Anything else?\n" ) )
                 # No matter the count, ask to sell, assuming we didn't input an invalid count value previously
                 if proceed:
                     ask = input( "That'll get you " + str( price ) + " credits. Would you like to sell? [sell or exit]\n" ).lower()
                     if ask == "sell":
-                        # Checking if ask2 exists. It exists if we sold more than 1 item
-                        # Meaning if it doesn't exist, we're removing one item
-                        try:
-                            ask2 = int(ask2)
-                        except:
-                            ask2 = 1
-                        finally:
-                            inventory[checktable["index"]][1] -= ask2
-                            # If sold all, delete
-                            if inventory[ checktable["index"] ][1] == 0:
-                                inventory.pop( checktable["index"] )
-                            inventory[0][1] += price
-                            saveinv()
-                            inp_store_buy( input( "Thanks! Anything else?\n" ) )
+                        inventory[checktable["index"]][1] -= argument2
+                        # If sold all, delete
+                        if inventory[ checktable["index"] ][1] == 0:
+                            inventory.pop( checktable["index"] )
+                        inventory[0][1] += price
+                        saveinv()
+                        inp_store_buy( input( "Thanks! Anything else?\n" ) )
                     else:
                         inp_store_buy( input( "That's cool. Anything else?\n" ) )
     else:
@@ -597,3 +607,5 @@ print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
 print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
 
 mainmenu()
+
+# Next fix 21.05 - implement tab commands to inventory
