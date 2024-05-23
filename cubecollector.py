@@ -174,7 +174,10 @@ def inp_inv( printinv ):
         # We'll nowe use printreg() to show the inventory in pages.
         printreg( 1, pages, inventory )
         print("--------------------------------------------")
-    invinput = input("Commands: use, delete, info, exit, sort [alph, value, count], [cube name], page [number]\n").lower()
+    if printinv:
+        invinput = input("Commands: use, delete, info, exit, sort [alph, value, count], [cube name], page [number], fav [cube or nil]\n").lower()
+    else:
+        invinput = input("")
     invinput = invinput.strip().split('\t')
     command = invinput[0].lower()
     argument1 = "nil" 
@@ -185,6 +188,36 @@ def inp_inv( printinv ):
             argument2 = invinput[2]
     if command == "exit":
         mainmenu()
+    elif command == "fav":
+        checktable = checkinv( argument1 )
+        # If printing favourites
+        if argument1.lower() == "nil":
+            print( "Favourite items:" )
+            for row in inventory:
+                if row[len(row) - 1] == "fav":
+                    print( "- " + row[0] )
+            time.sleep( 1 )
+            inp_inv( False )
+        # If favouriting a cube
+        elif checktable["found"]:
+            row = inventory[ checktable["index"] ]
+            # If not favourited yet, meaning the last value is not "fav", add to favourites
+            if row[len(row) - 1] != "fav":
+                row.append( "fav" )
+                print( row[0] + " added to favourites.")
+                saveinv()
+                inp_inv( False )
+            # If favourited, remove from favourites
+            else:
+                row.pop( len(row) - 1 )
+                print( row[0] + " removed from favourites." )
+                saveinv()
+                inp_inv( False )
+        else:
+            print( "Invalid cube." )
+            time.sleep( 1 )
+            inp_inv( False )
+
     # If page and page number; argument1 is page number
     elif command == "page" and checkifproperint( argument1 ):
         if int( argument1 ) <= pages:
@@ -478,7 +511,7 @@ def inp_store_buy( pl_input ):
         argument = "nil"
 
     # Argument 2 is usually the amount you want to buy/sell
-    if len( pl_input ) == 3:
+    if len( pl_input ) > 2:
         argument2 = pl_input[2]
     else:
         argument2 = 1
