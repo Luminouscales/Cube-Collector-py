@@ -501,8 +501,6 @@ def inp_store_buy( pl_input ):
     # Save as table, [1] is command [2] is argument
     pl_input = pl_input.strip().split('\t')
     command = pl_input[0].lower()
-    print(pl_input)
-    print(command)
 
     if len( pl_input ) > 1:
         argument = pl_input[1]
@@ -542,7 +540,23 @@ def inp_store_buy( pl_input ):
             argument = inventory[ argument ][0]
         # If the item is not inventory
         if checktable["found"] == False:
-            inp_store_buy( input( "You don't have that.\n" ) )
+            # When selling all
+            if argument == "all": #//FIX you can sell for 0 credits if inv is empty. Doesn't break anything, just a bit weird | 23.05
+                total = 0
+                for row in inventory[1:len(inventory)]:
+                    # Don't sell favourites
+                    if row[len(row)-1] != "fav":
+                        total += getprice( row[0] ) * row[1]
+                if input( "That will get you " + str( total ) + " credits. [sell or exit]\n" ).lower() == "sell":
+                    for row in inventory[1:len(inventory)]:
+                        inventory.pop( inventory.index( row ) ) # FIX HERE 23.05
+                    inventory[0][1] += total
+                    saveinv()
+                    inp_store_buy( input( "Thank you! Anything else? ") )
+                else:
+                    inp_store_buy( input( "Alright. Anything else?" ) )
+            else:
+                inp_store_buy( input( "You don't have that.\n" ) )
         else:
             # Amount of items
             count = inventory[ checktable["index"] ][1]
