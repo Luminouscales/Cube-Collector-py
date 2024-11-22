@@ -3,7 +3,7 @@ import os, sys, random, time, math
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
-verdate = "18.05.24"
+verdate = "22.11.24"
 # For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
 limit = 20
 
@@ -58,34 +58,36 @@ def addreg( cube ):
     registry.append( [ cube, 1, registry[len(registry) - 1][2] + 1 ] )
     savereg()
 
+# Add or remove credits to inv
+def addcredits(price):
+    inventory[0][1] += price
+    saveinv()
+
 # Import list of prefixes
 with open( selfpath + "/prefixes.txt", 'r' ) as file:
     lines = file.readlines()
     prefixtable = [line.strip() for line in lines]
     prefixmax = len(prefixtable) - 1
 
+# Let's do it like this.
+# Each box has four values corresponding to the drop rate in each tier.
+# This way we can controll and adjust them manually.
+# Means we can't prevent a prefix from rolling, we can just make it cosmically unlikely
+
 # Primitive roll function
-def rollcube( tier ):
-    # Tier is value of box. 0 is standard. 1 is single prefix. 2 is double prefix and so on
-    # Roll for single prefix
-    if tier > 0 or random.randint( 1, 2 ) == 1:
-        prefixes = prefixtable[ random.randint( 0, prefixmax ) ]
-        # Roll for second prefix if tier is 2
-        if tier > 1 or random.randint( 1, 8 ) == 1:
-            prefix2 = prefixtable[ random.randint( 0, prefixmax ) ]
-            prefixes = prefixes + " " + prefix2
-            if tier > 2 or random.randint( 1, 9 ) == 1:
-                prefix3 = prefixtable[ random.randint( 0, prefixmax ) ]
-                prefixes = prefixes + " " + prefix3
-                if tier > 3 or random.randint( 1, 10 ) == 1:
-                    prefix4 = prefixtable[ random.randint( 0, prefixmax ) ]
-                    prefixes = prefixes + " " + prefix4
-        gotcube = prefixes + " Cube"
-        # Add cube to inventory
-        addcube( gotcube )
-        return
-    # return if prefixed cube dropped, if not: add a basic vanilla ass Cube manually
-    addcube( "Cube" )
+def rollcube( odds ):
+    # Odds is a table of chances for a box
+    # [ one prefix, two, three, four ]
+
+    prefixes = []
+    for idx in range(len(odds)):
+        if random.randint( 1, odds[idx] ) != 1:
+            break
+            
+        prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
+
+    cube = ' '.join(prefixes) + ' Cube' if len(prefixes) > 0 else 'Cube'
+    addcube(cube)
 
 # Function that adds a cube to inventory
 def addcube( cube ):
@@ -123,7 +125,7 @@ def additem( cube, count ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \ninventory\nregistry\nstore\n") )
+    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\n") )
 
 # Function for checking if the given item is in the inventory
 def checkinv(item):
@@ -143,6 +145,7 @@ def checkinv(item):
 
 
 #//FIX inputting int in reg gives you weird row index and ID returns. Make int in reg be ID and not row index | 23.05
+    # I don't give aaaaa i want to kill myself | 22.11 
 # For checking if the cube is in the registry, meaning if it's a cube
 def checkreg(item):
     # We can input either int (for index) or string (for name)
@@ -162,19 +165,20 @@ def checkreg(item):
 
 
 # Honestly these inventory inputs have become so nested it would be much more hygienic to split them up into functions and
-# to throw them into a case match. //FIX
+# to throw them into a case match. //FIX Besides the fact that cases only work on newer py versions
+    # Fuck the older py versions. I managed to get the different versions to work | 22.11
 
 # "inventory" input that prints owned cubes
 # printinv is a bool that decides if we should print the inventory or not
 def inp_inv( printinv ):
     pages = math.ceil( len( inventory )/limit )
     if printinv:
+        os.system('cls')
         print( "\nYour inventory contains:" )
         print("--------------------------------------------")
         # We'll nowe use printreg() to show the inventory in pages.
         printreg( 1, pages, inventory )
         print("--------------------------------------------")
-    if printinv:
         invinput = input("Commands: use, delete, info, exit, sort [alph, value, count], [cube name], page [number], fav [cube or nil]\n").lower()
     else:
         invinput = input("")
@@ -221,7 +225,11 @@ def inp_inv( printinv ):
     # If page and page number; argument1 is page number
     elif command == "page" and checkifproperint( argument1 ):
         if int( argument1 ) <= pages:
+            os.system('cls')
+            print( "\nYour inventory contains:" )
+            print("--------------------------------------------")
             printreg( int( argument1 ), pages, inventory )
+            print("--------------------------------------------")
             inp_inv( False )
         else:
             print( "Invalid page." )
@@ -375,11 +383,16 @@ def printreg( page, maxpages, table ):
     # Different approach for reg and inv
     if table == registry:
         for row in table[range1:range2]:
-            print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] ) )
+            print( "[" + str( row[2] ) + "] " + row[0] + " " + str( row[1] )  )
     else: # If inventory
         for row in table[range1:range2 + 1]:
-            print( "[" + str( table.index( row ) ) + "] " + row[0] + " " + str( row[1] ) )
-    print( "Page " + str( page ) + " of " + str(maxpages) )
+            try:
+                row[2]
+                print( f"[{str( table.index( row ) )}] {row[0]} {str( row[1] )} *" )
+            except:
+                print( "[" + str( table.index( row ) ) + "] " + row[0] + " " + str( row[1] ) )
+                
+    print( f"Page {str( page )} of {str(maxpages)}" )
 
 # registry input part 2, internal, to maintain flow
 def inp_reg2( pages ):
@@ -413,6 +426,7 @@ def inp_reg2( pages ):
         inp_reg()
     # Must be proper int and not more than max pages
     elif command == "page" and checkifproperint( argument1 ) and int(argument1) <= pages:
+        os.system('cls')
         argument1 = int(argument1)
         printreg( argument1, pages, registry )
     else:
@@ -446,7 +460,7 @@ def inp_store_buy_count( pl_input ):
             cash = inventory[0][1]
             if cash >= price:
                 # Add to inv; name and amount; remove cash
-                inventory[0][1] -= price
+                addcredits( -price )
                 additem( setcube, pl_input )
                 inp_store_buy( input("Thanks for buying! Anything else?\n") )
             else:
@@ -460,13 +474,13 @@ def inp_store_buy_count( pl_input ):
 def get_cube_cost(prefixes):
     match prefixes:
         case 0:
-            return 10
+            return 5
         case 1:
-            return 30
+            return 40
         case 2:
-            return 300
+            return 270
         case 3:
-            return 3000
+            return 2500
         case 4:
             return 30000
         case 5:
@@ -515,6 +529,7 @@ def inp_store_buy( pl_input ):
         argument2 = 1
 
     if command == "exit":
+        os.system('cls')
         mainmenu()
     elif command == "balance":
         inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
@@ -545,14 +560,19 @@ def inp_store_buy( pl_input ):
                 total = 0
                 for row in inventory[1:len(inventory)]:
                     # Don't sell favourites
-                    if row[len(row)-1] != "fav":
+                    try:
+                        row[2] != "fav"
+                    except:
                         total += getprice( row[0] ) * row[1]
+                        
                 if input( "That will get you " + str( total ) + " credits. [sell or exit]\n" ).lower() == "sell":
                     for row in inventory[1:len(inventory)]:
-                        inventory.pop( inventory.index( row ) ) # FIX HERE 23.05
-                    inventory[0][1] += total
-                    saveinv()
-                    inp_store_buy( input( "Thank you! Anything else? ") )
+                        try:
+                            row[2] != "fav"
+                        except:
+                            inventory.pop( inventory.index( row ) ) # FIX HERE 23.05
+                    addcredits( total )
+                    inp_store_buy( input( f"Thank you! You now have {inventory[0][1] } credits. Anything else?\n") )
                 else:
                     inp_store_buy( input( "Alright. Anything else?" ) )
             else:
@@ -583,8 +603,7 @@ def inp_store_buy( pl_input ):
                         # If sold all, delete
                         if inventory[ checktable["index"] ][1] == 0:
                             inventory.pop( checktable["index"] )
-                        inventory[0][1] += price
-                        saveinv()
+                        addcredits( price )
                         inp_store_buy( input( "Thanks! Anything else?\n" ) )
                     else:
                         inp_store_buy( input( "That's cool. Anything else?\n" ) )
@@ -593,34 +612,75 @@ def inp_store_buy( pl_input ):
 
 # "store" input
 def inp_store():
-    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[100c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
+    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[40c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
 
 # "debug" input to make the program close so I can run commands
 def debug():
     pass
 
+# Place to earn cash
+def jobs():
+    os.system('cls')
+    plinput = input( "Welcome to the jobs section! You can earn cash here. Choose an activity to take your time!\nguessgame\n" )
+    if plinput.lower() == "exit":
+        mainmenu()
+    elif plinput.lower() == "guessgame":
+        guessgame()
+# Activity: Guessing Game
+def guessgame():
+    os.system('cls')
+    maxnum = 100
+    # By guessing right the first time you get a triple prefix box. Each time you fail to guess, the reward halves
+    newnumber = True
+    print( f"Welcome to Guess Game! Guess a number from 1 to {maxnum}. The earlier you guess, the more credits you get!\n" )
+
+    while True:
+        if newnumber:
+            reward = 1000
+            rightnumber = random.randint( 1, maxnum )
+            newnumber = False
+        givenumber = input("Input a number! or exit\n")
+        if str( givenumber.lower() ) == "exit":
+            mainmenu()
+            break
+        elif checkifproperint( givenumber ) == False:
+            print("Incorrect number!...")
+        elif rightnumber > int(givenumber): # if guessed less
+            os.system('cls')
+            reward /= 2
+            print( f"{givenumber} is lower, try something higher!" )
+        elif rightnumber < int(givenumber): # if guessed more
+            os.system('cls')
+            reward /= 2
+            print( f"{givenumber} is higher, try something lower!" )
+        else:
+            reward = math.ceil( reward )
+            addcredits( reward )
+            print( f"You guessed right! Your reward is {reward} credits! You now have {inventory[0][1]} credits." )
+            
+            newnumber = True
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
-    "inventory": inp_inv,
-    "inv": inp_inv,
-    "registry": inp_reg,
-    "reg": inp_reg,
-    "store": inp_store,
-    "debug": debug
+    "inventory": inp_inv, "inv": inp_inv,
+    "registry": inp_reg, "reg": inp_reg,
+    "store": inp_store, "shop": inp_store,
+    "debug": debug,
+    "jobs": jobs
 }
 
 inv_inputs = {
-    "basic box": 0,
-    "prefixed box": 1,
-    "double prefixed box": 2,
-    "triple prefixed box": 3,
-    "quadruple prefixed box": 4,
+    "basic box": [ 4, 12, 100, 1000 ],
+    "prefixed box": [ 1, 5, 10, 100 ],
+    "double prefixed box": [ 1, 1, 20, 100 ],
+    "triple prefixed box": [ 1, 1, 1, 20 ],
+    "quadruple prefixed box": [ 1, 1, 1, 1 ],
 }
 
 store_prices = {
     "basic box": 10,
-    "prefixed box": 100,
+    "prefixed box": 40,
     "double prefixed box": 1000,
     "triple prefixed box": 10000,
     "quadruple prefixed box": 100000,
@@ -628,7 +688,7 @@ store_prices = {
 
 # For convenient selling of items that aren't in the store
 item_sellprices = {
-    "placeholder": 999999
+    "kitty box": 999999
 }
 
 # Input def for main inputs
@@ -645,7 +705,8 @@ def inputs1( player_input ):
 
 # Start message
 def mainmenu():
-    inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help".\n' ) )
+    os.system('cls')
+    return
 
 print( "           __..--''``---....___   _..._    __" )
 print(  "/// //_.-'    .-/';  `        ``<._  ``.''_ `. / // /" )
@@ -653,6 +714,10 @@ print( '///_.-" _..--."_    |                    `( ) ) // //' )
 print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
 print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
 
-mainmenu()
+while True:
+    inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help".\n' ) )
+
+
 
 # Next fix 21.05 - implement tab commands to inventory
+# Fix 13.06 - fix cube box rolls and FAV DOESNT WORK
