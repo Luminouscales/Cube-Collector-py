@@ -1,11 +1,14 @@
 import os, sys, random, time, math
+from datetime import datetime
 
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
+timepath = selfpath + "/time.txt"
 verdate = "22.11.24"
 # For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
 limit = 20
+format_str = "%Y-%m-%d %H:%M:%S"
 
 # In the future we could use subprocess to slice up the code into more accessible chunks and run only what we need.
 
@@ -19,6 +22,24 @@ if os.path.exists(inventorypath):
             # Turn every amount number into int
             row[1] = int( row[1] )
 
+# Save Time file
+def savetime():
+    with open( timepath, 'w' ) as file:
+        for row in dates:
+            row_str = '\t'.join(map(str, row))
+            file.write( row_str + '\n')
+
+dates = []
+# Read the Time file for tracking dailies and stuff.
+if os.path.exists( timepath ):
+    with open( timepath, 'r' ) as file:
+        for line in file:
+            row = line.strip().split('\t')
+            dates.append( row )
+    # Check if setup value is 0 meaning new save. I'm too lazy to do this the normal way.
+    if dates[0][1] == "0":
+        dates[0][1] = datetime.now().strftime( format_str )
+        savetime()
 
 # Load registry. The registry is a list of all ever unboxed cubes
 registry = []
@@ -69,25 +90,36 @@ with open( selfpath + "/prefixes.txt", 'r' ) as file:
     prefixtable = [line.strip() for line in lines]
     prefixmax = len(prefixtable) - 1
 
+# Import affixes
+with open( selfpath + "/affixes.txt", 'r' ) as file:
+    lines = file.readlines()
+    affixtable = [line.strip() for line in lines]
+    affixmax = len(affixtable) - 1
+
 # Let's do it like this.
 # Each box has four values corresponding to the drop rate in each tier.
 # This way we can controll and adjust them manually.
 # Means we can't prevent a prefix from rolling, we can just make it cosmically unlikely
 
-# Primitive roll function
+# Function for rolling a cube
 def rollcube( odds ):
     # Odds is a table of chances for a box
     # [ one prefix, two, three, four ]
 
-    prefixes = []
-    for idx in range(len(odds)):
-        if random.randint( 1, odds[idx] ) != 1:
-            break
-            
-        prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
+    # Each box has a odds[3] * 5 percent chance of dropping an affix tag.
+    if random.randint( 1, odds[3] * 10 ) == 1:
+        print( "You found an Affix Tag! You lucky cat." )
+        addcube( "Affix Tag" )
+    else:
+        prefixes = []
+        for idx in range(len(odds)):
+            if random.randint( 1, odds[idx] ) != 1:
+                break
+                
+            prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
 
-    cube = ' '.join(prefixes) + ' Cube' if len(prefixes) > 0 else 'Cube'
-    addcube(cube)
+        cube = ' '.join(prefixes) + ' Cube' if len(prefixes) > 0 else 'Cube'
+        addcube(cube)
 
 # Function that adds a cube to inventory
 def addcube( cube ):
@@ -98,16 +130,15 @@ def addcube( cube ):
             print( "You got a " + cube + "!" )
             saveinv()
             # Add to reg
-            addreg( cube )
             return
     # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
     inventory.append( [cube, 1] )
     saveinv()
     # If it's not in reg yet, say it's brand new.
-    if checkreg( cube ):
+    if checkreg( cube )["found"]:
         print( "You got a " + cube + "!" )
     else:
-        print( "You got a brand new " + cube + "!" )
+        print( "[NEW] You got a " + cube + "!" )
     addreg( cube )
 
 # Function that adds an item to inventory
@@ -255,21 +286,26 @@ def inp_inv( printinv ):
                 inp_inv( False )
             else:
                 argument2 = int(argument2)   
-                # Check if you have enough
-                if argument2 <= rowd[1]:
-                    for i in range( argument2 ):
-                        # Remove one use from the object; if it's last, remove it from inv
-                        rowd[1] -= 1
-                        if rowd[1] == 0:
-                            inventory.pop(rowindex)
-                        rollcube( inv_inputs[argument1] )
-                        time.sleep(0.5)
-                    time.sleep( 1.5 )
-                    inp_inv( True )
-                else:
-                    print( "You don't have enough of those.\n" )
-                    time.sleep(1)
-                    inp_inv( False )
+                # Check if it's a box. If not, we use the item's own function
+                if argument1[len(argument1)-3:len(argument1)].lower() == "box":
+                    # Check if you have enough
+                    if argument2 <= rowd[1]:
+                        for i in range( argument2 ):
+                            # Remove one use from the object; if it's last, remove it from inv
+                            rowd[1] -= 1
+                            if rowd[1] == 0:
+                                inventory.pop(rowindex)
+                            rollcube( inv_inputs[argument1] )
+                            time.sleep(0.5)
+                        time.sleep( 1.5 )
+                        inp_inv( True )
+                    else:
+                        print( "You don't have enough of those.\n" )
+                        time.sleep(1)
+                        inp_inv( False )
+                else: # Not a box
+                    inv_inputs[argument1.lower()]( rowindex )
+
         else:
             print( "You can't use that." )
             time.sleep(1)
@@ -433,7 +469,7 @@ def inp_reg2( pages ):
         print( "Incorrect input." )
         time.sleep( 1 )
         inp_reg()
-    inp_reg2(pages)
+    #inp_reg2(pages)
 
 # "registry" input
 def inp_reg():
@@ -449,6 +485,13 @@ def inp_reg():
 
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
+    cash = inventory[0][1]
+    # inputting "max" will give you the maximum amount you can buy
+    if pl_input.lower() == "max" or pl_input.lower() == "all":
+        pl_input = math.floor( cash / store_prices[ setcube ] )
+        if pl_input < 1:
+            inp_store_buy( input( "You can't afford any. Anything else?\n" ) )
+            return
     if checkifproperint( pl_input ):
         # If it's bigger than 0 and if it's whole
         # Calc price and check if we have the funds
@@ -457,7 +500,6 @@ def inp_store_buy_count( pl_input ):
         price = int(price)
         locinput = input( str(pl_input) + " of " + setcube + " costs " + str( price ) + " credits. [buy or exit] " )
         if locinput == "buy":
-            cash = inventory[0][1]
             if cash >= price:
                 # Add to inv; name and amount; remove cash
                 addcredits( -price )
@@ -469,27 +511,6 @@ def inp_store_buy_count( pl_input ):
             inp_store_buy( input( "Alright. Anything else?\n" ) )
     else:
         inp_store_buy( input( "Invalid input." ) )
-                
-# Used in selling to get price of sold cube based on prefixes
-def get_cube_cost(prefixes):
-    match prefixes:
-        case 0:
-            return 5
-        case 1:
-            return 40
-        case 2:
-            return 270
-        case 3:
-            return 2500
-        case 4:
-            return 30000
-        case 5:
-            return 60000
-        # Quad prefix with affix? Should be expensive.
-        case 6:
-            return 200000
-        case _:
-            return 20^prefixes
 
 def getprice( sellitem ):
     # If it's a store item, sell it at 75% price
@@ -660,6 +681,71 @@ def guessgame():
             
             newnumber = True
 
+# Open a box once per day for rewards. Increases each time you open (not a streak though).
+# 86400 seconds in a day
+def dailybox():
+    dbindex = -1
+    eligible = False
+    # Get position of dailybox in dates
+    for row in dates:
+        if row[0] == 'dailybox':
+            dbindex = dates.index( row )
+    # If new setup  
+    if dbindex == -1:
+        dates.append( ['dailybox', datetime.now().strftime( format_str ) ] )
+        savetime()
+        dbindex = len(dates)-1
+        # And give reward
+        eligible = True
+    else:
+        # Counting the difference of seconds. If more than one day, give reward.
+        format_str = "%Y-%m-%d %H:%M:%S"
+        date1 = datetime.strptime(dates[dbindex][1], format_str)
+        date2 = datetime.strptime(str(datetime.now().strftime( format_str )), format_str)
+        time_difference = (date2 - date1).total_seconds()
+        # If more than a day has passed
+        if time_difference >= 86400:
+            eligible = True
+            dates[dbindex][1] = datetime.now().strftime( format_str )
+            savetime()
+    # Finally check through bool eligible if can receive.
+    if eligible:
+        print( "You open your daily box. It contains...")
+        time.sleep( 2 )
+        randint = random.randint( 1, 100 )
+        match randint:
+            case randint if randint <= 2: # Affix tag drop
+                print( "An Affix Tag!" )
+                additem( "Affix Tag", 1 )
+            case randint if randint >= 3 and randint <= 25:
+                
+
+                # 5 percent for quad pref, otherwise triple
+                if random.randint(1, 100) < 6:
+                    additem( "Quadruple Prefixed Box", 1 )
+                    print( "A Quadruple Prefixed Box!" )
+                else:
+                    additem( "Triple Prefixed Box", 1 )
+                    print( "A Triple Prefixed Box!" )
+
+            case randint if randint >= 26 and randint <= 50:
+                print( "A random cube!" )
+
+                if random.randint(1, 100) < 6:
+                    rollcube( inv_inputs["quadruple prefixed box"] )
+                else:
+                    rollcube( inv_inputs["triple prefixed box"])
+            case randint if randint >= 51 and randint <= 100:
+                randint = random.randint( 500, 2000 )
+                print( f"{randint} credits!" )
+                inventory[0][1] += randint
+        time.sleep( 3 )
+    else:
+        print( "The daily box is still locked, you should check back later." )
+        time.sleep( 3 )
+
+
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
@@ -667,28 +753,91 @@ player_inputs = {
     "registry": inp_reg, "reg": inp_reg,
     "store": inp_store, "shop": inp_store,
     "debug": debug,
-    "jobs": jobs
+    "jobs": jobs,
+    "dailybox": dailybox
 }
 
+
+def affixtag(row):
+    # row is inventory index of the affix tag. god im sleepy
+    # Apply an affix to a cube. Must be a cube with no affix (easy).
+    plinput = input( "Which Cube would you like to apply a random affix to? It can't already be affixed. [or exit]\n" )
+    checktable = checkinv( plinput )
+    
+    if plinput.lower() == "exit":
+        inp_inv()
+    elif checktable["found"]:
+        if checkifproperint( plinput ):
+            plinput = inventory[int(plinput)][0].lower()
+        # Check if it's a cube
+        if plinput[len(plinput)-4:len(plinput)].lower() != "cube":
+            print( "You can only affix cubes." )
+            time.sleep( 1.5 )
+            affixtag(row)
+        else:
+            # Delete one tag if right
+            inventory[row][1] -= 1
+            # If empty, delete from inv
+            if inventory[row][1] == 0:
+                inventory.pop( row )
+            
+            # Find cube in inventory. Get its name and row.
+            cubename = inventory[checktable["index"]][0]
+            inventory[checktable["index"]][1] -= 1
+            if inventory[checktable["index"]][1] == 0:
+                inventory.pop( checktable["index"] )
+            addcube(  cubename + " " + affixtable[random.randint(0, affixmax)] )
+            saveinv()
+            time.sleep( 1.5 )
+            inp_inv( True )
+    else:
+        print( "No such cube." )
+        time.sleep( 1.5 )
+        affixtag(row)
+
+# Used in selling to get price of sold cube based on prefixes
+def get_cube_cost(prefixes):
+    match prefixes:
+        case 0:
+            return 5
+        case 1:
+            return 20
+        case 2:
+            return 270
+        case 3:
+            return 2500
+        case 4:
+            return 30000
+        case 5:
+            return 60000
+        # Quad prefix with affix? Should be expensive.
+        case 6:
+            return 200000
+        case _:
+            return 20^prefixes
+
 inv_inputs = {
-    "basic box": [ 4, 12, 100, 1000 ],
-    "prefixed box": [ 1, 5, 10, 100 ],
-    "double prefixed box": [ 1, 1, 20, 100 ],
+    "basic box": [ 4, 20, 100, 1000 ],
+    "prefixed box": [ 1, 10, 40, 100 ],
+    "double prefixed box": [ 1, 1, 8, 35 ],
     "triple prefixed box": [ 1, 1, 1, 20 ],
     "quadruple prefixed box": [ 1, 1, 1, 1 ],
+    "affix tag": affixtag
 }
+
 
 store_prices = {
     "basic box": 10,
     "prefixed box": 40,
-    "double prefixed box": 1000,
+    "double prefixed box": 500,
     "triple prefixed box": 10000,
     "quadruple prefixed box": 100000,
 }
 
 # For convenient selling of items that aren't in the store
 item_sellprices = {
-    "kitty box": 999999
+    "kitty box": 999999,
+    "affix tag": 500000
 }
 
 # Input def for main inputs
@@ -708,16 +857,13 @@ def mainmenu():
     os.system('cls')
     return
 
-print( "           __..--''``---....___   _..._    __" )
-print(  "/// //_.-'    .-/';  `        ``<._  ``.''_ `. / // /" )
-print( '///_.-" _..--."_    |                    `( ) ) // //' )
-print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
-print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
-
 while True:
+    os.system('cls')
+
+    print( "           __..--''``---....___   _..._    __" )
+    print(  "/// //_.-'    .-/';  `        ``<._  ``.''_ `. / // /" )
+    print( '///_.-" _..--."_    |                    `( ) ) // //' )
+    print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
+    print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
+
     inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help".\n' ) )
-
-
-
-# Next fix 21.05 - implement tab commands to inventory
-# Fix 13.06 - fix cube box rolls and FAV DOESNT WORK
