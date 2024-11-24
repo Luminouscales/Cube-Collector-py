@@ -5,12 +5,15 @@ selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
 timepath = selfpath + "/time.txt"
-verdate = "22.11.24"
+verdate = "23.11.24"
 # For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
 limit = 20
 format_str = "%Y-%m-%d %H:%M:%S"
 
-# In the future we could use subprocess to slice up the code into more accessible chunks and run only what we need.
+# 23.11.24 We've come so far... I remember when this little idea was just one primitive roll function.
+# This thing is fairly playable and semi-balanced, and not the most boring.
+# I've decided to change it from Cubes to Kittens. Only makes sense, right? And it will be much more charming.
+# Just needs a lot of work. But it's fine.
 
 # Read the inventory and output it into the "inventory" var
 inventory = []
@@ -156,7 +159,7 @@ def additem( cube, count ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\n") )
+    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\n") )
 
 # Function for checking if the given item is in the inventory
 def checkinv(item):
@@ -285,7 +288,11 @@ def inp_inv( printinv ):
                 time.sleep(1)
                 inp_inv( False )
             else:
-                argument2 = int(argument2)   
+                argument2 = int(argument2)
+                if argument2 > 99:
+                    delay = 0
+                else:
+                    delay = 0.5
                 # Check if it's a box. If not, we use the item's own function
                 if argument1[len(argument1)-3:len(argument1)].lower() == "box":
                     # Check if you have enough
@@ -296,7 +303,7 @@ def inp_inv( printinv ):
                             if rowd[1] == 0:
                                 inventory.pop(rowindex)
                             rollcube( inv_inputs[argument1] )
-                            time.sleep(0.5)
+                            time.sleep(delay)
                         time.sleep( 1.5 )
                         inp_inv( True )
                     else:
@@ -633,7 +640,7 @@ def inp_store_buy( pl_input ):
 
 # "store" input
 def inp_store():
-    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[40c]\nDouble Prefixed Box[1000c]\nTriple Prefixed Box[10000c]\nQuadruple Prefixed Box[100000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
+    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[50c]\nDouble Prefixed Box[500c]\nTriple Prefixed Box[5000c]\nQuadruple Prefixed Box[50000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
 
 # "debug" input to make the program close so I can run commands
 def debug():
@@ -684,6 +691,7 @@ def guessgame():
 # Open a box once per day for rewards. Increases each time you open (not a streak though).
 # 86400 seconds in a day
 def dailybox():
+    format_str = "%Y-%m-%d %H:%M:%S"
     dbindex = -1
     eligible = False
     # Get position of dailybox in dates
@@ -718,7 +726,6 @@ def dailybox():
                 print( "An Affix Tag!" )
                 additem( "Affix Tag", 1 )
             case randint if randint >= 3 and randint <= 25:
-                
 
                 # 5 percent for quad pref, otherwise triple
                 if random.randint(1, 100) < 6:
@@ -763,15 +770,16 @@ def affixtag(row):
     # Apply an affix to a cube. Must be a cube with no affix (easy).
     plinput = input( "Which Cube would you like to apply a random affix to? It can't already be affixed. [or exit]\n" )
     checktable = checkinv( plinput )
+    cubeindex = checktable["index"]
     
     if plinput.lower() == "exit":
-        inp_inv()
+        inp_inv(True)
     elif checktable["found"]:
         if checkifproperint( plinput ):
             plinput = inventory[int(plinput)][0].lower()
         # Check if it's a cube
         if plinput[len(plinput)-4:len(plinput)].lower() != "cube":
-            print( "You can only affix cubes." )
+            print( "You can only affix cubes, or the cube is already affixed." )
             time.sleep( 1.5 )
             affixtag(row)
         else:
@@ -779,13 +787,18 @@ def affixtag(row):
             inventory[row][1] -= 1
             # If empty, delete from inv
             if inventory[row][1] == 0:
+                # If the Affixer will disappear and is positioned before the target cube, the cube's index has to be lowered
+                # Otherwise the affix might hit the wrong cube or crash completely
+                if row < cubeindex:
+                    cubeindex -= 1
+
                 inventory.pop( row )
             
             # Find cube in inventory. Get its name and row.
-            cubename = inventory[checktable["index"]][0]
-            inventory[checktable["index"]][1] -= 1
-            if inventory[checktable["index"]][1] == 0:
-                inventory.pop( checktable["index"] )
+            cubename = inventory[cubeindex][0]
+            inventory[cubeindex][1] -= 1
+            if inventory[cubeindex][1] == 0:
+                inventory.pop( cubeindex )
             addcube(  cubename + " " + affixtable[random.randint(0, affixmax)] )
             saveinv()
             time.sleep( 1.5 )
@@ -801,25 +814,26 @@ def get_cube_cost(prefixes):
         case 0:
             return 5
         case 1:
-            return 20
+            return 30
         case 2:
-            return 270
+            return 425
         case 3:
-            return 2500
+            return 3500
         case 4:
-            return 30000
+            return 40000
         case 5:
             return 60000
         # Quad prefix with affix? Should be expensive.
         case 6:
-            return 200000
+            return 500000
         case _:
-            return 20^prefixes
+            return math.pow(20, prefixes)
+        
 
 inv_inputs = {
     "basic box": [ 4, 20, 100, 1000 ],
-    "prefixed box": [ 1, 10, 40, 100 ],
-    "double prefixed box": [ 1, 1, 8, 35 ],
+    "prefixed box": [ 1, 12, 40, 100 ],
+    "double prefixed box": [ 1, 1, 15, 35 ],
     "triple prefixed box": [ 1, 1, 1, 20 ],
     "quadruple prefixed box": [ 1, 1, 1, 1 ],
     "affix tag": affixtag
@@ -828,16 +842,16 @@ inv_inputs = {
 
 store_prices = {
     "basic box": 10,
-    "prefixed box": 40,
+    "prefixed box": 50,
     "double prefixed box": 500,
-    "triple prefixed box": 10000,
-    "quadruple prefixed box": 100000,
+    "triple prefixed box": 5000,
+    "quadruple prefixed box": 50000,
 }
 
 # For convenient selling of items that aren't in the store
 item_sellprices = {
     "kitty box": 999999,
-    "affix tag": 500000
+    "affix tag": 25000
 }
 
 # Input def for main inputs
