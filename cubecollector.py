@@ -1,19 +1,25 @@
 import os, sys, random, time, math
-from datetime import datetime
+from datetime import datetime, timedelta
 
 selfpath = os.path.dirname(sys.argv[0])
 inventorypath = selfpath + "/inventory.txt"
 registrypath = selfpath + "/registry.txt"
 timepath = selfpath + "/time.txt"
-verdate = "23.11.24"
+verdate = "05.06.25"
 # For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
 limit = 20
 format_str = "%Y-%m-%d %H:%M:%S"
+# var used for daily rewards
+daily = 3600 * 1
 
 # 23.11.24 We've come so far... I remember when this little idea was just one primitive roll function.
 # This thing is fairly playable and semi-balanced, and not the most boring.
 # I've decided to change it from Cubes to Kittens. Only makes sense, right? And it will be much more charming.
 # Just needs a lot of work. But it's fine.
+
+# 05.06.25
+# Life sucks but at least I get to be a code kitten
+
 
 # Read the inventory and output it into the "inventory" var
 inventory = []
@@ -110,9 +116,9 @@ def rollcube( odds ):
     # [ one prefix, two, three, four ]
 
     # Each box has a odds[3] * 5 percent chance of dropping an affix tag.
-    if random.randint( 1, odds[3] * 10 ) == 1:
+    if random.randint( 1, odds[3] * 5 ) == 1:
         print( "You found an Affix Tag! You lucky cat." )
-        addcube( "Affix Tag" )
+        addcube( "Affix Tag", 1 )
     else:
         prefixes = []
         for idx in range(len(odds)):
@@ -121,15 +127,16 @@ def rollcube( odds ):
                 
             prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
 
-        cube = ' '.join(prefixes) + ' Cube' if len(prefixes) > 0 else 'Cube'
-        addcube(cube)
+        cube = ' '.join(prefixes) + ' Kitty' if len(prefixes) > 0 else 'Kitty'
+        addcube(cube, 1)
 
 # Function that adds a cube to inventory
-def addcube( cube ):
+def addcube( cube, amount ):
+    
     for row in inventory:
         # If cube already in inventory add one more to count and end function
         if row[0] == cube:
-            row[1] = row[1] + 1
+            row[1] = row[1] + amount
             print( "You got a " + cube + "!" )
             saveinv()
             # Add to reg
@@ -159,7 +166,7 @@ def additem( cube, count ):
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\n") )
+    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\ntreats\n") )
 
 # Function for checking if the given item is in the inventory
 def checkinv(item):
@@ -174,12 +181,9 @@ def checkinv(item):
         for row in inventory:
             if item.lower() == row[0].lower():
                 # Scripts using checkinv() can read this table to get the bool and the item's row
-                return { "found": True, "index": inventory.index( row ) }
+                return { "found": True, "index": inventory.index( row ), "amount": inventory[inventory.index( row )][1] }
     return { "found": False  }
 
-
-#//FIX inputting int in reg gives you weird row index and ID returns. Make int in reg be ID and not row index | 23.05
-    # I don't give aaaaa i want to kill myself | 22.11 
 # For checking if the cube is in the registry, meaning if it's a cube
 def checkreg(item):
     # We can input either int (for index) or string (for name)
@@ -213,7 +217,7 @@ def inp_inv( printinv ):
         # We'll nowe use printreg() to show the inventory in pages.
         printreg( 1, pages, inventory )
         print("--------------------------------------------")
-        invinput = input("Commands: use, delete, info, exit, sort [alph, value, count], [cube name], page [number], fav [cube or nil]\n").lower()
+        invinput = input("Commands: use, delete, info, exit, sort [alph, value, count], [kitty name], page [number], fav [kitty or nil]\n").lower()
     else:
         invinput = input("")
     invinput = invinput.strip().split('\t')
@@ -252,7 +256,7 @@ def inp_inv( printinv ):
                 saveinv()
                 inp_inv( False )
         else:
-            print( "Invalid cube." )
+            print( "Invalid kitty." )
             time.sleep( 1 )
             inp_inv( False )
 
@@ -303,6 +307,13 @@ def inp_inv( printinv ):
                             if rowd[1] == 0:
                                 inventory.pop(rowindex)
                             rollcube( inv_inputs[argument1] )
+
+                            # Function for rolling Treat Tickets
+                            if random.randint( 1, 20 ) == 1:
+                                ticketamount = math.ceil(( ( store_prices[ argument1 ] / 10 ) * random.uniform(0.8, 1.2) ))
+                                additem( "Treat Ticket", ticketamount )
+                                print(f"You also found {ticketamount} Treat Tickets!")
+
                             time.sleep(delay)
                         time.sleep( 1.5 )
                         inp_inv( True )
@@ -439,7 +450,7 @@ def printreg( page, maxpages, table ):
 
 # registry input part 2, internal, to maintain flow
 def inp_reg2( pages ):
-    reginput = input("Input page [number], cube name, sort [alph, value, id, count] or exit\n")
+    reginput = input("Input page [number], kitty name, kitty ID, sort [alph, value, id, count] or exit\n")
     reginput = reginput.strip().split('\t')
     command = reginput[0].lower()
     argument1 = "nil" 
@@ -450,7 +461,7 @@ def inp_reg2( pages ):
     # Check if exists
     elif checkreg( command )["found"]:
         checktable = checkreg(command)
-        row = registry[ checktable["index"] ]
+        row = registry[ checktable["index"] + 1 ]
         print( "Found " + str(row[1]) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "] with ID " + str( row[2] ) )
         inp_reg2( pages )
     elif command == "sort":
@@ -565,8 +576,17 @@ def inp_store_buy( pl_input ):
         # First check if such a cube exists, then ask how many
         if argument in store_prices:
             # setcube is name of cube, used in next function
+                # FIX Why do we not put the argument as a function arg? 
             global setcube
             setcube = argument
+
+            match setcube:
+                case "bb": setcube = "basic box"
+                case "pb": setcube = "prefixed box"
+                case "dpb": setcube = "double prefixed box"
+                case "tpb": setcube = "triple prefixed box"
+                case "qpb": setcube = "quadruple prefixed box"
+
             inp_store_buy_count( argument2 )
         else:
             inp_store_buy( input( "We don't sell that here.\n" ) )
@@ -598,7 +618,7 @@ def inp_store_buy( pl_input ):
                         try:
                             row[2] != "fav"
                         except:
-                            inventory.pop( inventory.index( row ) ) # FIX HERE 23.05
+                            inventory.pop( inventory.index( row ) )
                     addcredits( total )
                     inp_store_buy( input( f"Thank you! You now have {inventory[0][1] } credits. Anything else?\n") )
                 else:
@@ -638,9 +658,26 @@ def inp_store_buy( pl_input ):
     else:
         inp_store_buy( input( "Pardon?\n" ) )   
 
+
+
+
+
 # "store" input
 def inp_store():
-    inp_store_buy( input("Hi, welcome to the Cube Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[50c]\nDouble Prefixed Box[500c]\nTriple Prefixed Box[5000c]\nQuadruple Prefixed Box[50000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
+    print(" /\     /\ ")
+    print("{  `---'  }")
+    print("{  O   O  }")
+    print("~~>  V  <~~")
+    print(" \  \|/  /")
+    print("  `-----'__")
+    print("  /     \  `^\_")
+    print(" {       }\ |\_\_   W")
+    print(" |  \_/  |/ /  \_\_( )")
+    print("  \__/  /(_E     \__/")
+    print("    (  /")
+    print("     MM")
+
+    inp_store_buy( input("Hi, welcome to the Cat Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[50c]\nDouble Prefixed Box[500c]\nTriple Prefixed Box[5000c]\nQuadruple Prefixed Box[50000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
 
 # "debug" input to make the program close so I can run commands
 def debug():
@@ -711,8 +748,8 @@ def dailybox():
         date1 = datetime.strptime(dates[dbindex][1], format_str)
         date2 = datetime.strptime(str(datetime.now().strftime( format_str )), format_str)
         time_difference = (date2 - date1).total_seconds()
-        # If more than a day has passed
-        if time_difference >= 86400:
+        # If more than two hours have passed
+        if time_difference >= daily:
             eligible = True
             dates[dbindex][1] = datetime.now().strftime( format_str )
             savetime()
@@ -736,22 +773,197 @@ def dailybox():
                     print( "A Triple Prefixed Box!" )
 
             case randint if randint >= 26 and randint <= 50:
-                print( "A random cube!" )
+                print( "A random kitty!" )
 
                 if random.randint(1, 100) < 6:
                     rollcube( inv_inputs["quadruple prefixed box"] )
                 else:
                     rollcube( inv_inputs["triple prefixed box"])
             case randint if randint >= 51 and randint <= 100:
-                randint = random.randint( 500, 2000 )
-                print( f"{randint} credits!" )
-                inventory[0][1] += randint
+                # 50% chance for treat tickets
+                if random.randint( 1, 2 ) == 1:
+                    randint = random.randint( 200, 2000 )
+                    print( f"{randint} credits!" )
+                    addcredits( randint )
+                else:
+                    randint = random.randint( 5, 20 )
+                    print( f"{randint} Treat Tickets!" )
+                    additem( "Treat Ticket", randint )
         time.sleep( 3 )
     else:
-        print( "The daily box is still locked, you should check back later." )
+        soondate = (( date1 + timedelta( seconds=daily) ) - date2).total_seconds()
+        # Formatting seconds for dialogue
+        if soondate >= 3600:
+            amount = math.floor( soondate / 3600 )
+            nominal = "hours"
+        elif soondate < 3600 and soondate >= 60:
+            amount = math.floor( soondate / 60 )
+            nominal = "minutes"
+        elif soondate <= 60:
+            amount = math.floor( soondate / 60 )
+            nominal = "seconds"
+        print( f"The daily box is still locked, you should check back in {amount} {nominal}." )
         time.sleep( 3 )
 
+# Treats - investing in kitty food
+def treats():
+    os.system('cls')
 
+    print("( \\")
+    print(" \ \\")
+    print(" / /                |\\\\")
+    print("/ /     .-`````-.   / ^`-.")
+    print("\ \    /         \_/  {|} `o")
+    print(" \ \  /   .---.   \\ _  ,--'")
+    print("  \ \/   /     \,  \(     ")
+    print("   \   \/\      (\  )")
+    print("    \   ) \     ) \\ \\")
+    print("jgs  ) /__ \__  ) (\ \___")
+    print("    (___)))__))(__))(__)))")
+
+    treatcount = int( dates[2][1] )
+    catsfed = math.floor( treatcount / 100 )
+    tickets = 0
+    ticketinfo = checkinv( "Treat Ticket" )
+
+    # Seek treats
+    if ticketinfo['found']:
+        tickets = ticketinfo['amount']
+    else:
+        tickets = 0
+
+    print(f"Meow! Welcome to the Treat Stockpile! We have currently amassed {treatcount} treats, feeding {catsfed} kitties!")
+
+    # Treat rewards
+    # Counting the difference of seconds. If more than one day, give reward.
+    if catsfed > 0:
+        format_str = "%Y-%m-%d %H:%M:%S"
+        date1 = datetime.strptime(dates[3][1], format_str)
+        date2 = datetime.strptime(str(datetime.now().strftime( format_str )), format_str)
+        time_difference = (date2 - date1).total_seconds()
+        # If more than two hours have passed
+        if time_difference >= daily:
+            dates[3][1] = datetime.now().strftime( format_str )
+            savetime()
+
+            reward = math.ceil(( catsfed * 25 ) * random.uniform( 0.75, 1.5 ))
+            addcredits( reward )
+
+            print( f"MRAW, thank you for contributing to our stockpile! Your happy kittens have brought you {reward} Credits in thanks!")
+        else:
+            soondate = (( date1 + timedelta( seconds=daily) ) - date2).total_seconds()
+            # Formatting seconds for dialogue
+            if soondate >= 3600:
+                amount = math.floor( soondate / 3600 )
+                nominal = "hours"
+            elif soondate < 3600 and soondate >= 60:
+                amount = math.floor( soondate / 60 )
+                nominal = "minutes"
+            elif soondate <= 60:
+                amount = math.floor( soondate / 60 )
+                nominal = "seconds"
+            print( f"Your kittens are currently resting contently. They might offer something again in {amount} {nominal}." )
+
+    print(f"You have {inventory[0][1]} Credits and {tickets} Treat Tickets.") # and treats
+
+# FIX more treat rewards?
+
+    print("donate, redeem, exit")
+
+    plinput = input("").lower()
+
+    match plinput:
+        case "exit":
+            mainmenu()
+        case "donate":
+            treatsdonate()
+        case "redeem":
+            treatsredeem()
+        case _:
+            print( "I'm not sure what you mean..." )
+            time.sleep( 1 )
+            os.system('cls')
+            treats()
+
+def treatsdonate():
+    print( "Meow, how much would you like to contribute?" )
+    plinput = input("").lower()
+    # If "all" then all money
+    if plinput == "all":
+        plinput = inventory[0][1]
+    elif checkifproperint(plinput):
+        plinput = int(plinput)
+    
+    if checkifproperint( plinput ) or plinput == "all" :
+        plinput = int(plinput)
+        # If less than what you have
+        if plinput > inventory[0][1]:
+            print( "You sadly don't have that much..." )
+            time.sleep( 2 )
+            os.system('cls')
+            treats()
+        else:
+            addcredits( -plinput )
+            dates[2][1] = plinput + int( dates[2][1] ) 
+            savetime()
+            print( "Thank you for donating!")
+            time.sleep( 2 )
+            os.system( 'cls' )
+            treats()
+    else:
+        print( "That's not a correct value..." )
+        time.sleep( 2 )
+        os.system('cls')
+        treats()
+
+# Redeeming Treat Tickets. Each ticket is worth 100 Credits and can be sold for 25
+def treatsredeem():
+    ticketloc = checkinv( "Treat Ticket" )
+    ticketamount = 0
+
+    if ticketloc['found'] == False:
+        print( "You don't seem to have any Treat Tickets at this time..." )
+        time.sleep( 2 )
+        os.system('cls')
+        treats()
+    else:
+        ticketamount = ticketloc['amount']
+        print( "Meow, how many Treat Tickets would you like to redeem?" )
+        plinput = input("").lower()
+        # If "all" then all money
+        if plinput == "all":
+            plinput = ticketamount
+        elif checkifproperint(plinput):
+            plinput = int(plinput)
+    
+        if checkifproperint( plinput ) or plinput == "all":
+            plinput = int(plinput)
+            # If less than what you have
+            if plinput > ticketamount:
+                print( "You sadly don't have that much..." )
+                time.sleep( 2 )
+                os.system('cls')
+                treats()
+            else:
+                inventory[ticketloc['index']][1] = int( inventory[ticketloc['index']][1] ) - plinput
+                if inventory[ticketloc['index']][1] == 0:
+                    inventory.pop( ticketloc['index'] )
+                saveinv()
+                dates[2][1] = int( dates[2][1] ) + plinput * 100
+                savetime()
+                print( "Thank you so much for redeeming!")
+                time.sleep( 2 )
+                os.system( 'cls' )
+                treats()
+        else:
+            print( "That's not a correct value..." )
+            time.sleep( 2 )
+            os.system('cls')
+            treats()
+
+def freecash():
+    addcredits( 10000 )
+    saveinv()
 
 # List of inputs for the player to utilise.
 player_inputs = {
@@ -761,14 +973,15 @@ player_inputs = {
     "store": inp_store, "shop": inp_store,
     "debug": debug,
     "jobs": jobs,
-    "dailybox": dailybox
+    "dailybox": dailybox,
+    "treats": treats,
+    "meow": freecash
 }
-
 
 def affixtag(row):
     # row is inventory index of the affix tag. god im sleepy
     # Apply an affix to a cube. Must be a cube with no affix (easy).
-    plinput = input( "Which Cube would you like to apply a random affix to? It can't already be affixed. [or exit]\n" )
+    plinput = input( "Which Kitty would you like to apply a random affix to? It can't already be affixed. [or exit]\n" )
     checktable = checkinv( plinput )
     cubeindex = checktable["index"]
     
@@ -778,8 +991,8 @@ def affixtag(row):
         if checkifproperint( plinput ):
             plinput = inventory[int(plinput)][0].lower()
         # Check if it's a cube
-        if plinput[len(plinput)-4:len(plinput)].lower() != "cube":
-            print( "You can only affix cubes, or the cube is already affixed." )
+        if plinput[len(plinput)-5:len(plinput)].lower() != "kitty":
+            print( "You can only affix kitties, or the kitty is already affixed." )
             time.sleep( 1.5 )
             affixtag(row)
         else:
@@ -799,12 +1012,12 @@ def affixtag(row):
             inventory[cubeindex][1] -= 1
             if inventory[cubeindex][1] == 0:
                 inventory.pop( cubeindex )
-            addcube(  cubename + " " + affixtable[random.randint(0, affixmax)] )
+            addcube(  cubename + " " + affixtable[random.randint(0, affixmax)], 1 )
             saveinv()
             time.sleep( 1.5 )
             inp_inv( True )
     else:
-        print( "No such cube." )
+        print( "No such kitten." )
         time.sleep( 1.5 )
         affixtag(row)
 
@@ -814,15 +1027,15 @@ def get_cube_cost(prefixes):
         case 0:
             return 5
         case 1:
-            return 30
+            return 20
         case 2:
-            return 425
+            return 200
         case 3:
-            return 3500
+            return 3000
         case 4:
-            return 40000
+            return 25000
         case 5:
-            return 60000
+            return 100000
         # Quad prefix with affix? Should be expensive.
         case 6:
             return 500000
@@ -831,27 +1044,29 @@ def get_cube_cost(prefixes):
         
 
 inv_inputs = {
+    # First four values are prefix drop chances, fifth is treat ticket AMOUNT
     "basic box": [ 4, 20, 100, 1000 ],
     "prefixed box": [ 1, 12, 40, 100 ],
     "double prefixed box": [ 1, 1, 15, 35 ],
-    "triple prefixed box": [ 1, 1, 1, 20 ],
-    "quadruple prefixed box": [ 1, 1, 1, 1 ],
+    "triple prefixed box": [ 1, 1, 1, 20, 200 ],
+    "quadruple prefixed box": [ 1, 1, 1, 1, 1000 ],
     "affix tag": affixtag
 }
 
 
 store_prices = {
-    "basic box": 10,
-    "prefixed box": 50,
-    "double prefixed box": 500,
-    "triple prefixed box": 5000,
-    "quadruple prefixed box": 50000,
+    "basic box":10, "bb": 10,
+    "prefixed box": 50, "pb": 50,
+    "double prefixed box": 500, "dpb": 500,
+    "triple prefixed box": 5000, "tpb": 5000,
+    "quadruple prefixed box": 50000, "qpb": 50000,
 }
 
 # For convenient selling of items that aren't in the store
 item_sellprices = {
     "kitty box": 999999,
-    "affix tag": 25000
+    "affix tag": 25000,
+    "treat ticket": 25
 }
 
 # Input def for main inputs
@@ -880,4 +1095,28 @@ while True:
     print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
     print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
 
-    inputs1( input( 'Meow! Welcome to Cube Collector version ' + verdate + '. For help, type "help".\n' ) )
+    inputs1( input( 'Meow! Welcome to Kitty Collector version ' + verdate + '. For help, type "help".\n' ) )
+
+
+
+
+
+
+
+
+# The Plaza
+# You can open your dailybox there.
+# You can also receive support from your fed cats here
+    # At any time you can donate credits to feed cats. Afterwards, every day you get a portion of that money back, as thanks from the cats
+    # Maybe this could also unlock stuff?
+    # Think: you can unbox Treat Tickets which can be consumed for this stockpile
+
+
+# You can also talk to the Phu'Sea (Fussy) Vendor here, who will seek Cats with certain Prefixes here every day.
+    # You can match them partially or completely. A complete match for 2+ prefixes yields A LOT of cash since it's rare.
+    # A partial match is still worth it though.
+    # He accepts only one Prefix sale per day
+
+# Continuity mechanics. Something to work for. Unlocks, investments
+    # Something that upgrades the payout from Guessgame
+    # Gives money for unlocking more and more of the registry
