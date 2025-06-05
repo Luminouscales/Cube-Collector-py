@@ -116,7 +116,7 @@ def rollcube( odds ):
     # [ one prefix, two, three, four ]
 
     # Each box has a odds[3] * 5 percent chance of dropping an affix tag.
-    if random.randint( 1, odds[3] * 5 ) == 1:
+    if random.randint( 1, odds[3] * 20 ) == 1:
         print( "You found an Affix Tag! You lucky cat." )
         addcube( "Affix Tag", 1 )
         time.sleep( 1 )
@@ -388,7 +388,7 @@ def inp_inv( printinv ):
         if argument1 == "alph":
             inventory.sort( key=lambda x: x[0] )
         # Sort by value
-        elif argument1 == "value":
+        elif argument1 == "value" or "argument1" == "val":
             inventory.sort( key=lambda x: getprice( x[0] ), reverse=True )
         elif argument1 == "count":
             inventory.sort( key=lambda x: x[1], reverse=True )
@@ -1050,7 +1050,7 @@ def get_cube_cost(prefixes):
         case 3:
             return 3000
         case 4:
-            return 25000
+            return 40000
         case 5:
             return 100000
         # Quad prefix with affix? Should be expensive.
