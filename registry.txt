@@ -1,1 +1,385 @@
-Cube	0	1
+Kitty	11	1
+Psychological Kitty	9	2
+Foolish Kitty	13	3
+Supreme Kitty	11	4
+Slow Typical Kitty	1	5
+Sick Kitty	11	6
+Hot Kitty	10	7
+Ironic Kitty	12	8
+Terrarian Kitty	10	9
+Rich Kitty	10	10
+Adorable Kitty	8	11
+Dishonest Kitty	14	12
+Cheap Kitty	8	13
+Sharp Kitty	10	14
+Thick Executable Kitty	1	15
+Clever Kitty	10	16
+Wrong Kitty	12	17
+Preposterous Kitty	8	18
+Soft Kitty	12	19
+Ancient Kitty	11	20
+Modular Kitty	10	21
+Intemporal Kitty	11	22
+Polite Kitty	12	23
+Expensive Kitty	11	24
+Easy Kitty	6	25
+World-Ending Kitty	14	26
+Executable Kitty	5	27
+Brave Kitty	11	28
+Stingy Responsive Kitty	1	29
+Safe Kitty	9	30
+Shitty Kitty	9	31
+Optimized Kitty	9	32
+Cold Kitty	12	33
+Draconic Kitty	8	34
+Sweet Kitty	11	35
+Fast Kitty	7	36
+Pathetic Kitty	7	37
+Titanium Kitty	11	38
+Bright Kitty	8	39
+Weak Kitty	11	40
+Adorable Cold Kitty	1	41
+Coding Kitty	7	42
+Virtual Kitty	11	43
+Thin Kitty	10	44
+Plastic Kitty	12	45
+Kind Kitty	10	46
+Dry Kitty	10	47
+Big Kitty	8	48
+Merry Kitty	10	49
+Generous Kitty	11	50
+Ascended Kitty	8	51
+Shattered Kitty	8	52
+Right Kitty	10	53
+Dull Kitty	10	54
+Encrypted Kitty	12	55
+Full Kitty	14	56
+Sour Kitty	12	57
+Collector's Kitty	7	58
+Scary Kitty	10	59
+Algorithmic Kitty	11	60
+Recursive Kitty	11	61
+Quick Kitty	10	62
+Strong Kitty	11	63
+Iron Kitty	9	64
+Sick Dangerous Kitty	1	65
+Streamlined Kitty	9	66
+Boring Kitty	9	67
+Temporal Kitty	10	68
+Responsive Kitty	7	69
+Annoying Kitty	10	70
+Common Kitty	9	71
+Cruel Kitty	10	72
+German Kitty	9	73
+True Kitty	9	74
+Kitty Kitty	4	75
+Dark Kitty	11	76
+Ugly Kitty	13	77
+Useless Kitty	10	78
+Collected Kitty	12	79
+Heavy Psychological Kitty	1	80
+Brilliant Kitty	11	81
+Wise Kitty	12	82
+Godly Kitty	8	83
+Scalable Kitty	7	84
+Sarcastic Kitty	13	85
+Rusty Kitty	12	86
+Auric Kitty	9	87
+Cubed Kitty	9	88
+Therian Kitty	10	89
+Calamitous Kitty	12	90
+Interactive Kitty	7	91
+Clean Kitty	9	92
+Heavy Cobalt Kitty	1	93
+Thick Kitty	9	94
+Lubinian Kitty	8	95
+Closed Kitty	6	96
+Formulaic Kitty	9	97
+Young Kitty	9	98
+Therapeutic Kitty	6	99
+Dangerous Kitty	11	100
+Interesting Kitty	11	101
+Hard Kitty	10	102
+Typical Kitty	10	103
+False Kitty	7	104
+Tall Kitty	11	105
+Furry Kitty	5	106
+Hard Collected Kitty	1	107
+Broken Kitty	5	108
+Calm Kitty	11	109
+Old Abstract Kitty	1	110
+Dumb Kitty	9	111
+Stupid Kitty	9	112
+Slow Recursive Kitty	1	113
+Asynchronous Kitty	6	114
+Feathered Kitty	8	115
+Robotic Kitty	8	116
+Formless Kitty	10	117
+Innovative Kitty	6	118
+Infected Kitty	8	119
+Shapeless Kitty	8	120
+Lubinian Thirsty Kitty	1	121
+Loud Kitty	6	122
+British Kitty	7	123
+Happy Kitty	8	124
+Simple Kitty	9	125
+Optimized Collected Kitty	1	126
+Cookie Kitty	9	127
+Abstract Kitty	9	128
+Slavic Kitty	6	129
+Wet Kitty	4	130
+Dirty Perseverant Kitty	1	131
+Slow Kitty	5	132
+Beautiful Kitty	3	133
+Psychological Therapeutic Kitty	1	134
+Noisy Kitty	7	135
+True Iron Kitty	1	136
+Efficient Kitty	7	137
+Open Kitty	9	138
+Perseverant Kitty	8	139
+Open Typical Kitty	1	140
+Unreal Kitty	8	141
+Hungry Kitty	9	142
+Profaned Thirsty Kitty	1	143
+Quiet Kitty	10	144
+Light Kitty	7	145
+Galvanized Kitty	9	146
+Old Kitty	10	147
+Recursive Furry Kitty	1	148
+Sad Kitty	7	149
+Purring Kitty	9	150
+Therapeutic Beautiful Kitty	1	151
+Thirsty Kitty	9	152
+Exciting Kitty	9	153
+Galvanized Scalable Kitty	1	154
+Evil Kitty	8	155
+Dirty Kitty	8	156
+Honest Kitty	8	157
+Small Kitty	6	158
+Polite Terrarian Kitty	1	159
+Stingy Kitty	9	160
+Healthy Kitty	7	161
+Stinky Kitty	9	162
+Rude Kitty	8	163
+Complex Cobalt Kitty	1	164
+Poor Kitty	8	165
+Clever Sweet Kitty	1	166
+Generic Kitty	9	167
+Modern Kitty	9	168
+Strong Feline Kitty	1	169
+Complex Kitty	7	170
+Angry Kitty	7	171
+Heavy Kitty	9	172
+Patriotic Kitty	7	173
+German Perseverant Kitty	1	174
+Bright Heavy Kitty	1	175
+Unusual Kitty	8	176
+New Kitty	4	177
+Kitty Wrong Kitty	1	178
+Mythril Kitty	8	179
+Coding Young Kitty	1	180
+Dynamic Kitty	8	181
+Formulaic Merry Kitty	1	182
+Executable Heavy Kitty	1	183
+Profaned Kitty	8	184
+Easy New Kitty	1	185
+Short Kitty	5	186
+American Kitty	8	187
+Vishunei Kitty	2	188
+Loud Complex Kitty	1	189
+Polish Kitty	9	190
+Cowardly Kitty	7	191
+Young Scary Kitty	1	192
+Brilliant Stingy Kitty	1	193
+Virtual Generous Kitty	2	194
+Sour Formless Kitty	1	195
+Hard Cookie Kitty	1	196
+Cobalt Kitty	7	197
+Sad Shitty Kitty	1	198
+Cookie Formless Kitty	1	199
+Clean American Kitty	1	200
+Boring Stupid Kitty	1	201
+Strong Merry Kitty	1	202
+Kind Intemporal Kitty	1	203
+Iterative Kitty	7	204
+Synthetic Kitty	7	205
+Streamlined Modern Kitty	1	206
+Feline Kitty	5	207
+Poor Psychological Kitty	1	208
+Ascended Expensive Kitty	1	209
+True Plastic Kitty	1	210
+Modern Broken Kitty	1	211
+Virtual Poor Kitty	1	212
+Difficult Kitty	6	213
+Iterative Abstract Kitty	1	214
+World-Ending Coding Kitty	1	215
+American Stingy Dirty Kitty	1	216
+Responsive Plastic Kitty	1	217
+Placeholder Kitty	2	218
+Sad Preposterous Kitty	1	219
+Collected Dumb Kitty	1	220
+Thick Happy Kitty	1	221
+Cold Infected Kitty	1	222
+Tall Poor Kitty	1	223
+Virtual Efficient Kitty	1	224
+Cookie Feathered Kitty	1	225
+Closed Virtual Kitty	1	226
+Psychological Draconic Modular Kitty	1	227
+Feathered Virtual Sad Kitty	1	228
+Fast Mythril Kitty	1	229
+Hard Godly Kitty	1	230
+Collected Healthy Kitty	1	231
+Strong Intemporal Kitty	1	232
+Merry True Kitty	1	233
+Unusual Patriotic Cookie Modern Kitty	1	234
+Shattered Tall Kitty	1	235
+Heavy Shitty Kitty	1	236
+Scalable Closed Kitty	1	237
+Streamlined Dynamic Kitty	1	238
+Small Iron Kitty	1	239
+Ugly Bright Kitty	1	240
+True Brave Kitty	1	241
+Therian Temporal Kitty	1	242
+Sad Hungry Kitty	1	243
+Bright Shattered Loud Kitty	1	244
+Exciting Stinky Kitty	1	245
+Formulaic Poor Kitty	1	246
+Quiet Common Kitty	1	247
+Scary Old Kitty	1	248
+Sarcastic Stinky Kitty	1	249
+German Loud Kitty	1	250
+Small Wrong Kitty	1	251
+Ironic Dry Kitty	1	252
+Therian Innovative Kitty	1	253
+Dull Sick Kitty	1	254
+True Generous Kitty	1	255
+Plastic Stinky Kitty	1	256
+British Lubinian Kitty	1	257
+Terrarian Robotic Kitty	1	258
+Dumb Quick Kitty	1	259
+Polish Innovative Kitty	1	260
+Broken Complex Kitty	1	261
+Easy Scalable Kitty	1	262
+Abstract Big Kitty	1	263
+Lubinian Soft Kitty	1	264
+Polite Refactored Kitty	1	265
+Noisy Supreme Kitty	1	266
+Scalable Lubinian Kitty	1	267
+Safe Pathetic Kitty	1	268
+Rusty Dishonest Kitty	1	269
+Refactored Kitty	4	270
+Healthy Adorable Kitty	1	271
+Wrong Godly Kitty	1	272
+Brilliant Iron Kitty	1	273
+Cubed Poor Kitty	1	274
+Pix Kitty	1	275
+Shitty Thin Kitty	1	276
+Brave Perseverant Kitty	1	277
+Dynamic Recursive Kitty	1	278
+World-Ending Open Kitty	1	279
+Annoying Polish Kitty	1	280
+Hot Coding Kitty	1	281
+Pathetic Abstract Kitty	1	282
+Dry Modern Kitty	1	283
+Expensive Collected Beautiful Kitty	1	284
+Executable Stupid Kitty	1	285
+Safe Galvanized Kitty	1	286
+Affix Tag	1	287
+Dishonest Iterative Kitty	1	288
+Slavic Soft Kitty	1	289
+Perseverant Small Kitty	1	290
+Sour Weak Kitty	1	291
+Full Dishonest Kitty	1	292
+Quiet Temporal Kitty	1	293
+Optimized Thin Kitty	1	294
+Asynchronous Ugly Kitty	1	295
+Happy Dull Kitty	1	296
+Titanium Cold Kitty	1	297
+Titanium Beautiful Kitty	1	298
+Soft Loud Kitty	1	299
+Iron Dull Kitty	1	300
+Slow Pix Kitty	1	301
+Common Noisy Kitty	1	302
+Expensive Cold Kitty	1	303
+Generous Psychological Kitty	1	304
+Exciting Plastic Kitty	1	305
+Angry American Kitty	1	306
+Plastic Scalable Kitty	1	307
+Lubinian Slavic Kitty	1	308
+Cheap Shattered Kitty	1	309
+Beautiful New Kitty	1	310
+Wise Kind Kitty	1	311
+Terrarian Encrypted Kitty	1	312
+False Adorable Kitty	1	313
+Shattered Temporal Kitty	1	314
+Intemporal Godly Kitty	1	315
+Wet Cheap Kitty	1	316
+Wrong Poor Kitty	1	317
+Therapeutic Abstract Kitty	1	318
+Weak Mythril Kitty	1	319
+Cowardly Rich Kitty	1	320
+Unusual Refactored Kitty	1	321
+Streamlined Complex Kitty	1	322
+Perseverant Brave Kitty	1	323
+Difficult Algorithmic Kitty	1	324
+Formless Cubed Kitty	1	325
+Stingy Loud Kitty	1	326
+German Formulaic Kitty	1	327
+Scary Dangerous Kitty	1	328
+Big Honest Kitty	1	329
+Therian Cruel Kitty	1	330
+Adorable Typical Kitty	1	331
+Full Common Kitty	1	332
+Psychological American Kitty	1	333
+Ugly Adorable Mythril Kitty	1	334
+Scalable Patriotic Kitty	1	335
+Noisy Hard Kitty	1	336
+Difficult Wise Kitty	1	337
+Draconic Supreme Kitty	1	338
+Quiet Dynamic Kitty	1	339
+Virtual Profaned Kitty	1	340
+Exciting Wise Kitty	1	341
+Shattered Evil Kitty	1	342
+Quick Evil Kitty	1	343
+Cookie Common Kitty	1	344
+Therapeutic Hot Kitty	1	345
+Hot Draconic Kitty	1	346
+Expensive Clean Kitty	1	347
+Cobalt Dirty Kitty	1	348
+Thin Perseverant Kitty	1	349
+Tall Cheap Kitty	1	350
+Thin Short Kitty	1	351
+Interactive Encrypted Kitty	1	352
+Quiet Unusual Kitty	1	353
+Poor Thin Beautiful Kitty	1	354
+Sick Collected Kitty	1	355
+Soft Bright Kitty	1	356
+Useless Brave Kitty	1	357
+Slow Healthy Kitty	1	358
+Rusty Scalable Kitty	1	359
+Shitty Big Kitty	1	360
+Unreal Modern Kitty	1	361
+Loud Polite Kitty	1	362
+Terrarian Hungry Kitty	1	363
+Clean Dumb Kitty	1	364
+Profaned Wise Kitty	1	365
+Modular Scary Kitty	1	366
+Auric Closed Kitty	1	367
+Efficient Thirsty Kitty	1	368
+Thirsty Old Kitty	1	369
+Ironic Dumb Kitty	1	370
+Interesting Cowardly Kitty	1	371
+Hot Furry Kitty	1	372
+Profaned Auric Kitty	1	373
+Shattered Boring Kitty	1	374
+Purring Dynamic Kitty	1	375
+Sarcastic Open Kitty	1	376
+Furry Angry Kitty	1	377
+Ironic German Kitty	1	378
+Generic Slavic Kitty	1	379
+Old Dark Kitty	1	380
+Ugly Healthy Kitty	1	381
+Complex Healthy Kitty	1	382
+Ascended Shapeless Kitty	1	383
+Wet Thick Kitty	1	384
+Kitty Dumb Kitty	1	385

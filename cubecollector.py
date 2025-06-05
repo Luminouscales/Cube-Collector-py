@@ -293,8 +293,8 @@ def inp_inv( printinv ):
                 inp_inv( False )
             else:
                 argument2 = int(argument2)
-                if argument2 > 99:
-                    delay = 0
+                if argument2 > 40:
+                    delay = 0.01
                 else:
                     delay = 0.5
                 # Check if it's a box. If not, we use the item's own function
@@ -309,7 +309,7 @@ def inp_inv( printinv ):
                             rollcube( inv_inputs[argument1] )
 
                             # Function for rolling Treat Tickets
-                            if random.randint( 1, 20 ) == 1:
+                            if random.randint( 1, 30 ) == 1:
                                 ticketamount = math.ceil(( ( store_prices[ argument1 ] / 10 ) * random.uniform(0.8, 1.2) ))
                                 additem( "Treat Ticket", ticketamount )
                                 print(f"You also found {ticketamount} Treat Tickets!")
@@ -664,6 +664,7 @@ def inp_store_buy( pl_input ):
 
 # "store" input
 def inp_store():
+    os.system('cls')
     print(" /\     /\ ")
     print("{  `---'  }")
     print("{  O   O  }")
@@ -1044,12 +1045,12 @@ def get_cube_cost(prefixes):
         
 
 inv_inputs = {
-    # First four values are prefix drop chances, fifth is treat ticket AMOUNT
-    "basic box": [ 4, 20, 100, 1000 ],
-    "prefixed box": [ 1, 12, 40, 100 ],
+    # First four values are prefix drop chances
+    "basic box": [ 4, 25, 100, 1000 ],
+    "prefixed box": [ 1, 15, 40, 100 ],
     "double prefixed box": [ 1, 1, 15, 35 ],
-    "triple prefixed box": [ 1, 1, 1, 20, 200 ],
-    "quadruple prefixed box": [ 1, 1, 1, 1, 1000 ],
+    "triple prefixed box": [ 1, 1, 1, 20],
+    "quadruple prefixed box": [ 1, 1, 1, 1 ],
     "affix tag": affixtag
 }
 
@@ -1065,8 +1066,8 @@ store_prices = {
 # For convenient selling of items that aren't in the store
 item_sellprices = {
     "kitty box": 999999,
-    "affix tag": 25000,
-    "treat ticket": 25
+    "affix tag": 75000,
+    "treat ticket": 100
 }
 
 # Input def for main inputs
