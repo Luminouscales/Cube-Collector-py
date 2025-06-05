@@ -119,6 +119,7 @@ def rollcube( odds ):
     if random.randint( 1, odds[3] * 5 ) == 1:
         print( "You found an Affix Tag! You lucky cat." )
         addcube( "Affix Tag", 1 )
+        time.sleep( 1 )
     else:
         prefixes = []
         for idx in range(len(odds)):
@@ -131,7 +132,8 @@ def rollcube( odds ):
         addcube(cube, 1)
 
 # Function that adds a cube to inventory
-def addcube( cube, amount ):
+# fav decides if cube should be favourited when added
+def addcube( cube, amount=1, fav=False ):
     
     for row in inventory:
         # If cube already in inventory add one more to count and end function
@@ -142,7 +144,10 @@ def addcube( cube, amount ):
             # Add to reg
             return
     # If new then add the cube to inventory. The 1 is the amount of new cubes. So, just one.
-    inventory.append( [cube, 1] )
+    if fav:
+        inventory.append( [cube, 1, "fav"] )
+    else:
+        inventory.append( [cube, 1] )
     saveinv()
     # If it's not in reg yet, say it's brand new.
     if checkreg( cube )["found"]:
@@ -995,7 +1000,7 @@ def affixtag(row):
             plinput = inventory[int(plinput)][0].lower()
         # Check if it's a cube
         if plinput[len(plinput)-5:len(plinput)].lower() != "kitty":
-            print( "You can only affix kitties, or the kitty is already affixed." )
+            print( "You can only affix Kitties, or the Kitty is already affixed." )
             time.sleep( 1.5 )
             affixtag(row)
         else:
@@ -1007,15 +1012,24 @@ def affixtag(row):
                 # Otherwise the affix might hit the wrong cube or crash completely
                 if row < cubeindex:
                     cubeindex -= 1
-
                 inventory.pop( row )
             
             # Find cube in inventory. Get its name and row.
             cubename = inventory[cubeindex][0]
+            # If the cube is favourited, the result will come out favd too. Convenience
+            favd = False
+            try:
+                if inventory[cubeindex][2] == "fav":
+                    favd = True
+            except:
+                favd = False
             inventory[cubeindex][1] -= 1
             if inventory[cubeindex][1] == 0:
                 inventory.pop( cubeindex )
-            addcube(  cubename + " " + affixtable[random.randint(0, affixmax)], 1 )
+            if favd:
+                addcube(  cubename + " " + affixtable[random.randint(0, affixmax)], 1, True )
+            else:
+                addcube(  cubename + " " + affixtable[random.randint(0, affixmax)], 1 )
             saveinv()
             time.sleep( 1.5 )
             inp_inv( True )
