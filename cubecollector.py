@@ -532,10 +532,12 @@ def inp_store_buy_count( pl_input ):
 
 def getprice( sellitem ):
     # If it's a store item, sell it at 75% price
-    if sellitem in store_prices:
+    if sellitem.lower() in store_prices:
+        sellitem = sellitem.lower()
         return math.ceil( store_prices[sellitem] * 0.75 )
     # If an item not found in store
-    elif sellitem in item_sellprices:
+    elif sellitem.lower() in item_sellprices:
+        sellitem = sellitem.lower()
         return math.ceil( item_sellprices[ sellitem ] )
     # If cube
     else:
@@ -604,7 +606,7 @@ def inp_store_buy( pl_input ):
         # If the item is not inventory
         if checktable["found"] == False:
             # When selling all
-            if argument == "all": #//FIX you can sell for 0 credits if inv is empty. Doesn't break anything, just a bit weird | 23.05
+            if argument == "all": #//FIX you can sell for 0 credits if inv is empty. Doesn't break anything, just a bit weird | 23.05.24
                 total = 0
                 for row in inventory[1:len(inventory)]:
                     # Don't sell favourites
