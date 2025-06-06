@@ -388,7 +388,7 @@ def inp_inv( printinv ):
         if argument1 == "alph":
             inventory.sort( key=lambda x: x[0] )
         # Sort by value
-        elif argument1 == "value" or "argument1" == "val":
+        elif argument1 == "value" or argument1 == "val":
             inventory.sort( key=lambda x: getprice( x[0] ), reverse=True )
         elif argument1 == "count":
             inventory.sort( key=lambda x: x[1], reverse=True )
@@ -408,6 +408,12 @@ def inp_inv( printinv ):
         row = inventory[( checktable["index"] )]
         loc = math.ceil( checktable["index"] / limit )
         print( "Found " + str( row[1] ) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "], page " + str( loc ) )
+        inp_inv( False )
+    # Print 20 random Kitties
+    elif command == "roll":
+        print("")
+        for _ in range(20):
+            print( inventory[random.randint(0, len(inventory)-1 )][0] )
         inp_inv( False )
     else:
         print( "Invalid input." )
@@ -924,6 +930,8 @@ def treatsdonate():
         os.system('cls')
         treats()
 
+# FIX super rare affixes?
+
 # Redeeming Treat Tickets. Each ticket is worth 100 Credits and can be sold for 25
 def treatsredeem():
     ticketloc = checkinv( "Treat Ticket" )
@@ -1082,7 +1090,7 @@ store_prices = {
 # For convenient selling of items that aren't in the store
 item_sellprices = {
     "kitty box": 999999,
-    "affix tag": 75000,
+    "affix tag": 25000,
     "treat ticket": 100
 }
 

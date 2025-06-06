@@ -1,41 +1,16 @@
-Credits	16
+Credits	0
+Sweet Collector's Exciting Kitty Of Whisper	1	fav
+Profaned Auric Kitty Of Shadow	1	fav
+Kitty Feline Kitty Of Whisper	1	fav
 Annoying Polish Kitty	1	fav
-Profaned Auric Kitty	1	fav
-Wet Kitty	8	fav
-Kitty Kitty	9	fav
-Furry Kitty	6	fav
-Beautiful Kitty	12	fav
-Placeholder Kitty	9	fav
-Vishunei Kitty	8	fav
-Pix Kitty	3	fav
-Complex Kitty	1
-Common Kitty	1
-Complex Healthy Kitty	1
-Ascended Shapeless Kitty	1
-Dishonest Kitty	1
-Plastic Kitty	1
-Right Kitty	1
-Kind Kitty	1
-Polite Kitty	1
-Wet Thick Kitty	1
-Collected Kitty	1
-Recursive Kitty	1
-Auric Kitty	1
-Dry Kitty	2
-Safe Kitty	1
-Cold Kitty	1
-Formless Kitty	1
-Virtual Kitty	1
-Cubed Kitty	1
-Quiet Kitty	1
-Stingy Kitty	1
-TREAT TICKET	5
-Clean Kitty	1
 Kitty Dumb Kitty	1	fav
-Wise Kitty	1
-Dumb Kitty	1
-Exciting Kitty	1
-Rusty Kitty	1
-Useless Kitty	1
-Shitty Kitty	1
-Shattered Kitty	1
+Polite Beautiful Kitty	1	fav
+Sarcastic Sarcastic Kitty	1	fav
+Beautiful Kitty	22	fav
+Furry Kitty	16	fav
+Kitty Kitty	22	fav
+Pix Kitty	13	fav
+Placeholder Kitty	19	fav
+Vishunei Kitty	25	fav
+Wet Kitty	19	fav
+Mythril New American Kitty	1

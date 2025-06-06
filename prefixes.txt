@@ -164,3 +164,6 @@ Collector's
 Vishunei
 Pix
 Refactored
+Cute
+Snuggly
+p<0.05
