@@ -127,6 +127,15 @@ def rollcube( odds ):
                 break
                 
             prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
+        
+        # Time for big randomness. Each rolled kitty has a 1% chance to get an extra prefix, an infinite amount of times. Good luck!
+        while True:
+            if random.randint( 1, 100 ) == 1:
+                prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
+                print( "*** This Kitty is carrying an extra affix! ***" )
+                time.sleep( 2 )
+            else:
+                break
 
         cube = ' '.join(prefixes) + ' Kitty' if len(prefixes) > 0 else 'Kitty'
         addcube(cube, 1)
@@ -410,7 +419,7 @@ def inp_inv( printinv ):
         print( "Found " + str( row[1] ) + " of " + row[0] + " at index [" + str( checktable["index"] ) + "], page " + str( loc ) )
         inp_inv( False )
     # Print 20 random Kitties
-    elif command == "roll":
+    elif command == "r":
         print("")
         for _ in range(20):
             print( inventory[random.randint(0, len(inventory)-1 )][0] )
@@ -1063,9 +1072,9 @@ def get_cube_cost(prefixes):
             return 100000
         # Quad prefix with affix? Should be expensive.
         case 6:
-            return 500000
+            return 250000
         case _:
-            return math.pow(20, prefixes)
+            return math.pow(12, prefixes)
         
 
 inv_inputs = {
