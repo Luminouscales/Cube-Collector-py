@@ -1,4 +1,4 @@
 setup	2024-11-24 17:03:12
-dailybox	2025-06-06 17:19:13
-treats	157995
-treatsdaily	2025-06-06 17:19:26
+dailybox	2025-06-08 16:08:50
+treats	427195
+treatsdaily	2025-06-08 16:08:57
