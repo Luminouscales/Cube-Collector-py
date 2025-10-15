@@ -129,16 +129,18 @@ def rollcube( odds ):
             prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
         
         # Time for big randomness. Each rolled kitty has a 1% chance to get an extra prefix, an infinite amount of times. Good luck!
+        extra = False
         while True:
-            if random.randint( 1, 100 ) == 1:
+            if random.randint( 1, 33 ) == 1:
                 prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
                 print( "*** This Kitty is carrying an extra affix! ***" )
-                time.sleep( 2 )
             else:
                 break
 
         cube = ' '.join(prefixes) + ' Kitty' if len(prefixes) > 0 else 'Kitty'
         addcube(cube, 1)
+        if extra:
+            time.sleep( 2 )
 
 # Function that adds a cube to inventory
 # fav decides if cube should be favourited when added
@@ -1065,7 +1067,7 @@ def get_cube_cost(prefixes):
         case 2:
             return 200
         case 3:
-            return 3000
+            return 2250
         case 4:
             return 40000
         case 5:
@@ -1074,7 +1076,7 @@ def get_cube_cost(prefixes):
         case 6:
             return 250000
         case _:
-            return math.pow(12, prefixes)
+            return math.pow(7, prefixes)
         
 
 inv_inputs = {
