@@ -1,13 +1,24 @@
 import os, sys, random, math
 
 selfpath = os.path.dirname(sys.argv[0])
-prefixvar = 3 # How many prefixes the Kitties will appear with
+prefixvar = 5 # How many prefixes the Kitties will appear with
+
+# Ability tier, how strong the values are
+# Roll how many abilties, odds stacking
+
+# Flurry / Windfury - chance for a bonus attack regardless of speed
+# Resilience - gain stat boost on lower hp
+# Second Wind - revive
+# Crit - crit
+# Parry - parry
+# Reflect - hard to code
+
 
 # The odds for the next Kitty to be stronger by this amount. 0.5 is a good chance.
 # 1 will make the enemy AT LEAST equal in power. 2 will make enemies deal at least double damage. 
 # Anything higher will make it even harder to win for the winner.
 # This is Effective Power so the enemy may deal more damage, not accounting for accuracy.
-difficulty = 0.5
+difficulty = 0.75
 
 with open( selfpath + "/prefixes.txt", 'r' ) as file:
     lines = file.readlines()
@@ -236,6 +247,7 @@ def createkitty1():
     kitty1power += kitty1stats[2] / 2
     kitty1power += kitty1stats[4] / 5
     kitty1power *= kitty1stats[3]
+    kitty1power = math.floor( kitty1power )
 
     kitty1save = kitty1stats[0]
     kitty1wins = 0
@@ -272,6 +284,7 @@ def createkitty2():
     kitty2power += kitty2stats[2] / 2
     kitty2power += kitty2stats[4] / 5
     kitty2power *= kitty2stats[3]
+    kitty2power = math.floor( kitty2power )
 
     kitty2save = kitty2stats[0]
     kitty2wins = 0
@@ -279,26 +292,73 @@ def createkitty2():
 createkitty1()
 createkitty2()
 
+global kitty1rank
+global kitty2rank
+kitty1rank = 1
+kitty2rank = 2
+
 def dopower():
     global kitty1epower
     global kitty2epower
 
-    kitty1epower = math.floor( ( max( kitty1stats[1] - kitty2stats[2], 1 ) ) * ( max( kitty1stats[3] / kitty2stats[3], 1 ) ) )
-    kitty2epower = math.floor( ( max( kitty2stats[1] - kitty1stats[2], 1 ) ) * ( max( kitty2stats[3] / kitty1stats[3], 1 ) ) )
+    kitty1epower = ( max( kitty1stats[1] - kitty2stats[2], 1 ) ) * ( max( kitty1stats[3] / max(kitty2stats[3],1), 1 ) )
+    kitty2epower = ( max( kitty2stats[1] - kitty1stats[2], 1 ) ) * ( max( kitty2stats[3] / max(kitty1stats[3],1), 1 ) )
 
+    tempmult = (kitty1stats[4] - kitty2stats[4]) / 50
+    tempmult = max( tempmult, 0.1 )
+    tempmult = min( tempmult, 1 )
+    kitty1epower = round( kitty1epower * tempmult, 2 )
+    
+    tempmult = (kitty2stats[4] - kitty1stats[4]) / 50
+    tempmult = max( tempmult, 0.1 )
+    tempmult = min( tempmult, 1 )
+    kitty2epower = round( kitty2epower * tempmult, 2 )
+
+    # 3 - 8 = -5
+    # should be a 5 disadvantage 
+    # Need at least 25 to guarantee
+    # * (acc / 25)
+
+    # 26 disadv
+    # 
+
+    # Multiply EP based on accuracy. If you will always hit then mult by 1
+    # The minimum hit is like 10
+    # kittystats[4] - enemystats[4]
+    # Guaranteed is when the modifier is 75 or more
+    # So ( kittystats[4] - enemystats[4] ) / 75
+    # max( x, 0.1 )
+    # min(x, 1)
+ 
 dopower()
 
-print( f"{kitty1}: { kitty1stats } {kitty1power}P {kitty1epower}EP" )
-print( f"{kitty2}: { kitty2stats } {kitty2power}P {kitty2epower}EP"  )
+#print( f"{kitty1}\n{ kitty1stats } {kitty1power}P {kitty1epower}EP\n" )
+#print( f"{kitty2}\n{ kitty2stats } {kitty2power}P {kitty2epower}EP"  )
 
-input( "" )
+#input( "" )
 
 # Cats duking it out on a giant ball
 # Roll one of the cats to attack first. Then do OwnSpeed - EnemySpeed. If your value is zero or less, move to next turn and repeat.
 
 def leaderboard():
-    print( f"{kitty1}: { kitty1stats } {kitty1power}P {kitty1epower}EP | wins: {kitty1wins}" )
-    print( f"{kitty2}: { kitty2stats } {kitty2power}P {kitty2epower}EP | wins: {kitty2wins}\n"  )
+    kitty1vstats = f"| {kitty1stats[0]} HP – {kitty1stats[1]} STR – {kitty1stats[2]} DEF – {kitty1stats[3]} SPD – {kitty1stats[4]} ACC |"
+    kitty2vstats = f"| {kitty2stats[0]} HP – {kitty2stats[1]} STR – {kitty2stats[2]} DEF – {kitty2stats[3]} SPD – {kitty2stats[4]} ACC |"
+
+    kitty1filler = ""
+    for _ in range( len(str(kitty1rank)) + 1 ):
+        kitty1filler = kitty1filler + " "
+
+    kitty2filler = ""
+    for _ in range( len(str(kitty2rank)) + 1 ):
+        kitty2filler = kitty2filler + " "
+
+
+    print( f"#{kitty1rank} | {kitty1} | wins: {kitty1wins}\n{kitty1filler} { kitty1vstats } [{kitty1power}P {kitty1epower}EP]\n" )
+    print( f"#{kitty2rank} | {kitty2} | wins: {kitty2wins}\n{kitty2filler} { kitty2vstats } [{kitty2power}P {kitty2epower}EP]\n"  )
+
+leaderboard()
+
+input("")
 
 def proceed():
     print( f"The enemy's turn begins.")
@@ -306,7 +366,51 @@ def proceed():
     os.system("cls")
     leaderboard()
 
+# Function to generate a new cat opponent
+def rollcat( loser ):
+    global kitty1wins
+    global kitty2wins
+    global kitty1rank
+    global kitty2rank
+
+
+    temp = 0
+
+    if loser == 1:
+        kitty2wins += 1
+        kitty2stats[0] = kitty2save
+        kitty1rank = max( kitty1rank, kitty2rank ) + 1
+        while True:
+            temp += 1
+            createkitty1()
+            dopower()
+            if kitty2epower * difficulty < kitty1epower:
+                break
+            if temp > 999:
+                os.system('cls')
+                input( "Generation is looped - the difficulty is too high, or it's just slow.")
+                temp = 0
+    else:
+        kitty1wins += 1
+        kitty1stats[0] = kitty1save
+        kitty2rank = max( kitty1rank, kitty2rank ) + 1
+        while True:
+            temp += 1
+            createkitty2()
+            dopower()
+            if kitty1epower * difficulty < kitty2epower:
+                break
+            if temp > 999:
+                os.system('cls')
+                input( "Generation is looped - the difficulty is too high, or it's just slow.")
+                temp = 0
+
+
+
 def DoTurn( kittystats, kittyname, enemystats, enemyname, newturn ):
+    if newturn:
+        proceed()
+    
     global zoomies # 20 minutes for a single line of code... I don't know why you need to do this twice.
     global kitty1wins
     global kitty2wins # These two special cats for some reason need a global tag. Don't caaare
@@ -320,21 +424,22 @@ def DoTurn( kittystats, kittyname, enemystats, enemyname, newturn ):
     if zoomies > 0 and zoomies < enemystats[3]: 
         bonus += zoomies / enemystats[3]
         zoomies = 0
-    damage = math.floor( ( kittystats[1] - enemystats[2] ) * bonus )
-    damage = max(damage, 1)
+    damage = math.floor( ( kittystats[1] - enemystats[2] ) * max( bonus, 1 ) * ( random.randint( 5, 20 ) / 10 ) )
+
+    damage = max(damage, 1) # At least 1 damage
     # Accuracy check, 25% chance to miss by default reduced by accuracy and increased by enemy accuracy.
     # But at least 10
-    hit = random.randint( 1, 100 ) + max( kittystats[4] - enemystats[4], -20 ) # FIX
+    hit = random.randint( 1, 100 ) + max( kittystats[4] - enemystats[4], -65 )
+    hit = min( hit, 95 ) # Always 5% chance to miss
     if hit < 25:
-        print( f"The { kittyname } misses... [rolled {hit} out of 75]" ) # FIX add flashy actions
+        print( f"The { kittyname } misses... [rolled {hit} out of 25]" ) # FIX add flashy actions
         if zoomies < 1:
-            proceed()
             DoTurn( enemystats, enemyname, kittystats, kittyname, True )
         else:
             DoTurn( kittystats, kittyname, enemystats, enemyname, False )
     else:
         enemystats[0] -= damage  # Gets scratched
-        print( f"The {enemyname} takes {damage} damage and now has {enemystats[0]} HP!")
+        print( f"The {enemyname} takes {damage} damage and now has {enemystats[0]} HP! [{hit} out of 25]")
         # Check if defeated
         if enemystats[0] < 1:
             print( f"The {enemyname} has been defeated by the {kittyname}!")
@@ -342,32 +447,16 @@ def DoTurn( kittystats, kittyname, enemystats, enemyname, newturn ):
             os.system('cls')
             # Continue the gauntlet!
             # See that pitiful pile of pink scales? It moves for nobody.
+            temp = 0
             if kitty1stats[0] < 1:
-                while True:
-                    createkitty1()
-                    #kitty1stats[0] = kitty1save
-                    #kitty1wins += 1
-                    dopower()
-                    if kitty2epower * difficulty < kitty1epower:
-                        break
-                kitty2wins += 1
-                kitty2stats[0] = kitty2save
+                rollcat( 1 )
             else:
-                while True:
-                    createkitty2()
-                    #kitty1stats[0] = kitty1save
-                    #kitty1wins += 1
-                    dopower()
-                    if kitty1epower * difficulty < kitty2epower:
-                        break
-                kitty1wins += 1
-                kitty1stats[0] = kitty1save
+                rollcat( 2 )
             #dopower()
             leaderboard()
             startrandom()
         else: # If alive, do speed calculations
             if zoomies < 1:
-                proceed()
                 DoTurn( enemystats, enemyname, kittystats, kittyname, True )
             else:
                 DoTurn( kittystats, kittyname, enemystats, enemyname, False )
@@ -378,6 +467,7 @@ def startrandom():
         DoTurn( kitty1stats, kitty1, kitty2stats, kitty2, True )
     else:
         DoTurn( kitty2stats, kitty2, kitty1stats, kitty1, True )
+            
 startrandom()
 
 
