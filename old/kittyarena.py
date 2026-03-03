@@ -1,4 +1,4 @@
-import os, sys, random, math, time
+import os, sys, random, math
 
 selfpath = os.path.dirname(sys.argv[0])
 prefixvar = 5 # How many prefixes the Kitties will appear with
@@ -213,7 +213,7 @@ def doprefixstats( prefixes, statstable ):
             statstable[2] += 10
 
 
-#kitty2stats = [ 100, 10, 0, 1, 0, 0]
+kitty2stats = [ 100, 10, 0, 1, 0 ]
 
 def createkitty1():
     global kitty1stats
@@ -223,18 +223,12 @@ def createkitty1():
     global kitty1wins
 
     prefixes = []
-    for _ in range(prefixvar):
+    for idx in range(prefixvar):
         prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
 
     kitty1 = ""
     kitty1 = ' '.join(prefixes) + ' Kitty'
-
-    try:
-        ranksave = kitty1stats[5]
-    except:
-        ranksave = 0
-
-    kitty1stats = [ 100, 10, 0, 1, 0, ranksave]
+    kitty1stats = [ 100, 10, 0, 1, 0 ]
 
     kittyprefixes = kitty1.strip().split(' ') 
     # Delete Kitty from prefix table
@@ -266,18 +260,12 @@ def createkitty2():
     global kitty2wins
 
     prefixes = []
-    for _ in range(prefixvar):
+    for idx in range(prefixvar):
         prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
 
     kitty2 = ""
     kitty2 = ' '.join(prefixes) + ' Kitty'
-
-    try:
-        ranksave = kitty2stats[5]
-    except:
-        ranksave = 0
-
-    kitty2stats = [ 100, 10, 0, 1, 0, ranksave ]
+    kitty2stats = [ 100, 10, 0, 1, 0 ]
 
     kittyprefixes = kitty2.strip().split(' ') 
     # Delete Kitty from prefix table
@@ -307,9 +295,7 @@ createkitty2()
 global kitty1rank
 global kitty2rank
 kitty1rank = 1
-kitty1stats[5] = 1
 kitty2rank = 2
-kitty2stats[5] = 2
 
 def dopower():
     global kitty1epower
@@ -375,7 +361,6 @@ leaderboard()
 #input("")
 
 def proceed():
-    #print( f"The enemy's turn begins.")
     input("")
     os.system("cls")
     #leaderboard()
@@ -387,11 +372,11 @@ def rollcat( loser ):
     global kitty1rank
     global kitty2rank
 
+
     temp = 0
 
     if loser == 1:
         kitty2wins += 1
-        kitty2stats[5] += 1
         kitty2stats[0] = kitty2save
         kitty1rank = max( kitty1rank, kitty2rank ) + 1
         while True:
@@ -406,7 +391,6 @@ def rollcat( loser ):
                 temp = 0
     else:
         kitty1wins += 1
-        kitty1stats[5] += 1
         kitty1stats[0] = kitty1save
         kitty2rank = max( kitty1rank, kitty2rank ) + 1
         while True:
@@ -420,35 +404,23 @@ def rollcat( loser ):
                 input( "Generation is looped - the difficulty is too high, or it's just slow.")
                 temp = 0
 
-# lua reference. print given table in interval
-def PrintTable( table, interval ):
-    for row in table:
-        print(row)
-        # A little delay if there's more than one thing in the log
-        if len(table) > 1 or row == len(table)+1:
-            time.sleep( interval )
-    #input("")
+
 
 def DoTurn( kittystats, kittyname, enemystats, enemyname, newturn ):
+    if newturn:
+        proceed()
+    
     global zoomies # 20 minutes for a single line of code... I don't know why you need to do this twice.
     global kitty1wins
     global kitty2wins # These two special cats for some reason need a global tag. Don't caaare
-    global logstack
 
     if newturn:
         zoomies = kittystats[3]
-
-        logstack = []
-        proceed()
-
-
-    rank1 = f"Kitty #{kittystats[5]}"
-    rank2 = f"Kitty #{enemystats[5]}"
-    
     zoomies -= enemystats[3]
     # If you have more than 0 actions but still less than the enemy, 
     # convert leftover energy to damage
     bonus = 1
+    lasthit = zoomies < enemystats[3]
     if zoomies > 0 and zoomies < enemystats[3]: 
         bonus += zoomies / enemystats[3]
         zoomies = 0
@@ -460,21 +432,19 @@ def DoTurn( kittystats, kittyname, enemystats, enemyname, newturn ):
     hit = random.randint( 1, 100 ) + max( kittystats[4] - enemystats[4], -65 )
     hit = min( hit, 95 ) # Always 5% chance to miss
     if hit < 25:
-        logstack.append( f"{rank2} dodges! [rolled {hit} out of 25]" ) # FIX add flashy actions
+        leaderboard()
+        print( f"The { kittyname } misses... [rolled {hit} out of 25]" ) # FIX add flashy actions
         if zoomies < 1:
-            leaderboard()
-            PrintTable( logstack, 0.5 )
             DoTurn( enemystats, enemyname, kittystats, kittyname, True )
         else:
             DoTurn( kittystats, kittyname, enemystats, enemyname, False )
     else:
         enemystats[0] -= damage  # Gets scratched
-        logstack.append( f"{rank2} takes {damage} damage and now has {enemystats[0]} HP! [{hit} out of 25]")
+        leaderboard()
+        print( f"The {enemyname} takes {damage} damage and now has {enemystats[0]} HP! [{hit} out of 25]")
         # Check if defeated
         if enemystats[0] < 1:
-            leaderboard()
-            PrintTable( logstack, 0.5 )
-            print( f"{rank2} was defeated!")
+            print( f"The {enemyname} has been defeated by the {kittyname}!")
             input("Continue?")
             os.system('cls')
             # Continue the gauntlet!
@@ -484,12 +454,11 @@ def DoTurn( kittystats, kittyname, enemystats, enemyname, newturn ):
             else:
                 rollcat( 2 )
             #dopower()
-            leaderboard()
+            #leaderboard()
             startrandom()
         else: # If alive, do speed calculations
+            leaderboard()
             if zoomies < 1:
-                leaderboard()
-                PrintTable( logstack, 0.5 )
                 DoTurn( enemystats, enemyname, kittystats, kittyname, True )
             else:
                 DoTurn( kittystats, kittyname, enemystats, enemyname, False )
@@ -500,6 +469,7 @@ def startrandom():
         DoTurn( kitty1stats, kitty1, kitty2stats, kitty2, True )
     else:
         DoTurn( kitty2stats, kitty2, kitty1stats, kitty1, True )
+    
             
 startrandom()
 

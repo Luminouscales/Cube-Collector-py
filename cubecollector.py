@@ -10,7 +10,7 @@ verdate = "05.06.25"
 limit = 20
 format_str = "%Y-%m-%d %H:%M:%S"
 # var used for daily rewards
-daily = 3600 * 1
+daily = 3600 * 0.25
 
 # 23.11.24 We've come so far... I remember when this little idea was just one primitive roll function.
 # This thing is fairly playable and semi-balanced, and not the most boring.
@@ -131,9 +131,9 @@ def rollcube( odds ):
         # Time for big randomness. Each rolled kitty has a 1% chance to get an extra prefix, an infinite amount of times. Good luck!
         extra = False
         while True:
-            if random.randint( 1, 33 ) == 1:
+            if random.randint( 1, 20 ) == 1:
                 prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
-                print( "*** This Kitty is carrying an extra affix! ***" )
+                print( "*** This Kitty is carrying an extra prefix! ***" )
             else:
                 break
 
@@ -756,6 +756,8 @@ def dailybox():
     format_str = "%Y-%m-%d %H:%M:%S"
     dbindex = -1
     eligible = False
+    curtreats = int( dates[2][1] )
+
     # Get position of dailybox in dates
     for row in dates:
         if row[0] == 'dailybox':
@@ -807,13 +809,23 @@ def dailybox():
             case randint if randint >= 51 and randint <= 100:
                 # 50% chance for treat tickets
                 if random.randint( 1, 2 ) == 1:
-                    randint = random.randint( 200, 2000 )
-                    print( f"{randint} credits!" )
-                    addcredits( randint )
+                    if curtreats < 2000:
+                        randint = random.randint( 200, 2000 )
+                        print( f"{randint} credits!" )
+                        addcredits( randint )
+                    else:
+                        randint = random.randint( curtreats/10, curtreats/4)
+                        print( f"{randint} credits!" )
+                        addcredits( randint )
                 else:
-                    randint = random.randint( 5, 20 )
-                    print( f"{randint} Treat Tickets!" )
-                    additem( "Treat Ticket", randint )
+                    if curtreats < 2000:
+                        randint = random.randint( 5, 20 )
+                        print( f"{randint} Treat Tickets!" )
+                        additem( "Treat Ticket", randint )
+                    else:
+                        randint = random.randint( math.floor(curtreats/200), math.floor(curtreats/100) )
+                        print( f"{randint} Treat Tickets!" )
+                        additem( "Treat Ticket", randint )
         time.sleep( 3 )
     else:
         soondate = (( date1 + timedelta( seconds=daily) ) - date2).total_seconds()
@@ -847,7 +859,8 @@ def treats():
     print("    (___)))__))(__))(__)))")
 
     treatcount = int( dates[2][1] )
-    catsfed = math.floor( treatcount / 100 )
+    #catsfed = math.floor( treatcount / 100 )
+    catsfed = math.floor( math.sqrt(treatcount*25) )
     tickets = 0
     ticketinfo = checkinv( "Treat Ticket" )
 
@@ -871,7 +884,8 @@ def treats():
             dates[3][1] = datetime.now().strftime( format_str )
             savetime()
 
-            reward = math.ceil(( catsfed * 25 ) * random.uniform( 0.75, 1.5 ))
+            #reward = math.ceil(( catsfed * 25 ) * random.uniform( 0.75, 1.5 ))
+            reward = math.ceil(random.randint( catsfed, catsfed * 3 ) * random.uniform( 0.75, 1.5 ))
             addcredits( reward )
 
             print( f"MRAW, thank you for contributing to our stockpile! Your happy kittens have brought you {reward} Credits in thanks!")
@@ -976,7 +990,7 @@ def treatsredeem():
                 if inventory[ticketloc['index']][1] == 0:
                     inventory.pop( ticketloc['index'] )
                 saveinv()
-                dates[2][1] = int( dates[2][1] ) + plinput * 100
+                dates[2][1] = int( dates[2][1] ) + plinput * 25
                 savetime()
                 print( "Thank you so much for redeeming!")
                 time.sleep( 2 )
@@ -1065,18 +1079,18 @@ def get_cube_cost(prefixes):
         case 1:
             return 20
         case 2:
-            return 200
+            return 150
         case 3:
-            return 2250
+            return 1250
         case 4:
-            return 40000
+            return 20000
         case 5:
-            return 100000
+            return 60000
         # Quad prefix with affix? Should be expensive.
         case 6:
             return 250000
         case _:
-            return math.pow(7, prefixes)
+            return math.floor( math.pow(7, prefixes) )
         
 
 inv_inputs = {
@@ -1102,7 +1116,7 @@ store_prices = {
 item_sellprices = {
     "kitty box": 999999,
     "affix tag": 25000,
-    "treat ticket": 100
+    "treat ticket": 50
 }
 
 # Input def for main inputs
