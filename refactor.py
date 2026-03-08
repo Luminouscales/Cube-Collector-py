@@ -3,7 +3,6 @@ import os, math
 from scripts import data as d
 
 inventory = d.inventory
-
 store_prices = d.store_prices
 
 # "store" input
@@ -46,7 +45,7 @@ def inp_store_buy( pl_input ):
         case "exit": return
         case "balance": inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
         case "buy": case_buy(argument, argument2)
-        case "sell": case_sell(argument)
+        case "sell": case_sell()
         case _: inp_store_buy( input( "Pardon?\n" ) )
 
 # Input in store for buying a certain amount
@@ -97,7 +96,7 @@ def case_buy(argument, argument2):
     else:
         inp_store_buy( input( "We don't sell that here.\n" ) )
 
-def case_sell(argument):
+def case_sell():
     # credits, available, cube
     # We have to check if the item is available, if it's sellable and if it's a cube
     # There are two sellables: cubes and items. You can't sell credits.
