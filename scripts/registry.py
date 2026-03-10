@@ -1,5 +1,5 @@
 import os, math, time
-from scripts import data as d
+import scripts.data as d
 
 registry = d.registry
 limit = d.limit

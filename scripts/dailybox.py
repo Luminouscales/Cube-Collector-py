@@ -1,7 +1,7 @@
 import time, random, math
 from datetime import datetime, timedelta
 
-from scripts import data as d
+import scripts.data as d
 dates = d.dates
 daily = d.daily
 inv_inputs = d.inv_inputs
@@ -84,7 +84,7 @@ def dailybox():
                         d.additem( "Treat Ticket", randint )
         time.sleep( 3 )
     else:
-        soondate = (( date1 + timedelta( seconds=daily) ) - date2).total_seconds()
+        soondate = int(float((( date1 + timedelta( seconds=daily) ) - date2).total_seconds()))
         # Formatting seconds for dialogue
         if soondate >= 3600:
             amount = math.floor( soondate / 3600 )
@@ -93,7 +93,7 @@ def dailybox():
             amount = math.floor( soondate / 60 )
             nominal = "minutes"
         elif soondate <= 60:
-            amount = math.floor( soondate / 60 )
+            amount = soondate 
             nominal = "seconds"
         print( f"The daily box is still locked, you should check back in {amount} {nominal}." )
-        time.sleep( 3 )
+        time.sleep( 2 )

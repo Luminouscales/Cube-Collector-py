@@ -1,6 +1,6 @@
 import os, math, random, time
 from datetime import datetime, timedelta
-from scripts import data as d
+import scripts.data as d
 
 dates = d.dates
 daily = d.daily
@@ -54,7 +54,7 @@ def treats():
 
             print( f"MRAW, thank you for contributing to our stockpile! Your happy kittens have brought you {reward} Credits in thanks!")
         else:
-            soondate = (( date1 + timedelta( seconds=daily) ) - date2).total_seconds()
+            soondate = int(float( (( date1 + timedelta( seconds=daily) ) - date2).total_seconds() ))
             # Formatting seconds for dialogue
             if soondate >= 3600:
                 amount = math.floor( soondate / 3600 )
@@ -63,7 +63,7 @@ def treats():
                 amount = math.floor( soondate / 60 )
                 nominal = "minutes"
             elif soondate <= 60:
-                amount = math.floor( soondate / 60 )
+                amount = soondate
                 nominal = "seconds"
             print( f"Your kittens are currently resting contently. They might offer something again in {amount} {nominal}." )
 
@@ -76,7 +76,7 @@ def treats():
     plinput = input("").lower()
 
     match plinput:
-        case "exit":
+        case "exit" | "e":
             return
         case "donate":
             treatsdonate()
@@ -110,7 +110,7 @@ def treatsdonate():
             dates[2][1] = plinput + int( dates[2][1] ) 
             d.savetime()
             print( "Thank you for donating!")
-            time.sleep( 2 )
+            time.sleep( 1 )
             os.system( 'cls' )
             treats()
     else:
@@ -157,7 +157,7 @@ def treatsredeem():
                 dates[2][1] = int( dates[2][1] ) + plinput * 25
                 d.savetime()
                 print( "Thank you so much for redeeming!")
-                time.sleep( 2 )
+                time.sleep( 1 )
                 os.system( 'cls' )
                 treats()
         else:

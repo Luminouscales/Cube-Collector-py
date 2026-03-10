@@ -22,32 +22,32 @@ def jobs():
         guessgame()
 
 def guessgame():
-    from scripts import guessgame as gg
+    import scripts.guessgame as gg
     gg.guessgame()
 
 def freecash():
-    from scripts import data as d
+    import scripts.data as d
     d.addcredits( 10000 )
     d.saveinv()
 
 def inp_inv():
-    from scripts import inventory as inv
+    import scripts.inventory as inv
     inv.inp_inv( True )
 
 def inp_reg():
-    from scripts import registry as reg
+    import scripts.registry as reg
     reg.inp_reg()
 
 def inp_store():
-    from scripts import store as st
+    import scripts.store as st
     st.inp_store()
 
 def dailybox():
-    from scripts import dailybox as db
+    import scripts.dailybox as db
     db.dailybox()
 
 def treatsrun():
-    from scripts import treats as tr
+    import scripts.treats as tr
     tr.treats()
 
 # List of inputs for the player to utilise.
@@ -58,7 +58,7 @@ player_inputs = {
     "store": inp_store, "shop": inp_store,
     "jobs": jobs,
     "dailybox": dailybox,
-    "treats": treatsrun,
+    "treats": treatsrun, "tr": treatsrun,
     "meow": freecash
 }
 

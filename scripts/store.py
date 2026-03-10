@@ -1,6 +1,6 @@
 import os, math
 
-from scripts import data as d
+import scripts.data as d
 
 inventory = d.inventory
 
@@ -43,10 +43,9 @@ def inp_store_buy( pl_input ):
         argument2 = 1
 
     match command:
-        case "exit": return
-        case "balance": inp_store_buy(input( "Your balance: " + str( inventory[0][1] ) + " credits\n"))
-        case "buy": case_buy(argument, argument2)
-        case "sell": case_sell(argument)
+        case "exit" | "e": return
+        case "buy" | "b": case_buy(argument, argument2)
+        case "sell" | "s": case_sell(argument)
         case _: inp_store_buy( input( "Pardon?\n" ) )
 
 # Input in store for buying a certain amount

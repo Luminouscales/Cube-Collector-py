@@ -154,7 +154,7 @@ def rollcube( odds ):
         # Time for big randomness. Each rolled kitty has a 1% chance to get an extra prefix, an infinite amount of times. Good luck!
         extra = False
         while True:
-            if random.randint( 1, 20 ) == 1:
+            if random.randint( 1, 20 + ( odds[0] * 5 ) - 5 ) == 1: # Temp calculation to make pb less likely to be profitable
                 prefixes.append(prefixtable[ random.randint( 0, prefixmax ) ])
                 print( "*** This Kitty is carrying an extra prefix! ***" )
             else:
@@ -354,12 +354,12 @@ store_prices = {
 item_sellprices = {
     "kitty box": 999999,
     "affix tag": 25000,
-    "treat ticket": 50
+    "treat ticket": 20
 }
 
 inv_inputs = {
     # First four values are prefix drop chances
-    "basic box": [ 4, 25, 100, 1000 ],
+    "basic box": [ 8, 25, 100, 1000 ],
     "prefixed box": [ 1, 15, 40, 100 ],
     "double prefixed box": [ 1, 1, 15, 35 ],
     "triple prefixed box": [ 1, 1, 1, 20],

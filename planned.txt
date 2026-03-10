@@ -1,0 +1,4 @@
+*Kitty/Box rolls from dailybox don't account for Treat stockpile amount
+
+*Make duplicate prefixes mult value
+*Make valuable (rarer?) prefixes

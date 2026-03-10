@@ -1,6 +1,6 @@
 import math, os, time, random
 
-from scripts import data as d # type: ignore
+import scripts.data as d
 
 inventory = d.inventory
 limit = d.limit
@@ -31,7 +31,7 @@ def inp_inv( printinv ):
             argument2 = invinput[2]
 
     match command:
-        case "exit": return
+        case "exit" | "e": return
         case "fav": case_fav(argument1)
         case "page": case_page(argument1, pages)
         case "use": case_use( argument1, argument2 )
@@ -191,7 +191,7 @@ def case_sort(argument1):
         inventory.sort( key=lambda x: x[0] )
     # Sort by value
     elif argument1 == "value" or argument1 == "val":
-        inventory.sort( key=lambda x: d.getprice( x[0] ), reverse=True )
+        inventory.sort( key=lambda x: d.getprice( x[0] ) * x[1], reverse=True )
     elif argument1 == "count":
         inventory.sort( key=lambda x: x[1], reverse=True )
     # In any case, we have to find credits and cube and insert them into the beginning of the table
