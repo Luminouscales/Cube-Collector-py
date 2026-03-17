@@ -292,7 +292,7 @@ Adorable Unusual Kitty	1	291
 Open Closed Kitty	1	292
 Cruel Slow Kitty	1	293
 Big Quiet Kitty	1	294
-Complex Cruel Kitty	1	295
+Complex Cruel Kitty	2	295
 Healer Wise Kitty	1	296
 Supreme Sad Kitty	1	297
 Lynxsie Lynxsie Kitty	1	298
@@ -338,3 +338,136 @@ Coding Sweet Kitty	1	337
 Slavic Scary Kitty	1	338
 Dishonest Hot Kitty	1	339
 Abstract Lynxsie Kitty	1	340
+Evil Preposterous Draconic Kitty	1	341
+Ascended Scary Kitty	1	342
+Loud Ascended Dancing British Kitty	1	343
+Vishunei Beautiful Kitty	1	344
+Cookie Sphynx Kitty	1	345
+Polite American Kitty	1	346
+Healthy Supreme Kitty	1	347
+Shattered Safe Kitty	1	348
+Adorable New Kitty	1	349
+Hungry Polish Kitty	1	350
+Algorithmic Cute Kitty	1	351
+Complex Easy Kitty	1	352
+Slavic Interesting Kitty	1	353
+Collector's Collector's Kitty	1	354
+Thick Brave Kitty	1	355
+Thirsty Cobalt Kitty	1	356
+Quick Vishunei Kitty	1	357
+Noisy Dirty Kitty	1	358
+Iterative Feathered Kitty	1	359
+Refactored Light Kitty	1	360
+Bright Generic Kitty	1	361
+Sharp Synthetic Kitty	1	362
+New Mephedrone Useless Kitty	1	363
+Shattered Slow Kitty	1	364
+Snuggly Wise Kitty	1	365
+Typical Quick Kitty	1	366
+Dry Brave Kitty	1	367
+Dancing Draconic Kitty	1	368
+Stinky Cobalt Kitty	1	369
+Feline Useless Bright Kitty	1	370
+Modern Calico Kitty	1	371
+Draconic Kind Kitty	1	372
+Expensive Easy Kitty	1	373
+Soft Typical Kitty	1	374
+Optimized Wet Bright Formulaic Kitty	1	375
+Sweet Dirty Kitty	1	376
+Calm Boring Kitty	1	377
+Thin Useless Kitty	1	378
+Tall Weak Kitty	1	379
+Temporal Intemporal Kitty	1	380
+Clever Lubinian Kitty	1	381
+Collector's Lynxsie Kitty	1	382
+British Merry Kitty	1	383
+Feathered Asynchronous Kitty	1	384
+Stoned Pathetic Kitty	1	385
+Honest Noisy Kitty	1	386
+Ugly Cookie Kitty	1	387
+Thin Patriotic Kitty	1	388
+Brave Common Kitty	1	389
+Cute Intemporal Kitty	1	390
+Temporal Coding Kitty	1	391
+Unusual Executable Kitty	1	392
+Purring Meowing Kitty	1	393
+Vishunei Collected Kitty	1	394
+Exciting Dynamic Kitty	1	395
+Lynxsie Right Kitty	1	396
+Brave Innovative Kitty	1	397
+Cowardly Clever Kitty	1	398
+Unreal Thin Kitty	1	399
+Formulaic Sweet Kitty	1	400
+Easy Full Kitty	1	401
+Kind Profaned Kitty	1	402
+Young Terrarian Kitty	1	403
+Foolish Rich Kitty	1	404
+Fast Dynamic Kitty	1	405
+Dry Collector's Kitty	1	406
+Stupid Quick Kitty	1	407
+Dry Robotic Kitty	1	408
+Cheap Clever Kitty	1	409
+Stinky World-Ending Kitty	1	410
+Wrong Sad Kitty	1	411
+Stoner Slavic Kitty	1	412
+Therian Closed Ugly Kitty	1	413
+Poor Angry Kitty	1	414
+American Weak Polish Kitty	1	415
+Heavy Rude Kitty	1	416
+Safe Ranger Kitty	1	417
+True Collected Kitty	1	418
+New Wet Kitty	1	419
+Rude Bright Kitty	1	420
+Complex Interactive Kitty	1	421
+Vishunei True Kitty	1	422
+Thirsty Dull Modern Kitty	1	423
+Evil Robotic Kitty	1	424
+Therapeutic Dry Purring Kitty	1	425
+Cookie Old Kitty	1	426
+Auric Poor Kitty	1	427
+Short Dry Kitty	1	428
+Interactive Unreal Kitty	1	429
+High Iterative Kitty	1	430
+American Cold Kitty	1	431
+Broken Dark Kitty	1	432
+Adorable Clean Kitty	1	433
+Synthetic Quiet Kitty	1	434
+Stoned Expensive Kitty	1	435
+Young Innovative Kitty	1	436
+Sad Furry Cute Kitty	1	437
+Difficult Lubinian Kitty	1	438
+Thirsty Virtual Kitty	1	439
+Thirsty Cute Algorithmic Kitty	1	440
+Purring Slow Kitty	1	441
+Efficient Collector's Kitty	1	442
+British Coding Kitty	1	443
+Warrior Sphynx Kitty	1	444
+Big Algorithmic Kitty	1	445
+Sour High Foolish Kitty	1	446
+Hard Wise Efficient Kitty	1	447
+Sarcastic Sick Soft Kitty	1	448
+Interactive Calm Kitty	1	449
+Siberian Dirty Kitty	1	450
+Ascended Coding Kitty	1	451
+Generous Hazy Kitty	1	452
+Draconic Annoying Kitty	1	453
+Refactored Scalable Kitty	1	454
+Foolish Big Kitty	1	455
+Cold Stinky Kitty	1	456
+Dull Mephedrone Kitty	1	457
+Safe Foolish Kitty	1	458
+Ugly Old Kitty	1	459
+Useless Feline Stoner Kitty	1	460
+Safe Cookie Kitty	1	461
+Dirty Healthy Kitty	1	462
+Mythril Useless Kitty	1	463
+Sick Hot Kitty	1	464
+Closed Iterative Therapeutic Kitty	1	465
+Open Purring Kitty	1	466
+Foolish False Algorithmic Kitty	1	467
+Cold Formulaic Kitty	1	468
+Streamlined Unreal Kitty	1	469
+Perseverant Healer Kitty	1	470
+Unusual Sarcastic Kitty	1	471
+Interactive Closed Kitty	1	472
+German Hot Kitty	1	473

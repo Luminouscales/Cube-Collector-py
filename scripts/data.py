@@ -2,6 +2,7 @@ import os, sys, random, time, math
 from datetime import datetime
 
 selfpath = os.path.dirname(sys.argv[0]) + "/scripts/"
+savepath = selfpath + "/save/"
 inventorypath = selfpath + "save/inventory.txt"
 registrypath = selfpath + "save/registry.txt"
 timepath = selfpath + "save/time.txt"
@@ -167,13 +168,14 @@ def rollcube( odds ):
 
 # Function that adds a cube to inventory
 # fav decides if cube should be favourited when added
-def addcube( cube, amount=1, fav=False ):
+def addcube( cube, amount=1, fav=False, text=True ): # text set in gallery, usually True
     
     for row in inventory:
         # If cube already in inventory add one more to count and end function
         if row[0] == cube:
             row[1] = row[1] + amount
-            print( "You got a " + cube + "!" )
+            if text:
+                print( "You got a " + cube + "!" )
             saveinv()
             # Add to reg
             return
@@ -184,11 +186,12 @@ def addcube( cube, amount=1, fav=False ):
         inventory.append( [cube, 1] )
     saveinv()
     # If it's not in reg yet, say it's brand new.
-    if checkreg( cube )["found"]:
-        print( "You got a " + cube + "!" )
-    else:
-        print( "[NEW] You got a " + cube + "!" )
-    addreg( cube )
+    if text:
+        if checkreg( cube )["found"]:
+            print( "You got a " + cube + "!" )
+        else:
+            print( "[NEW] You got a " + cube + "!" )
+        addreg( cube )
 
 # Function that adds an item to inventory
 def additem( cube, count ):

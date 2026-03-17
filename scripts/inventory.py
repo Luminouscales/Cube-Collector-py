@@ -140,13 +140,13 @@ def case_use( argument1, argument2 ):
         time.sleep(1)
         inp_inv( False )
 
-def case_delete(argument1, argument2):
+def case_delete(argument1, argument2, print=True): # print is set from gallery, otherwise always print
     # d.checkinv() returns if found and index row where the item is
     checktable = d.checkinv( argument1 )
     # If index
-    if checktable["found"] and d.checkifproperint( argument1 ):
-        print( inventory[int(invuse)][0] )
-        invuse = inventory[int(invuse)][0].lower()
+    #if checktable["found"] and d.checkifproperint( argument1 ):
+        #print( inventory[int(invuse)][0] )
+        #invuse = inventory[int(invuse)][0].lower()
     # If in inventory
     if checktable["found"]:
         rowindex = checktable[ "index" ]
@@ -176,14 +176,16 @@ def case_delete(argument1, argument2):
                 inventory[rowindex][0] == 0
             else:
                 inventory.pop( rowindex )
-            print( "Items deleted." )
             d.saveinv()
-            time.sleep( 1 )
-            inp_inv( True )
+            if print:
+                print( "Items deleted." )
+                time.sleep( 1 )
+                inp_inv( True )
     else:
-        print( "You don't have that." )
-        time.sleep(1)
-        inp_inv( False )
+        if print:
+            print( "You don't have that." )
+            time.sleep(1)
+            inp_inv( False )
 
 def case_sort(argument1):
     # Sort alphabetically

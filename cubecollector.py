@@ -6,7 +6,7 @@ verdate = "26.03.05"
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\ntreats\n") )
+    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\ntreats\ngallery\n") )
 
 # "debug" input to make the program close so I can run commands
 def debug():
@@ -50,6 +50,10 @@ def treatsrun():
     import scripts.treats as tr
     tr.treats()
 
+def gallery():
+    import scripts.gallery
+    scripts.gallery.inp_gallery()
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
@@ -59,7 +63,8 @@ player_inputs = {
     "jobs": jobs,
     "dailybox": dailybox,
     "treats": treatsrun, "tr": treatsrun,
-    "meow": freecash
+    "meow": freecash,
+    "gallery": gallery
 }
 
 # Input def for main inputs

@@ -6,6 +6,11 @@ dates = d.dates
 daily = d.daily
 inventory = d.inventory
 
+#/----------------------------/
+# TREAT VARS
+#/----------------------------/
+fedcatsqr = 25
+
 # Treats - investing in kitty food
 def treats():
     os.system('cls')
@@ -24,7 +29,7 @@ def treats():
 
     treatcount = int( dates[2][1] )
     #catsfed = math.floor( treatcount / 100 )
-    catsfed = math.floor( math.sqrt(treatcount*25) )
+    catsfed = math.floor( math.sqrt(treatcount*fedcatsqr) )
     tickets = 0
     ticketinfo = d.checkinv( "Treat Ticket" )
 
@@ -165,5 +170,3 @@ def treatsredeem():
             time.sleep( 2 )
             os.system('cls')
             treats()
-
-treats()
