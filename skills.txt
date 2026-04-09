@@ -1,1 +1,19 @@
+1:
+	Heal self for 10%
+	Hit twice
+	Hit with max acc
+	Randomize hit by +-50%		
+	P: ignore +25% def
+2:
+
+3:
+
+4:
+
+
+
+
+
+
+
 *Increases Credits gained from victory

@@ -20,7 +20,7 @@ prefixvar = 5 # How many prefixes the Kitties will appear with
 # This is Effective Power so the enemy may deal more damage, not accounting for accuracy.
 difficulty = 0.75
 
-with open( selfpath + "/prefixes.txt", 'r' ) as file:
+with open( selfpath + "/scripts/content/prefixes.txt", 'r' ) as file:
     lines = file.readlines()
     prefixtable = [line.strip() for line in lines]
     prefixmax = len(prefixtable) - 1
