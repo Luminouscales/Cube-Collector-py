@@ -22,7 +22,7 @@ if os.path.exists(inventorypath):
             row = line.strip().split('\t') # What?
             inventory.append( row )
             # Turn every amount number into int
-            row[1] = int( row[1] )
+            row[1] = int( float(row[1]) )
 
 # Save Time file
 def savetime():

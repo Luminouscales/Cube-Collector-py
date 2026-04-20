@@ -15,11 +15,12 @@ def debug():
 # Place to earn cash
 def jobs():
     os.system('cls')
-    plinput = input( "Welcome to the jobs section! You can earn cash here. Choose an activity to take your time!\nguessgame\n" )
-    if plinput.lower() == "exit":
-        return
-    elif plinput.lower() == "guessgame":
-        guessgame()
+    plinput = input( "Welcome to the jobs section! You can earn cash here. Choose an activity to take your time!\nguessgame, typetiming, reflex\n" )
+    match plinput.lower():
+        case "exit": return
+        case "guessgame": guessgame()
+        case "typetiming": typetimingrun()
+        case "reflex": reflexgame()
 
 def guessgame():
     import scripts.guessgame as gg
@@ -54,6 +55,14 @@ def gallery():
     import scripts.gallery
     scripts.gallery.inp_gallery()
 
+def typetimingrun():
+    import scripts.typetiming
+    scripts.typetiming.typetiming()
+
+def reflexgame():
+    import scripts.reflex
+    scripts.reflex.reflexrun()
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
@@ -64,7 +73,7 @@ player_inputs = {
     "dailybox": dailybox,
     "treats": treatsrun, "tr": treatsrun,
     "meow": freecash,
-    "gallery": gallery
+    "gallery": gallery,
 }
 
 # Input def for main inputs
