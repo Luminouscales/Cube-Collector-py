@@ -17,7 +17,7 @@ def debug():
 
 # Place to earn cash
 def jobs():
-    os.system('cls')
+    f.clear()
     plinput = input( "Welcome to the jobs section! You can earn cash here. Choose an activity to take your time!\nguessgame, typetiming, reflex\n" )
     match plinput.lower():
         case "exit": return

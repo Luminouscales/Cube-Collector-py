@@ -19,7 +19,7 @@ inventory = []
 if os.path.exists(inventorypath):
     with open( inventorypath, 'r' ) as file:
         for line in file:
-            row = line.strip().split('\t') # What?
+            row = line.strip().split("|")
             inventory.append( row )
             # Turn every amount number into int
             row[1] = int( float(row[1]) )
@@ -28,7 +28,7 @@ if os.path.exists(inventorypath):
 def savetime():
     with open( timepath, 'w' ) as file:
         for row in dates:
-            row_str = '\t'.join(map(str, row))
+            row_str = '|'.join(map(str, row))
             file.write( row_str + '\n')
 
 dates = []
@@ -36,7 +36,7 @@ dates = []
 if os.path.exists( timepath ):
     with open( timepath, 'r' ) as file:
         for line in file:
-            row = line.strip().split('\t')
+            row = line.strip().split('|')
             dates.append( row )
     # Check if setup value is 0 meaning new save. I'm too lazy to do this the normal way.
     if dates[0][1] == "0":
@@ -48,7 +48,7 @@ registry = []
 if os.path.exists( registrypath ):
     with open( registrypath, 'r' ) as file:
         for line in file:
-            row = line.strip().split('\t')
+            row = line.strip().split('|')
             registry.append( row )
             row[1] = int( row[1] )
             row[2] = int( row[2] )
@@ -57,14 +57,14 @@ if os.path.exists( registrypath ):
 def saveinv():
     with open( inventorypath, 'w' ) as file:
         for row in inventory:
-            row_str = '\t'.join(map(str, row)) # What the fuck is map() ?
+            row_str = '|'.join(map(str, row))
             file.write( row_str + '\n')
 
 # Take all cubes from reg and save it as registry.txt
 def savereg():
     with open( registrypath, 'w' ) as file:
         for row in registry:
-            row_str = '\t'.join(map(str, row))
+            row_str = '|'.join(map(str, row))
             file.write( row_str + '\n')
 
 # Import list of prefixes
