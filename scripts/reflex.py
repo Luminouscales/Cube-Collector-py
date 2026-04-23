@@ -11,7 +11,7 @@ def reflexrun():
         f.clear()
         plinput = input( "FIXME reflex text. Press enter when you're ready, or 'exit'")
         if plinput.lower() == "exit": 
-            pass
+            return
         else:
             seconds = random.randint(1, 8)
             randomtime = seconds + random.random()
@@ -27,7 +27,7 @@ def reflexrun():
             miliseconds = math.floor( miliseconds )
 
             difference = 450 - miliseconds
-            reward = max( 1, 50 + math.floor(difference/4) + seconds*10 )
+            reward = max( 1, math.floor(difference/6) + seconds*5 )
 
             d.addcredits( reward )
 

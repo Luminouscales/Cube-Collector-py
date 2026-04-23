@@ -2,6 +2,7 @@
 
 import scripts.data as d
 import scripts.inventory as inv
+import scripts.funcs as f
 
 gallerypath = d.savepath + "gallery.txt"
 
@@ -12,6 +13,8 @@ with open( gallerypath, 'r' ) as file:
         gallery.append( row[0] )
 
 def inp_gallery():
+
+    f.clear()
 
     print( "\n_                ___       _.--.")
     print("\`.|\..----...-'`   `-._.-'_.-'`")
@@ -25,9 +28,9 @@ def inp_gallery():
     if len(gallery) > 0:
         for cat in gallery:
             print( "|| " + cat )
-        print( "FIXME gallery text" )
+        print( "\nFIXME gallery text\n" )
     else:
-        print( "FIXME gallery: no cats" )
+        print( "\nFIXME gallery: no cats\n" )
 
     galleryinput = input("")
     match galleryinput:

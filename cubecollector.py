@@ -2,14 +2,14 @@
 
 import scripts.funcs as f
 
-verdate = "26.03.05"
+verdate = "23.04.2026"
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
-    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\ntreats\ngallery\n") )
+    inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\ntreats\ngallery\nforge\n") )
 
 # "debug" input to make the program close so I can run commands
 def debug():
@@ -66,6 +66,10 @@ def reflexgame():
     import scripts.reflex
     scripts.reflex.reflexrun()
 
+def forge():
+    import scripts.forge
+    scripts.forge.forge()
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
@@ -77,6 +81,7 @@ player_inputs = {
     "treats": treatsrun, "tr": treatsrun,
     "meow": freecash,
     "gallery": gallery,
+    "forge": forge
 }
 
 # Input def for main inputs

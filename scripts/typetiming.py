@@ -9,7 +9,7 @@ prefixmax = d.prefixmax
 
 def typetiming():
     while True:
-        f.clear(0)
+        f.clear()
         aim = ""
         lettercount = 0
         for i in range(1, 20):
