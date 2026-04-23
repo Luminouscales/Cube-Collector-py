@@ -1,6 +1,7 @@
 import os, math, random, time
 from datetime import datetime, timedelta
 import scripts.data as d
+import scripts.funcs as f
 
 dates = d.dates
 daily = d.daily
@@ -13,7 +14,7 @@ fedcatsqr = 25
 
 # Treats - investing in kitty food
 def treats():
-    os.system('cls')
+    f.clear()
 
     print("( \\")
     print(" \ \\")
@@ -90,7 +91,7 @@ def treats():
         case _:
             print( "I'm not sure what you mean..." )
             time.sleep( 1 )
-            os.system('cls')
+            f.clear()
             treats()
 
 def treatsdonate():
@@ -108,7 +109,7 @@ def treatsdonate():
         if plinput > inventory[0][1]:
             print( "You sadly don't have that much..." )
             time.sleep( 2 )
-            os.system('cls')
+            f.clear()
             treats()
         else:
             d.addcredits( -plinput )
@@ -121,7 +122,7 @@ def treatsdonate():
     else:
         print( "That's not a correct value..." )
         time.sleep( 2 )
-        os.system('cls')
+        f.clear()
         treats()
 
 # FIX super rare affixes?
@@ -134,7 +135,7 @@ def treatsredeem():
     if ticketloc['found'] == False:
         print( "You don't seem to have any Treat Tickets at this time..." )
         time.sleep( 2 )
-        os.system('cls')
+        f.clear()
         treats()
     else:
         ticketamount = ticketloc['amount']
@@ -152,7 +153,7 @@ def treatsredeem():
             if plinput > ticketamount:
                 print( "You sadly don't have that much..." )
                 time.sleep( 2 )
-                os.system('cls')
+                f.clear()
                 treats()
             else:
                 inventory[ticketloc['index']][1] = int( inventory[ticketloc['index']][1] ) - plinput
@@ -168,5 +169,5 @@ def treatsredeem():
         else:
             print( "That's not a correct value..." )
             time.sleep( 2 )
-            os.system('cls')
+            f.clear()
             treats()

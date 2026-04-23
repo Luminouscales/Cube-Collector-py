@@ -1,5 +1,6 @@
 import os, math, time
 import scripts.data as d
+import scripts.funcs as f
 
 registry = d.registry
 limit = d.limit
@@ -50,7 +51,7 @@ def case_sort(argument1):
 
 def case_page(argument1, pages):
     if d.checkifproperint( argument1 ) and int(argument1) <= pages:
-        os.system('cls')
+        f.clear()
         argument1 = int(argument1)
         d.printreg( argument1, pages, registry )
         inp_reg2( pages )

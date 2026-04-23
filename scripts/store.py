@@ -1,6 +1,7 @@
 import os, math
 
 import scripts.data as d
+import scripts.funcs as f
 
 inventory = d.inventory
 
@@ -8,7 +9,7 @@ store_prices = d.store_prices
 
 # "store" input
 def inp_store():
-    os.system('cls')
+    f.clear()
     print(" /\     /\ ")
     print("{  `---'  }")
     print("{  O   O  }")

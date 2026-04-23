@@ -2,12 +2,13 @@ from datetime import datetime
 import time, random, os, math
 
 import scripts.data as d
+import scripts.funcs as f
 
 format_str = "%Y-%m-%d %H:%M:%S:%f"
 
 def reflexrun():
     while True:
-        os.system("cls")
+        f.clear()
         plinput = input( "FIXME reflex text. Press enter when you're ready, or 'exit'")
         if plinput.lower() == "exit": 
             pass

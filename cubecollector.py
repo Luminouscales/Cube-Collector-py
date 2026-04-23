@@ -1,8 +1,11 @@
 # 2026.03.05 Refactored version, mostly
 
-import os
+import scripts.funcs as f
 
 verdate = "26.03.05"
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 # When the player inputs "help". Lists an explanation of the game and commands.
 def helpguide():
@@ -86,7 +89,7 @@ def inputs1( player_input ):
         player_input = inputs1( input("Meow, I don't get what you're saying... ") )
 
 while True:
-    os.system('cls')
+    f.clear()
 
     print( "           __..--''``---....___   _..._    __" )
     print(  "/// //_.-'    .-/';  `        ``<._  ``.''_ `. / // /" )

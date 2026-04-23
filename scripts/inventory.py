@@ -1,6 +1,7 @@
 import math, os, time, random
 
 import scripts.data as d
+import scripts.funcs as f
 
 inventory = d.inventory
 limit = d.limit
@@ -12,7 +13,7 @@ inv_inputs = d.inv_inputs
 def inp_inv( printinv ):
     pages = math.ceil( len( inventory )/limit )
     if printinv:
-        os.system('cls')
+        f.clear()
         print( "\nYour inventory contains:" )
         print("--------------------------------------------")
         # We'll nowe use printreg() to show the inventory in pages.
@@ -75,7 +76,7 @@ def case_fav(argument1):
 
 def case_page(argument1, pages):
     if d.checkifproperint( argument1 ) and int( argument1 ) <= pages:
-        os.system('cls')
+        f.clear()
         print( "\nYour inventory contains:" )
         print("--------------------------------------------")
         d.printreg( int( argument1 ), pages, inventory )

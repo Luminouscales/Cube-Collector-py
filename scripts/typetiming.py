@@ -1,6 +1,7 @@
 import random, math, os
 from datetime import datetime
 import scripts.data as d
+import scripts.funcs as f
 
 format_str = "%Y-%m-%d %H:%M:%S"
 prefixtable = d.prefixtable
@@ -8,7 +9,7 @@ prefixmax = d.prefixmax
 
 def typetiming():
     while True:
-        os.system("cls")
+        f.clear(0)
         aim = ""
         lettercount = 0
         for i in range(1, 20):
