@@ -1,6 +1,8 @@
 # 2026.03.05 Refactored version, mostly
 
+import random
 import scripts.funcs as f
+import scripts.gallery as gal
 
 verdate = "23.04.2026"
 
@@ -55,8 +57,7 @@ def treatsrun():
     tr.treats()
 
 def gallery():
-    import scripts.gallery
-    scripts.gallery.inp_gallery()
+    gal.inp_gallery()
 
 def typetimingrun():
     import scripts.typetiming
@@ -84,6 +85,24 @@ player_inputs = {
     "forge": forge
 }
 
+# Gallery flavour texts
+flavtext = [ "is looking at you expectantly...",
+"is gazing at you with wide eyes...",
+"is sleeping soundly on a high perch.",
+"is tearing up the scratching post!",
+"is chewing on a Treat Ticket",
+"is chewing on a Kittycoin",
+"is half-stuck in the cat dimension",
+"is rearranging its fur schema",
+"just de-ranked in Deadlock...",
+"is playing WoW on your PC!",
+"is planning a cat rebellion... eventually.",
+"is smoking a cigarette",
+"is smoking a fatass doink"
+]
+
+print(flavtext[0])
+
 # Input def for main inputs
 def inputs1( player_input ):
     player_input = player_input.lower() # .lower() for ignoring capitalisation
@@ -101,6 +120,12 @@ while True:
     print( '///_.-" _..--."_    |                    `( ) ) // //' )
     print( "/ (_..-' // (< _     ;_..__               ; `' / ///" )
     print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
+
+    # Gallery flavour text
+    if len(gal.gallery) > 0:
+        randcat = gal.gallery[random.randint(0, len(gal.gallery)-1) ]
+        randtext = flavtext[random.randint(0, len(flavtext)-1)]
+        print( f"The {randcat} {randtext}\n" )
 
     inputs1( input( 'Meow! Welcome to Kitty Collector version ' + verdate + '. For help, type "help".\n' ) )
 
