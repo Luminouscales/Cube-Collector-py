@@ -40,12 +40,7 @@ def typetiming():
         reward = int( float(reward) )
 
         d.addcredits( reward )
-        plinput = input(f"Errors: {npoints}, Time: {timeseconds}, Letters: {lettercount}, LPS: {lps}, Reward: {reward} credits! Continue or exit ")
+        plinput = input(f"Errors: {npoints}, Time: {timeseconds}, Letters: {lettercount}, LPS: {lps}, Reward: {reward} credits! Continue or exit\n\n")
         match plinput.lower():
             case "exit": return
             case _: pass
-        
-
-# Average of 5 letters per second
-# For 5 lps: 100 credits
-# Each error decreases reward by 10%

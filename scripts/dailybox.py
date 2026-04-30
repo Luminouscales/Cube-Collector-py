@@ -45,24 +45,36 @@ def dailybox():
             case randint if randint <= 2: # Affix tag drop
                 print( "An Affix Tag!" )
                 d.additem( "Affix Tag", 1 )
-            case randint if randint >= 3 and randint <= 25:
+            case randint if randint < 25:
 
-                # 5 percent for quad pref, otherwise triple
-                if random.randint(1, 100) < 6:
-                    d.additem( "Quadruple Prefixed Box", 1 )
-                    print( "A Quadruple Prefixed Box!" )
+                treats1percent = 1000 # every amount of this increases 4pbox chance by +1%
+                treats1percentbonus = int(curtreats/treats1percent)
+
+                count3 = max(1, int( 1 + treats1percentbonus/6 ) ) # count for 3pbox / for every 900c one more, min 1
+                count4 = max(1,int(count3 / 2))
+
+                if random.randint(1, 100) > int(94 - treats1percentbonus):
+                    if count4 == 1:
+                        joiner2 = "A"
+                        joiner = ""
+                    else:
+                        joiner2 = str(count4)
+                        joiner = "es"
+
+                    d.additem( "Quadruple Prefixed Box", count4 )
+                    print( f"{joiner2} Quadruple Prefixed Box{joiner}!" )
                 else:
-                    d.additem( "Triple Prefixed Box", 1 )
-                    print( "A Triple Prefixed Box!" )
+                    if count3 == 1:
+                        joiner2 = "A"
+                        joiner = ""
+                    else:
+                        joiner2 = str(count3)
+                        joiner = "es"
 
-            case randint if randint >= 26 and randint <= 50:
-                print( "A random kitty!" )
+                    d.additem( "Triple Prefixed Box", count3 )
+                    print( f"{joiner2} Triple Prefixed Box{joiner}!" )
 
-                if random.randint(1, 100) < 6:
-                    d.rollcube( inv_inputs["quadruple prefixed box"] )
-                else:
-                    d.rollcube( inv_inputs["triple prefixed box"])
-            case randint if randint >= 51 and randint <= 100:
+            case randint if randint >= 25 and randint <= 100:
                 # 50% chance for treat tickets
                 if random.randint( 1, 2 ) == 1:
                     if curtreats < 2000:

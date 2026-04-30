@@ -11,6 +11,7 @@ inventory = d.inventory
 # TREAT VARS
 #/----------------------------/
 fedcatsqr = 25
+redeemall = True # instantly redeem all tickets
 
 # Treats - investing in kitty food
 def treats():
@@ -40,7 +41,7 @@ def treats():
     else:
         tickets = 0
 
-    print(f"Meow! Welcome to the Treat Stockpile! We have currently amassed {treatcount} treats, feeding {catsfed} kitties!")
+    print(f"Meow! Welcome to the Treat Stockpile! We have currently amassed {treatcount} treats, feeding {catsfed} kitties!\n")
 
     # Treat rewards
     # Counting the difference of seconds. If more than one day, give reward.
@@ -58,7 +59,7 @@ def treats():
             reward = math.ceil(random.randint( catsfed, catsfed * 3 ) * random.uniform( 0.75, 1.5 ))
             d.addcredits( reward )
 
-            print( f"MRAW, thank you for contributing to our stockpile! Your happy kittens have brought you {reward} Credits in thanks!")
+            print( f"MRAW, thank you for contributing to our stockpile! Your happy kittens have brought you {reward} Credits in thanks!\n")
         else:
             soondate = int(float( (( date1 + timedelta( seconds=daily) ) - date2).total_seconds() ))
             # Formatting seconds for dialogue
@@ -77,7 +78,7 @@ def treats():
 
 # FIX more treat rewards?
 
-    print("donate, redeem, exit")
+    print("donate, redeem, exit\n")
 
     plinput = input("").lower()
 
@@ -139,14 +140,16 @@ def treatsredeem():
         treats()
     else:
         ticketamount = ticketloc['amount']
-        print( "Meow, how many Treat Tickets would you like to redeem?" )
-        plinput = input("").lower()
-        # If "all" then all money
-        if plinput == "all":
+        if redeemall:
             plinput = ticketamount
-        elif d.checkifproperint(plinput):
-            plinput = int(plinput)
-    
+        else:
+            print( "Meow, how many Treat Tickets would you like to redeem?" )
+            plinput = input("").lower()
+            # If "all" then all money
+            if plinput == "all":
+                plinput = ticketamount
+            elif d.checkifproperint(plinput):
+                plinput = int(plinput)
         if d.checkifproperint( plinput ) or plinput == "all":
             plinput = int(plinput)
             # If less than what you have

@@ -20,12 +20,13 @@ def debug():
 # Place to earn cash
 def jobs():
     f.clear()
-    plinput = input( "Welcome to the jobs section! You can earn cash here. Choose an activity to take your time!\nguessgame, typetiming, reflex\n" )
+    plinput = input( "Welcome to the jobs section! You can earn cash here. Choose an activity to take your time!\nguessgame, typetiming, reflex, catbed\n" )
     match plinput.lower():
         case "exit": return
         case "guessgame": guessgame()
         case "typetiming": typetimingrun()
         case "reflex": reflexgame()
+        case "catbed": catbedfile()
 
 def guessgame():
     import scripts.guessgame as gg
@@ -46,7 +47,7 @@ def inp_reg():
 
 def inp_store():
     import scripts.store as st
-    st.inp_store()
+    st.store()
 
 def dailybox():
     import scripts.dailybox as db
@@ -71,12 +72,16 @@ def forge():
     import scripts.forge
     scripts.forge.forge()
 
+def catbedfile():
+    import scripts.catbed
+    scripts.catbed.catbed()
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
-    "inventory": inp_inv, "inv": inp_inv,
+    "inventory": inp_inv, "inv": inp_inv, "i": inp_inv,
     "registry": inp_reg, "reg": inp_reg,
-    "store": inp_store, "shop": inp_store,
+    "store": inp_store, "s": inp_store,
     "jobs": jobs,
     "dailybox": dailybox,
     "treats": treatsrun, "tr": treatsrun,
@@ -122,12 +127,12 @@ while True:
     print( " / // // //  `-._,_)' // / ``--...____..-' /// / //" )
 
     # Gallery flavour text
-    if len(gal.gallery) > 0:
+    if len(gal.gallery) > 0 and random.randint(1,5) == 1:
         randcat = gal.gallery[random.randint(0, len(gal.gallery)-1) ]
         randtext = flavtext[random.randint(0, len(flavtext)-1)]
         print( f"The {randcat} {randtext}\n" )
 
-    inputs1( input( 'Meow! Welcome to Kitty Collector version ' + verdate + '. For help, type "help".\n' ) )
+    inputs1( input( 'Meow! Welcome to Kitty Collector version ' + verdate + '. For help, type "help".\n\n' ) )
 
 
 

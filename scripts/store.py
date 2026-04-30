@@ -8,25 +8,29 @@ inventory = d.inventory
 store_prices = d.store_prices
 
 # "store" input
-def inp_store():
-    f.clear()
-    print(" /\     /\ ")
-    print("{  `---'  }")
-    print("{  O   O  }")
-    print("~~>  V  <~~")
-    print(" \  \|/  /")
-    print("  `-----'__")
-    print("  /     \  `^\_")
-    print(" {       }\ |\_\_   W")
-    print(" |  \_/  |/ /  \_\_( )")
-    print("  \__/  /(_E     \__/")
-    print("    (  /")
-    print("     MM")
+def store():
+    global runstore
+    runstore = True
 
-    inp_store_buy( input("Hi, welcome to the Cat Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[50c]\nDouble Prefixed Box[500c]\nTriple Prefixed Box[5000c]\nQuadruple Prefixed Box[50000c]\n\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
+    while runstore:
+        f.clear()
+        print(" /\     /\ ")
+        print("{  `---'  }")
+        print("{  O   O  }")
+        print("~~>  V  <~~")
+        print(" \  \|/  /")
+        print("  `-----'__")
+        print("  /     \  `^\_")
+        print(" {       }\ |\_\_   W")
+        print(" |  \_/  |/ /  \_\_( )")
+        print("  \__/  /(_E     \__/")
+        print("    (  /")
+        print("     MM")
+
+        inp_store( input("Hi, welcome to the Cat Emporium! What can I get you?\n--------------------------------\nBasic Box [10c]\nPrefixed Box[50c]\nDouble Prefixed Box[500c]\nTriple Prefixed Box[5000c]\nQuadruple Prefixed Box[50000c]\n--------------------------------\nYour balance: " + str( inventory[0][1] ) + " credits\n") )
 
 # Input in store for buying
-def inp_store_buy( pl_input ):
+def inp_store( pl_input ):
     # Save as table, [1] is command [2] is argument
     pl_input = pl_input.strip().split('\t')
     command = pl_input[0].lower()
@@ -43,11 +47,12 @@ def inp_store_buy( pl_input ):
     else:
         argument2 = 1
 
+    global runstore
     match command:
-        case "exit" | "e": return
+        case "exit" | "e": runstore = False
         case "buy" | "b": case_buy(argument, argument2)
-        case "sell" | "s": case_sell(argument)
-        case _: inp_store_buy( input( "Pardon?\n" ) )
+        case "sell" | "s": case_sell(argument, argument2)
+        case _: inp_store( input( "Pardon?\n" ) )
 
 # Input in store for buying a certain amount
 def inp_store_buy_count( pl_input ):
@@ -56,7 +61,7 @@ def inp_store_buy_count( pl_input ):
     if pl_input.lower() == "max" or pl_input.lower() == "all":
         pl_input = math.floor( cash / store_prices[ setcube ] )
         if pl_input < 1:
-            inp_store_buy( input( "You can't afford any. Anything else?\n" ) )
+            inp_store( input( "You can't afford any. Anything else?\n" ) )
             return
     if d.checkifproperint( pl_input ):
         # If it's bigger than 0 and if it's whole
@@ -70,13 +75,13 @@ def inp_store_buy_count( pl_input ):
                 # Add to inv; name and amount; remove cash
                 d.addcredits( -price )
                 d.additem( setcube, pl_input )
-                inp_store_buy( input("Thanks for buying! Anything else?\n") )
+                inp_store( input("Thanks for buying! Anything else?\n") )
             else:
-                inp_store_buy( input( "You can't afford that. Anything else?\n" ) )
+                inp_store( input( "You can't afford that. Anything else?\n" ) )
         else:
-            inp_store_buy( input( "Alright. Anything else?\n" ) )
+            inp_store( input( "Alright. Anything else?\n" ) )
     else:
-        inp_store_buy( input( "Invalid input." ) )
+        inp_store( input( "Invalid input." ) )
 
 def case_buy(argument, argument2):
     # First check if such a cube exists, then ask how many
@@ -95,9 +100,9 @@ def case_buy(argument, argument2):
 
         inp_store_buy_count( argument2 )
     else:
-        inp_store_buy( input( "We don't sell that here.\n" ) )
+        inp_store( input( "We don't sell that here.\n" ) )
 
-def case_sell(argument):
+def case_sell(argument, argument2=1):
     # credits, available, cube
     # We have to check if the item is available, if it's sellable and if it's a cube
     # There are two sellables: cubes and items. You can't sell credits.
@@ -126,16 +131,16 @@ def case_sell(argument):
                     except:
                         inventory.pop( inventory.index( row ) )
                 d.addcredits( total )
-                inp_store_buy( input( f"Thank you! You now have {inventory[0][1] } credits. Anything else?\n") )
+                inp_store( input( f"Thank you! You now have {inventory[0][1] } credits. Anything else?\n") )
             else:
-                inp_store_buy( input( "Alright. Anything else?" ) )
+                inp_store( input( "Alright. Anything else?" ) )
         else:
-            inp_store_buy( input( "You don't have that.\n" ) )
+            inp_store( input( "You don't have that.\n" ) )
     else:
         # Amount of items
         count = inventory[ checktable["index"] ][1]
         if argument == "credits":
-            inp_store_buy( input( "You can't sell that.\n" ) )
+            inp_store( input( "You can't sell that.\n" ) )
         # If the item is valid
         else:
             price = d.getprice( argument )
@@ -148,7 +153,7 @@ def case_sell(argument):
                 price *= argument2
             else:
                 proceed = False
-                inp_store_buy( input( "That's not valid. Anything else?\n" ) )
+                inp_store( input( "That's not valid. Anything else?\n" ) )
             # No matter the count, ask to sell, assuming we didn't input an invalid count value previously
             if proceed:
                 ask = input( "That'll get you " + str( price ) + " credits. Would you like to sell? [sell or exit]\n" ).lower()
@@ -158,6 +163,6 @@ def case_sell(argument):
                     if inventory[ checktable["index"] ][1] == 0:
                         inventory.pop( checktable["index"] )
                     d.addcredits( price )
-                    inp_store_buy( input( "Thanks! Anything else?\n" ) )
+                    inp_store( input( "Thanks! Anything else?\n" ) )
                 else:
-                    inp_store_buy( input( "That's cool. Anything else?\n" ) )
+                    inp_store( input( "That's cool. Anything else?\n" ) )

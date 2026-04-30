@@ -97,8 +97,8 @@ def addreg( cube ):
     savereg()
 
 # Add or remove credits to inv
-def addcredits(price):
-    inventory[0][1] += price
+def addcredits(credits):
+    inventory[0][1] += credits
     saveinv()
 
 # Function for checking if the given item is in the inventory

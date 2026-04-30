@@ -10,7 +10,7 @@ def reflexrun():
     while True:
         f.clear()
         plinput = input( "FIXME reflex text. Press enter when you're ready, or 'exit'")
-        if plinput.lower() == "exit": 
+        if plinput.lower() == "exit" or plinput.lower() == "e": 
             return
         else:
             seconds = random.randint(1, 8)
