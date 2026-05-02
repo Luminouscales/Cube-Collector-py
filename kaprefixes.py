@@ -186,9 +186,7 @@ def doprefixstats( prefixes, statstable ):
             statstable[2] += 10
 
 
-allskills = [ "Flurry",
-"Resilience",
-"Second Wind",
-"Bapper"
+allskills = [ 
+    "Swipe", # 50% more damage
 
 ]
