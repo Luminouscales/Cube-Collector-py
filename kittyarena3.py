@@ -1,6 +1,6 @@
 import json, random, os, time
 
-debug = True
+debug = False
 
 def Debug( msg ):
     if debug: print(msg + "\n")
@@ -59,46 +59,138 @@ def PrintTable( table, interval ):
         if len(table) > 1 or row == len(table)+1:
             time.sleep( interval )
 
+def Logstack(text):
+    global logstack
+    logstack.append( text )
+
 def DoTurn( attacker, defender ):
-    BasicAttack( attacker, defender )
+    # EACH skill has a % chance of activating. First one to activate does that instead of basicattack
+    skillproc = False
+    for skill in attacker.skills:
+        if random.randint( 1, 100 ) < 6:
+            Debug( f"SKILL: {skill}")
+            RunSkill( skill, attacker, defender )
+            skillproc = True
+            break
+    if not skillproc:
+        BasicAttack( attacker, defender )
+
+#/----------------------------/
+# SKILLS
+#/----------------------------/
+
+def RunSkill( skill, attacker, defender ):
+    match skill:
+        case "Swipe": skillSwipe( attacker, defender )
+        case "Scratch": skillScratch( attacker, defender )
+        case "Pounce": skillPounce( attacker, defender )
+        case "Tear": skillPounce( attacker, defender )
+        case "Flicker": skillFlicker( attacker, defender )
+        case "Lick": skillLick( attacker )
+    
+# For skills. Returns if should hit or not
+def skill_hitchance(chance):
+    if random.randint( 1, 100 ) < chance:
+        return True
+    else:
+        return False
+
+# Swipe for 50% more dmg
+def skillSwipe( attacker, defender ):
+    Logstack( f"{attacker.name} swiped at the enemy!")
+    if skill_hitchance( CalcAcc(attacker, defender) ):
+        DealDamage( attacker.name, defender, CalcDamage( attacker, defender, attboost=1.5 ) )
+    else:
+        Logstack( "Swipe missed!" )
+
+# Scratch
+def skillScratch( attacker, defender ):
+    Logstack( f"{attacker.name} scratched at the enemy!")
+    for i in range( 2 ):
+        if skill_hitchance( CalcAcc(attacker, defender) ):
+            DealDamage( attacker.name, defender, CalcDamage( attacker, defender ) )
+        else:
+            Logstack( "Scratch missed!" )
+
+# Tear
+def skillTear(attacker, defender):
+    Logstack( f"{attacker.name} tears the enemy!")
+    if skill_hitchance( CalcAcc(attacker, defender) ):
+        DealDamage( attacker.name, defender, CalcDamage( attacker, defender, defignore=20 ) )
+    else:
+        Logstack( "Tear missed!" )
+
+# Flicker
+def skillFlicker(attacker, defender):
+    Logstack( f"{attacker.name} licks itself...")
+    if skill_hitchance( CalcAcc(attacker, defender) ):
+        offset = random.randint( 5, 20 ) / 10
+        DealDamage( attacker.name, defender, CalcDamage( attacker, defender, attboost=offset ) )
+    else:
+        Logstack( "Flicker missed!" )
+
+# Lick
+def skillLick(attacker):
+    Logstack( f"{attacker.name} licks itself...")
+    HealTarget( attacker, int(attacker.hp/10))
+
+# Pounce
+def skillPounce( attacker, defender ):
+    Logstack( f"{attacker.name} pounced at the enemy!")
+    DealDamage( attacker.name, defender, CalcDamage( attacker, defender ) )
 
 # Normal cat attack. No skills.
 def BasicAttack( attacker, defender ):
     global battle
     global logstack
-    # Accuracy check, 25% chance to miss by default reduced by accuracy and increased by enemy accuracy.
-    # But at least 10
-    hit = random.randint( 1, 100 ) + ( attacker.acc - defender.acc )
-    hit = max( hit, 10 ) # Always 10% chance to hit at least
-    hit = min( hit, 95 ) # Always 5% chance to miss at least
 
     # If hit
-    if random.randint( 1, 100 ) < hit:
-        damage = attacker.att - defender.de
-        damage = damage * ( random.randint( 7, 15 ) / 10 ) # Random offest
-        damage = max( 1, int(damage) ) # At least 1, and rounded
-
-        # Returns False if target is dead
-        if DealDamage( attacker.name, defender, damage ):
-            Debug( f"BASIC ATTACK: {attacker.name}")
-        else:
-            battle = False
+    if random.randint( 1, 100 ) < CalcAcc( attacker, defender ):
+        DealDamage( attacker.name, defender, CalcDamage(attacker, defender) )
     else:
-        logstack.append(f"{attacker.name} missed")
+        Logstack(f"{attacker.name} missed")
         Debug( f"BASIC ATTACK MISSED: {attacker.name}")
+
+# Returns attack - defense damage
+# attboost: boost raw damage by percentage
+# attbonus: boost raw damage by flat amount
+# defignore: percentage of defence to ignore
+# defdecr: amount of defence to ignore
+def CalcDamage(attacker, defender, attboost=1, attbonus=0, defignore=1, defdecr=0 ):
+    damage = attacker.att * attboost + attbonus 
+    damage -= defender.de * defignore - defdecr
+    damage = damage * ( random.randint( 7, 15 ) / 10 ) # Random offest
+    damage = max( 1, int(damage) ) # At least 1, and rounded
+
+    return damage
+
+# Returns C1speed - C2speed
+# force: guaranteed hit
+def CalcAcc(attacker, defender, force=False):
+    # Accuracy check, 25% chance to miss by default reduced by accuracy and increased by enemy accuracy.
+    # But at least 10
+    if force:
+        return 100
+    else:
+        hit = random.randint( 1, 100 ) + ( attacker.acc - defender.acc )
+        hit = max( hit, 10 ) # Always 10% chance to hit at least
+        hit = min( hit, 95 ) # Always 5% chance to miss at least
+
+    return hit
 
 # Deal damage to target; returns whether should continue or not (dead or not)
 # Returns False if target is dead
 def DealDamage( attacker, target, damage ):
     global logstack
+    global battle
     target.hp -= damage
     Debug( f"TOOK DAMAGE: {target.name}")
-    logstack.append( f"{attacker} dealt {damage} damage" )
+    Logstack( f"{attacker} dealt {damage} damage" )
     if target.hp < 1:
         input("battle end")
-        return False
+        battle = False
     else:
-        return True
+        battle = True
     
 # Manages turn order, speed of actions and tempo overflow
 def DoTempo(attacker, defender):
@@ -114,6 +206,10 @@ def DoTempo(attacker, defender):
             attacker.tempo += attacker.sp
             Debug(f"OVERFLOW: {attacker.name} TEMPO now: {attacker.tempo} against {defender.sp}")
             tempo = False
+
+def HealTarget( target, amount ):
+    target.hp += amount
+    Logstack( f"{target.name} healed itself for {amount} health!" )
 
 # Start
 global battle
@@ -144,4 +240,3 @@ while battle:
     # Just skip if nothing happened
     if len(logstack) > 0:
         input("")
-

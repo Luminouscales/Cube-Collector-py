@@ -24,7 +24,7 @@ def jobs():
     match plinput.lower():
         case "exit": return
         case "guessgame": guessgame()
-        case "typetiming": typetimingrun()
+        case "typetiming": typetimingrun(1)
         case "reflex": reflexgame()
         case "catbed": catbedfile()
 

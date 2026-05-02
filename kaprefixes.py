@@ -188,5 +188,10 @@ def doprefixstats( prefixes, statstable ):
 
 allskills = [ 
     "Swipe", # 50% more damage
+    "Scratch", # Attack twice
+    "Pounce", # Guaranteed hit
+    "Tear", # Ignores 20 def
+    "Flicker", # -+50% damage
+    "Lick", #heal 10% hp
 
 ]
