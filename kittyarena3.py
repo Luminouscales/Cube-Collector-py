@@ -1,6 +1,6 @@
 import json, random, os, time
 
-debug = False
+debug = True
 
 def Debug( msg ):
     if debug: print(msg + "\n")
@@ -201,6 +201,13 @@ def DoTempo(attacker, defender):
             attacker.tempo = max( 0, attacker.tempo - defender.sp ) # C1 loses tempo equal to C2 speed, but not less than 0
             Debug(f"ATTACKS: {attacker.name}; TEMPO: {attacker.tempo} against {defender.sp}")
             DoTurn( attacker, defender )
+        elif attacker.tempo >= 1: # If you have not enough tempo, act only once, and regain tempo
+            Debug(f"LOW START: {attacker.tempo} against {defender.sp}")
+            attacker.tempo = max( 0, attacker.tempo - 1 )
+            attacker.tempo += attacker.sp
+            Debug(f"ATTACKS: {attacker.name}; TEMPO: {attacker.tempo} against {defender.sp}")
+            DoTurn( attacker, defender )
+            tempo = False
         else: # C1 has acted twice. It now regains tempo equal to its speed and passes
             Debug(f"OVERFLOWED; {attacker.tempo} against {defender.sp}")
             attacker.tempo += attacker.sp
@@ -221,7 +228,7 @@ while battle:
     side += 1
     clear()
     
-    Debug("START")
+    Debug(f"START: {side}")
 
     logstack = []
     

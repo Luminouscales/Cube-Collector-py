@@ -46,7 +46,7 @@ Rude Kitty|8|45
 Refactored True Kitty|1|46
 Thick Kitty|4|47
 Thin Kitty|8|48
-Supreme Kitty|5|49
+Supreme Kitty|6|49
 Complex Kitty|6|50
 Quiet Kitty|8|51
 Collected Kitty|7|52
@@ -67,7 +67,7 @@ Godly Kitty|7|66
 Stingy Kitty|7|67
 Healer Kitty|5|68
 Unusual Kitty|7|69
-Sick Kitty|4|70
+Sick Kitty|5|70
 Asynchronous Kitty|5|71
 Cobalt Kitty|6|72
 Safe Kitty|5|73
@@ -97,7 +97,7 @@ Boring Kitty|6|96
 Furry Kitty|8|97
 Short Kitty|4|98
 Purring Kitty|1|99
-Mephedrone Kitty|1|100
+Mephedrone Kitty|2|100
 Pix Kitty|7|101
 Thirsty Kitty|5|102
 Robotic Kitty|5|103
@@ -131,7 +131,7 @@ Strong Kitty|7|130
 Modern Kitty|7|131
 Poor Kitty|6|132
 Common Kitty|5|133
-Innovative Kitty|6|134
+Innovative Kitty|7|134
 Virtual Kitty|7|135
 Sad Kitty|5|136
 Stoned Kitty|5|137
@@ -139,8 +139,8 @@ Cold Kitty|5|138
 Placeholder Kitty|6|139
 Hard Kitty|4|140
 Lynxsie Therapeutic Kitty|1|141
-Difficult Kitty|4|142
-Snuggly Kitty|5|143
+Difficult Kitty|5|142
+Snuggly Kitty|6|143
 Encrypted Kitty|3|144
 Rusty Kitty|5|145
 Full Kitty|5|146
@@ -165,7 +165,7 @@ Patriotic Executable Kitty|1|164
 False Kitty|6|165
 Coding Kitty|3|166
 Hot Kitty|1|167
-Cowardly Kitty|4|168
+Cowardly Kitty|5|168
 Hazy Simple Kitty|1|169
 Dull Cruel Kitty|1|170
 Streamlined Kitty|4|171
@@ -195,7 +195,7 @@ Feline Generous Kitty|1|194
 True Ranger Kitty|1|195
 Pathetic Kitty|6|196
 Efficient Kitty|4|197
-Wise Kitty|5|198
+Wise Kitty|6|198
 Typical Light Kitty|1|199
 Warrior Kitty|4|200
 German Modern Kitty|1|201
@@ -205,7 +205,7 @@ Auric Big Kitty|1|204
 Meow Cruel Kitty|1|205
 Patriotic Kitty|6|206
 Iron Kitty|6|207
-Right Kitty|5|208
+Right Kitty|6|208
 Auric Healthy Kitty|1|209
 Noisy Kitty|5|210
 p<0.05 Intemporal Kitty|1|211
@@ -275,7 +275,7 @@ Sweet Sarcastic Kitty|1|274
 Slavic Kitty|5|275
 Placeholder Ancient Kitty|1|276
 Iterative Kitty|5|277
-True Kitty|5|278
+True Kitty|6|278
 Broken Dumb Kitty|1|279
 Generic Kitty|3|280
 Noisy Dangerous Kitty|1|281
@@ -552,3 +552,13 @@ Dishonest Infected Evil Cassie Kitty|1|551
 German Interesting Robotic Rusty Kitty|1|552
 Patriotic Heavy Honest Siberian Kitty|1|553
 Kitty Typical Clever Short Kitty|1|554
+Modular Optimized Auric Support Kitty|1|555
+Adorable Feathered Ugly Kitty|1|556
+Synthetic Feline Preposterous Kitty|1|557
+Exciting Tall Virtual Kitty|1|558
+Slavic Wet Ironic Kitty|1|559
+Cubed German Virtual Kitty|1|560
+Open Exciting Cassie Kitty|1|561
+Refactored Slow Brilliant Kitty|1|562
+Quiet Collected Pix Polish Kitty|1|563
+Ironic Thin Slow Kitty|1|564

@@ -76,6 +76,10 @@ def catbedfile():
     import scripts.catbed
     scripts.catbed.catbed()
 
+def arena():
+    import scripts.arena
+    scripts.arena.arenarun()
+
 # List of inputs for the player to utilise.
 player_inputs = {
     "help": helpguide,
@@ -87,7 +91,8 @@ player_inputs = {
     "treats": treatsrun, "tr": treatsrun,
     "meow": freecash,
     "gallery": gallery,
-    "forge": forge
+    "forge": forge,
+    "arena": arena
 }
 
 # Gallery flavour texts
