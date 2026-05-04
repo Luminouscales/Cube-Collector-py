@@ -87,6 +87,7 @@ def RunSkill( skill, attacker, defender ):
         case "Tear": skillPounce( attacker, defender )
         case "Flicker": skillFlicker( attacker, defender )
         case "Lick": skillLick( attacker )
+        case "Hiss": skillHiss( attacker )
     
 # For skills. Returns if should hit or not
 def skill_hitchance(chance):
@@ -138,6 +139,12 @@ def skillLick(attacker):
 def skillPounce( attacker, defender ):
     Logstack( f"{attacker.name} pounced at the enemy!")
     DealDamage( attacker.name, defender, CalcDamage( attacker, defender ) )
+
+# Pounce
+def skillHiss( attacker ):
+    attacker.att += 10
+    Logstack( f"{attacker.name} hissed at the enemy and gained 10 attack!")
+    
 
 # Normal cat attack. No skills.
 def BasicAttack( attacker, defender ):
@@ -211,13 +218,14 @@ def HealTarget( target, amount ):
     target.hp += amount
     Logstack( f"{target.name} healed itself for {amount} health!" )
 
-# Start
+#/----------------------------/
+# START
+#/----------------------------/
 global battle
 battle = True
 side = 0 # One attacks, then the other
 
 while battle:
-    
     side += 1
     clear()
     

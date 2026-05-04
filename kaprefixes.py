@@ -193,5 +193,6 @@ allskills = [
     "Tear", # Ignores 20 def
     "Flicker", # -+50% damage
     "Lick", #heal 10% hp
+    "Hiss", #give attack to self
 
 ]
