@@ -104,3 +104,17 @@ with open("cat.json", "w") as f:
 print( kitty1name )
 print( kitty1stats )
 print( kitty1skills )
+
+
+def rollcat(name):
+    prefixes = name.strip().split(' ')
+    prefixes = prefixes[0:len(prefixes)-2]
+
+    # Random stat offset
+    ghealth = random.randint( -50, 50 )
+    gatt = random.randint( -10, 10 )
+    gdef = random.randint( -10, 10 )
+    gacc = random.randint( -20, 20 )
+
+    # First table run
+    kitty1stats = [ 100 * pram + ghealth, 10 * pram + gatt, pram * 5 + gdef, 1, pram * 10 + gacc ]

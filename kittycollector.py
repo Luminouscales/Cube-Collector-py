@@ -1,6 +1,6 @@
 # 2026.03.05 Refactored version, mostly
 
-import random
+import random, os
 import scripts.funcs as f
 import scripts.gallery as gal
 
@@ -13,10 +13,6 @@ def clear():
 def helpguide():
     inputs1( input("Available commands: \ninventory\nregistry\nstore\njobs\ndailybox\ntreats\ngallery\nforge\n") )
 
-# "debug" input to make the program close so I can run commands
-def debug():
-    pass
-
 # Place to earn cash
 def jobs():
     f.clear()
@@ -24,7 +20,7 @@ def jobs():
     match plinput.lower():
         case "exit": return
         case "guessgame": guessgame()
-        case "typetiming": typetimingrun(1)
+        case "typetiming": typetimingrun()
         case "reflex": reflexgame()
         case "catbed": catbedfile()
 
@@ -104,7 +100,7 @@ flavtext = [ "is looking at you expectantly...",
 "is chewing on a Kittycoin",
 "is half-stuck in the cat dimension",
 "is rearranging its fur schema",
-"just de-ranked in Deadlock...",
+"just deranked in Deadlock...",
 "is playing WoW on your PC!",
 "is planning a cat rebellion... eventually.",
 "is smoking a cigarette",
