@@ -30,9 +30,10 @@ def typetiming():
             if letter != aim[count]:
                 print( letter, aim[count])
                 npoints += 1
+        npoints += max( 0, len(aim) - len(plinput) - 1 ) # Error for every missing letter, -1 bcs sth is fucked up?
 
 
-        lps = math.floor( lettercount / timeseconds )
+        lps = math.floor( lettercount / max( 0.1, timeseconds ) )
         reward = 100 * (lps/5) * (1.5 - npoints/5)
         if lps > 9:
             reward *= 2.5
