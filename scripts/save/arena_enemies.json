@@ -1,0 +1,143 @@
+[
+    {
+        "name": "Cowardly Kitty",
+        "hp": 18,
+        "att": 2,
+        "de": 7,
+        "sp": 1,
+        "acc": 11,
+        "skills": [
+            "Lick"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Dancing Kitty",
+        "hp": -28,
+        "att": 1,
+        "de": -9,
+        "sp": 1,
+        "acc": -10,
+        "skills": [
+            "Pounce"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Short Kitty",
+        "hp": 34,
+        "att": -5,
+        "de": -8,
+        "sp": 1,
+        "acc": -3,
+        "skills": [
+            "Pounce"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Dancing Kitty",
+        "hp": 7,
+        "att": 1,
+        "de": 6,
+        "sp": 1,
+        "acc": 4,
+        "skills": [
+            "Flicker",
+            "Swipe"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Modern Draconic Kitty",
+        "hp": 122,
+        "att": 18,
+        "de": -5,
+        "sp": 1,
+        "acc": 1,
+        "skills": [
+            "Scratch",
+            "Pounce"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Therapeutic Woozy Kitty",
+        "hp": 102,
+        "att": 20,
+        "de": 13,
+        "sp": 1,
+        "acc": 18,
+        "skills": [
+            "Flicker",
+            "Tear"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Iterative Broken Kitty",
+        "hp": 80,
+        "att": 19,
+        "de": 9,
+        "sp": 1,
+        "acc": -1,
+        "skills": [
+            "Tear",
+            "Hiss"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Sharp Cute Dishonest Kitty",
+        "hp": 169,
+        "att": 35,
+        "de": 4,
+        "sp": 1,
+        "acc": 30,
+        "skills": [
+            "Swipe",
+            "Scratch",
+            "Pounce"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Generic Difficult Useless Kitty",
+        "hp": 236,
+        "att": 14,
+        "de": 5,
+        "sp": 1,
+        "acc": 27,
+        "skills": [
+            "Lick",
+            "Pounce",
+            "Scratch"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Encrypted Unusual Loud Calamitous Kitty",
+        "hp": 277,
+        "att": 41,
+        "de": 8,
+        "sp": 1,
+        "acc": 9,
+        "skills": [
+            "Tear",
+            "Scratch",
+            "Scratch",
+            "Hiss"
+        ],
+        "tempo": 1,
+        "defeated": false
+    }
+]

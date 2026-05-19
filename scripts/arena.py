@@ -1,10 +1,23 @@
+# Okay we can gladiate and load cats, stats and all
+# That's ready. We don't have enemies yet
+# "enemies" command to display enemies tab?
+
+# When you go into enemies: every 15 min, roll new ones
+# Enemies need to have a "defeated" bool
+# First do it simple. First 4: one prefix; next 3: double; next 2: triple; last: quad
+
+# First, make a func to roll and save enemy cats
+
 import scripts.data as d
 import scripts.funcs as f
+import scripts.rollcatsforarena as r
 
 import os, json
 
 inventory = d.inventory
 global loaded_cats
+
+catdir = "scripts/save/arena_cats.json"
 
 class Cat:
     def __init__(self, name, hp, att, de, sp, acc, skills, tempo):
@@ -17,10 +30,7 @@ class Cat:
         self.skills = skills
         self.tempo = tempo
 
-def arenarun():
-    global loaded_cats
-    f.clear()
-
+def maincat():
     print("          _W        W_")
     print("        _) \\      // (_")
     print("      _)    \\    //    (_")
@@ -34,31 +44,35 @@ def arenarun():
     print("    )_       /    \       _(")
     print("     )_     |      |     _(")
 
+def arenarun():
+    global loaded_cats
+    f.clear()
+
+    maincat()
+
     print("FIXME arena text")
     print("List of fighters, active/time of recovery")
     print("Enemy list")
-    print("use")
+    print("use, exit, enemies")
 
     # Print list of available cats
-    if os.path.exists("scripts/save/arena_cats.json") == False:
+    if os.path.exists(catdir) == False:
         print("FIXME no cats")
     else:
-        with open("scripts/save/arena_cats.json", "r") as file:
+        with open(catdir, "r") as file:
             data = json.load( file )
         loaded_cats = [Cat(**cat_data) for cat_data in data]
 
         for cat in loaded_cats:
             print( cat.name )
 
-
-    print("\n")
-
     while True:
-        plinput = input("use")
+        plinput = input("\n\n")
         
         match plinput:
             case "exit" | "e": return
             case "use": case_use()
+            case "enemies" | "en": hub_enemies()
 
 def case_use():
     plinput = input("index")
@@ -75,12 +89,27 @@ def case_use():
 def gladiatecat(name):
     global loaded_cats
 
-    import scripts.rollcatsforarena as r
-
     fullcat = r.rollcat(name)
-    print(fullcat.att)
 
     loaded_cats.append( fullcat )
-    print( loaded_cats )
+
+    with open(catdir, "w") as f:
+        json.dump([cat.__dict__ for cat in loaded_cats], f, indent=4)
+
+# Enemies tab. Display time until reset, given enemies
+def hub_enemies():
+    while True:
+        f.clear()
+        maincat()
+        print("")
+
+        # Check if to roll for new enemies:
+        if d.TimePassedBool( d.dates["newenemies"], 15 ):
+            r.rollcatenemies()
+
+        # Read new enemies
+        times = d.ReturnTimeUntil( d.dates["newenemies"] )
+        print("Time until reset:")
+
 
 arenarun()

@@ -10,7 +10,7 @@
 # Roll random skills. One prefix: one skill, then 25%(?) chance compounding for more
 # Save as a json?
 
-import random, os
+import random, json
 import scripts.kaprefixes as script
 
 allskills = script.allskills
@@ -31,7 +31,19 @@ class Cat:
         self.skills = skills
         self.tempo = tempo
 
-def rollcat(name):
+class CatEnemy:
+    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
+        self.name = name
+        self.hp = hp
+        self.att = att
+        self.de = de
+        self.sp = sp
+        self.acc = acc
+        self.skills = skills
+        self.tempo = tempo
+        self.defeated = defeated
+
+def rollcat(name, friendly=True):
     prefixes = name.strip().split(' ')
     prefixes = prefixes[0:len(prefixes)-2]
     pram = len(prefixes)
@@ -52,13 +64,12 @@ def rollcat(name):
     # Roll skills
     kittyskills = []
 
-    for i in range( pram ):
+    for i in range( pram + 1 ):
         kittyskills.append( allskills[ random.randint(0, len(allskills)-1)] )
 
     # Incremental skill rolls
     while True:
         numb = random.randint( 0, 100 ) + 5 * pram
-        print( numb )
         if numb > 90:
             kittyskills.append( allskills[ random.randint(0, len(allskills)-1)] )
         else:
@@ -66,6 +77,43 @@ def rollcat(name):
 
     # Last setup
     kittystats[3] = max( 1, kittystats[3]) # At least 1 speed
-    kitty1 = Cat( name, kittystats[0], kittystats[1], kittystats[2], kittystats[3], kittystats[4], kittystats, kittystats[3] )
+    if friendly:
+        kitty = Cat( name, kittystats[0], kittystats[1], kittystats[2], kittystats[3], kittystats[4], kittyskills, kittystats[3] )
+    else:
+        kitty = CatEnemy( name, kittystats[0], kittystats[1], kittystats[2], kittystats[3], kittystats[4], kittyskills, kittystats[3], False )
 
-    return kitty1
+    return kitty
+
+def rollname(prefixcount):
+    prefixes = []
+    for i in range(prefixcount):
+        prefixes.append( prefixtable[ random.randint( 0, prefixmax ) ] )
+
+    cat = ' '.join(prefixes) + ' Kitty'
+    return cat
+
+
+# Roll however much cats to be available to fight in arena
+def rollcatenemies():
+
+    enemies = []
+
+    for i in range( 10 ):
+        # 0-3: one prefix
+        if i < 4:
+            prefixes = 1
+        # 4-6: two prefix
+        elif i < 7:
+            prefixes = 2
+        # 7-8: three pref
+        elif i < 9:
+            prefixes = 3
+        else:
+            prefixes = 4
+
+        name = rollname( prefixes )
+        newenemy = rollcat( name, False )
+        enemies.append( newenemy )
+
+    with open("scripts/save/arena_enemies.json", "w") as f:
+        json.dump([cat.__dict__ for cat in enemies], f, indent=4)

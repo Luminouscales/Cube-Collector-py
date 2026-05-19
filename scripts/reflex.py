@@ -1,5 +1,5 @@
 from datetime import datetime
-import time, random, os, math
+import time, random, math
 
 import scripts.data as d
 import scripts.funcs as f

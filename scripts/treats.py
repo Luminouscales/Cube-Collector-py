@@ -118,7 +118,7 @@ def treatsdonate():
             d.savetime()
             print( "Thank you for donating!")
             time.sleep( 1 )
-            os.system( 'cls' )
+            f.clear()
             treats()
     else:
         print( "That's not a correct value..." )
@@ -167,7 +167,7 @@ def treatsredeem():
                 d.savetime()
                 print( "Thank you so much for redeeming!")
                 time.sleep( 1 )
-                os.system( 'cls' )
+                f.clear()
                 treats()
         else:
             print( "That's not a correct value..." )

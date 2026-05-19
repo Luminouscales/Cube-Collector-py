@@ -1,5 +1,8 @@
+# Beautiful load-bearing file.
+# Basically anything that does anything inherits these functions, mostly dealing with save I/O and accessing content
+
 import os, sys, random, time, math
-from datetime import datetime
+from datetime import datetime, timedelta
 
 selfpath = os.path.dirname(sys.argv[0]) + "/scripts/"
 savepath = selfpath + "/save/"
@@ -340,6 +343,33 @@ def affixtag(row):
         time.sleep( 1.5 )
         affixtag(row)
 
+# Return if given minutes passed since given time
+# Time should be in raw form
+def TimePassedBool( time, minutes ):
+    format_str = "%Y-%m-%d %H:%M:%S"
+
+    time = datetime.strptime(time, format_str)
+
+    timenow = datetime.strptime( datetime.now().strftime( format_str ), format_str )
+    minuteseconds = minutes * 60
+    time_difference = (timenow - time).total_seconds()
+
+    return time_difference >= minuteseconds
+
+def ReturnTimeUntil( time1, time2 ):
+    soondate = int(float( (( time1 + timedelta( seconds=daily) ) - time2).total_seconds() ))
+    # Formatting seconds for dialogue
+    if soondate >= 3600:
+        amount = math.floor( soondate / 3600 )
+        nominal = "hours"
+    elif soondate < 3600 and soondate >= 60:
+        amount = math.floor( soondate / 60 )
+        nominal = "minutes"
+    elif soondate <= 60:
+        amount = soondate
+        nominal = "seconds"
+
+    return [amount, nominal]
         
 
 #/----------------------------/

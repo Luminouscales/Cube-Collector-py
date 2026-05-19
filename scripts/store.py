@@ -1,4 +1,4 @@
-import os, math
+import math
 
 import scripts.data as d
 import scripts.funcs as f

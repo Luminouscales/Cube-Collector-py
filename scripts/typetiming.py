@@ -1,4 +1,4 @@
-import random, math, os
+import random, math
 from datetime import datetime
 import scripts.data as d
 import scripts.funcs as f
