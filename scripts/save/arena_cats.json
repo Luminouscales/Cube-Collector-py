@@ -1,46 +1,15 @@
 [
     {
-        "name": "Psychological Honest Furry Kitty",
-        "hp": 288,
-        "att": 21,
-        "de": 19,
-        "sp": 1,
-        "acc": 22,
-        "skills": [
-            "Swipe",
-            "Pounce",
-            "Lick",
-            "Lick",
-            "Flicker"
-        ],
-        "tempo": 1
-    },
-    {
-        "name": "Sarcastic Vishunei Kind Kitty",
-        "hp": 268,
-        "att": 20,
-        "de": 11,
-        "sp": 1,
-        "acc": 40,
-        "skills": [
-            "Flicker",
-            "Pounce",
-            "Swipe",
-            "Lick",
-            "Pounce"
-        ],
-        "tempo": 1
-    },
-    {
-        "name": "Support Kitty",
-        "hp": -2,
-        "att": -4,
-        "de": 9,
+        "name": "Stoner Kitty",
+        "hp": 707,
+        "att": 60,
+        "de": 7,
         "sp": 1,
         "acc": -5,
         "skills": [
-            "Pounce"
+            "Swipe"
         ],
-        "tempo": 1
+        "tempo": 1,
+        "defeated": false
     }
 ]

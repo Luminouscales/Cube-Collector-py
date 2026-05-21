@@ -1,6 +1,6 @@
-import json, random, os, time
+import random, os, time
 
-debug = True
+debug = False
 
 def Debug( msg ):
     if debug: print(msg + "\n")
@@ -9,7 +9,7 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 class Cat:
-    def __init__(self, name, hp, att, de, sp, acc, skills, tempo):
+    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
         self.name = name
         self.hp = hp
         self.att = att
@@ -18,24 +18,7 @@ class Cat:
         self.acc = acc
         self.skills = skills
         self.tempo = tempo
-
-# Set up both cats
-# FIXME This will be changed later
-
-with open("cat.json", "r") as f:
-    data1 = json.load(f)
-
-with open("cat2.json", "r") as f:
-    data2 = json.load(f)
-
-kitty1 = Cat(**data1)
-kitty2 = Cat(**data2)
-
-kitty1health = kitty1.hp
-kitty2health = kitty2.hp
-# Tempo is how many times the cat can act each turn, carrying over
-kitty1tempo = kitty1.tempo
-kitty2tempo = kitty2.tempo
+        self.defeated = defeated
 
 global logstack
 logstack = []
@@ -45,6 +28,8 @@ logstack = []
 #/----------------------------/
 
 def leaderboard():
+    global kitty1
+    global kitty2
     kitty1vstats = f"| {kitty1.hp} HP – {kitty1.att} STR – {kitty1.de} DEF – {kitty1.sp} SPD – {kitty1.acc} ACC | {kitty1.tempo} TEMPO"
     kitty2vstats = f"| {kitty2.hp} HP – {kitty2.att} STR – {kitty2.de} DEF – {kitty2.sp} SPD – {kitty2.acc} ACC | {kitty2.tempo} TEMPO"
 
@@ -67,7 +52,7 @@ def DoTurn( attacker, defender ):
     # EACH skill has a % chance of activating. First one to activate does that instead of basicattack
     skillproc = False
     for skill in attacker.skills:
-        if random.randint( 1, 100 ) < 6:
+        if random.randint( 1, 100 ) < 20:
             Debug( f"SKILL: {skill}")
             RunSkill( skill, attacker, defender )
             skillproc = True
@@ -80,14 +65,16 @@ def DoTurn( attacker, defender ):
 #/----------------------------/
 
 def RunSkill( skill, attacker, defender ):
+    a = attacker
+    d = defender
     match skill:
-        case "Swipe": skillSwipe( attacker, defender )
-        case "Scratch": skillScratch( attacker, defender )
-        case "Pounce": skillPounce( attacker, defender )
-        case "Tear": skillPounce( attacker, defender )
-        case "Flicker": skillFlicker( attacker, defender )
-        case "Lick": skillLick( attacker )
-        case "Hiss": skillHiss( attacker )
+        case "Swipe": skillSwipe( a, d )
+        case "Scratch": skillScratch( a, d )
+        case "Pounce": skillPounce( a, d )
+        case "Tear": skillPounce( a, d )
+        case "Flicker": skillFlicker( a, d )
+        case "Lick": skillLick( a )
+        case "Hiss": skillHiss( a )
     
 # For skills. Returns if should hit or not
 def skill_hitchance(chance):
@@ -183,7 +170,7 @@ def CalcAcc(attacker, defender, force=False):
         hit = max( hit, 10 ) # Always 10% chance to hit at least
         hit = min( hit, 95 ) # Always 5% chance to miss at least
 
-    return hit
+    return hit + 20
 
 # Deal damage to target; returns whether should continue or not (dead or not)
 # Returns False if target is dead
@@ -228,30 +215,45 @@ def HealTarget( target, amount ):
 #/----------------------------/
 # START
 #/----------------------------/
-global battle
-battle = True
-side = 0 # One attacks, then the other
 
-while battle:
-    side += 1
-    clear()
-    
-    Debug(f"START: {side}")
+def startfight( c1, c2 ):
+    global kitty1
+    global kitty2
+    global logstack
 
-    logstack = []
-    
-    if side % 2 == 0:
-        Debug(f"TURN OF: {kitty1.name} ")
-        DoTempo( kitty1, kitty2)
-    else:
-        Debug(f"TURN OF: {kitty2.name} ")
-        DoTempo( kitty2, kitty1 )
+    kitty1 = c1
+    kitty2 = c2
+
+    global battle
+    battle = True
+    side = 0 # One attacks, then the other
+
+    while battle:
+        side += 1
+        clear()
         
-    # Text
-    Debug("LEADERBOARD")
-    leaderboard()
-    PrintTable( logstack, 0.5 )
+        Debug(f"START: {side}")
 
-    # Just skip if nothing happened
-    if len(logstack) > 0:
-        input("")
+        logstack = []
+        
+        if side % 2 == 0:
+            Debug(f"TURN OF: {kitty1.name} ")
+            DoTempo( kitty1, kitty2)
+        else:
+            Debug(f"TURN OF: {kitty2.name} ")
+            DoTempo( kitty2, kitty1 )
+            
+        # Text
+        Debug("LEADERBOARD")
+        leaderboard()
+        PrintTable( logstack, 0.5 )
+
+        # Just skip if nothing happened
+        if len(logstack) > 0:
+            input("")
+
+    # Return False if you lost
+    if kitty1.hp < 1:
+        return False
+    else:
+        return True

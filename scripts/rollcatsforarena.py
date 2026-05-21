@@ -21,7 +21,7 @@ with open( "scripts/content/prefixes.txt", 'r' ) as file:
     prefixmax = len(prefixtable) - 1
 
 class Cat:
-    def __init__(self, name, hp, att, de, sp, acc, skills, tempo):
+    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
         self.name = name
         self.hp = hp
         self.att = att
@@ -30,6 +30,7 @@ class Cat:
         self.acc = acc
         self.skills = skills
         self.tempo = tempo
+        self.defeated = defeated
 
 class CatEnemy:
     def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
@@ -45,13 +46,13 @@ class CatEnemy:
 
 def rollcat(name, friendly=True):
     prefixes = name.strip().split(' ')
-    prefixes = prefixes[0:len(prefixes)-2]
+    prefixes.pop( len(prefixes ) - 1 )
     pram = len(prefixes)
 
     # Random stat offset
     ghealth = random.randint( -50, 50 )
-    gatt = random.randint( -10, 10 )
-    gdef = random.randint( -10, 10 )
+    gatt = random.randint( -3, 10 )
+    gdef = random.randint( -3, 3 )
     gacc = random.randint( -20, 20 )
 
     # First table run
@@ -64,7 +65,7 @@ def rollcat(name, friendly=True):
     # Roll skills
     kittyskills = []
 
-    for i in range( pram + 1 ):
+    for i in range( pram ):
         kittyskills.append( allskills[ random.randint(0, len(allskills)-1)] )
 
     # Incremental skill rolls
@@ -78,7 +79,7 @@ def rollcat(name, friendly=True):
     # Last setup
     kittystats[3] = max( 1, kittystats[3]) # At least 1 speed
     if friendly:
-        kitty = Cat( name, kittystats[0], kittystats[1], kittystats[2], kittystats[3], kittystats[4], kittyskills, kittystats[3] )
+        kitty = Cat( name, kittystats[0], kittystats[1], kittystats[2], kittystats[3], kittystats[4], kittyskills, kittystats[3], False )
     else:
         kitty = CatEnemy( name, kittystats[0], kittystats[1], kittystats[2], kittystats[3], kittystats[4], kittyskills, kittystats[3], False )
 

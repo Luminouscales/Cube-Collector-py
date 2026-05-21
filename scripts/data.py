@@ -10,7 +10,7 @@ inventorypath = selfpath + "save/inventory.txt"
 registrypath = selfpath + "save/registry.txt"
 timepath = selfpath + "save/time.txt"
 limit = 20 # For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
-format_str = "%Y-%m-%d %H:%M:%S"
+format_str = "%Y-%m-%d %H:%M:%S.%f"
 # var used for daily rewards
 daily = 3600 * 0.25
 
@@ -343,20 +343,32 @@ def affixtag(row):
         time.sleep( 1.5 )
         affixtag(row)
 
+# Returns time; True for string, None for datetime
+def TimeNow( type=False ):
+    if type:
+        return datetime.now().strftime( format_str )
+    else:
+        return datetime.now()
+
 # Return if given minutes passed since given time
 # Time should be in raw form
 def TimePassedBool( time, minutes ):
-    format_str = "%Y-%m-%d %H:%M:%S"
+    if isinstance(time, str):
+        time = datetime.strptime( time, format_str )
 
-    time = datetime.strptime(time, format_str)
-
-    timenow = datetime.strptime( datetime.now().strftime( format_str ), format_str )
+    timenow = TimeNow()
     minuteseconds = minutes * 60
     time_difference = (timenow - time).total_seconds()
 
     return time_difference >= minuteseconds
 
-def ReturnTimeUntil( time1, time2 ):
+# Return time in hours/minutes/seconds until specified DATE
+# Only used for dailies, and has hardcoded daily var
+def ReturnTimeUntil( time1 ):
+    if isinstance(time1, str):
+        time1 = datetime.strptime( time1, format_str )
+    time2 = TimeNow()
+
     soondate = int(float( (( time1 + timedelta( seconds=daily) ) - time2).total_seconds() ))
     # Formatting seconds for dialogue
     if soondate >= 3600:
@@ -371,6 +383,18 @@ def ReturnTimeUntil( time1, time2 ):
 
     return [amount, nominal]
         
+# Return amount of prefixes in cat
+def ReturnPram( cat ):
+    prefixes = cat.strip().split(' ')
+    prefixes.pop( len(prefixes ) - 1 )
+    return len(prefixes)
+
+# Delete given amount of items from index row
+def InvDelete(index, count):
+    inventory[index][1] -= count
+    # If sold all, delete
+    if inventory[ index [1] ] == 0:
+        inventory.pop( index )
 
 #/----------------------------/
 # DATA TABLES

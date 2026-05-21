@@ -1,11 +1,25 @@
 [
     {
-        "name": "Cowardly Kitty",
-        "hp": 18,
-        "att": 2,
-        "de": 7,
+        "name": "Infected Kitty",
+        "hp": -35,
+        "att": 8,
+        "de": 5,
         "sp": 1,
-        "acc": 11,
+        "acc": 29,
+        "skills": [
+            "Lick",
+            "Flicker"
+        ],
+        "tempo": 1,
+        "defeated": true
+    },
+    {
+        "name": "Iterative Kitty",
+        "hp": 95,
+        "att": 15,
+        "de": 5,
+        "sp": 1,
+        "acc": 26,
         "skills": [
             "Lick"
         ],
@@ -13,131 +27,120 @@
         "defeated": false
     },
     {
-        "name": "Dancing Kitty",
-        "hp": -28,
-        "att": 1,
-        "de": -9,
+        "name": "Polish Kitty",
+        "hp": 143,
+        "att": 14,
+        "de": 5,
         "sp": 1,
-        "acc": -10,
+        "acc": -4,
         "skills": [
-            "Pounce"
+            "Flicker"
         ],
         "tempo": 1,
         "defeated": false
     },
     {
-        "name": "Short Kitty",
-        "hp": 34,
-        "att": -5,
-        "de": -8,
+        "name": "Dumb Kitty",
+        "hp": 131,
+        "att": 9,
+        "de": 3,
         "sp": 1,
-        "acc": -3,
+        "acc": -6,
         "skills": [
-            "Pounce"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Dancing Kitty",
-        "hp": 7,
-        "att": 1,
-        "de": 6,
-        "sp": 1,
-        "acc": 4,
-        "skills": [
-            "Flicker",
             "Swipe"
         ],
         "tempo": 1,
         "defeated": false
     },
     {
-        "name": "Modern Draconic Kitty",
-        "hp": 122,
-        "att": 18,
-        "de": -5,
-        "sp": 1,
-        "acc": 1,
-        "skills": [
-            "Scratch",
-            "Pounce"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Therapeutic Woozy Kitty",
-        "hp": 102,
-        "att": 20,
-        "de": 13,
-        "sp": 1,
-        "acc": 18,
-        "skills": [
-            "Flicker",
-            "Tear"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Iterative Broken Kitty",
-        "hp": 80,
+        "name": "Cowardly Poor Kitty",
+        "hp": 223,
         "att": 19,
-        "de": 9,
+        "de": 3,
         "sp": 1,
-        "acc": -1,
-        "skills": [
-            "Tear",
-            "Hiss"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Sharp Cute Dishonest Kitty",
-        "hp": 169,
-        "att": 35,
-        "de": 4,
-        "sp": 1,
-        "acc": 30,
+        "acc": 0,
         "skills": [
             "Swipe",
-            "Scratch",
-            "Pounce"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Generic Difficult Useless Kitty",
-        "hp": 236,
-        "att": 14,
-        "de": 5,
-        "sp": 1,
-        "acc": 27,
-        "skills": [
-            "Lick",
-            "Pounce",
             "Scratch"
         ],
         "tempo": 1,
         "defeated": false
     },
     {
-        "name": "Encrypted Unusual Loud Calamitous Kitty",
-        "hp": 277,
-        "att": 41,
-        "de": 8,
+        "name": "Typical Cassie Kitty",
+        "hp": 173,
+        "att": 25,
+        "de": 11,
         "sp": 1,
-        "acc": 9,
+        "acc": 17,
         "skills": [
-            "Tear",
-            "Scratch",
-            "Scratch",
-            "Hiss"
+            "Hiss",
+            "Lick"
         ],
         "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Innovative Easy Kitty",
+        "hp": 179,
+        "att": 21,
+        "de": 8,
+        "sp": 1,
+        "acc": 38,
+        "skills": [
+            "Pounce",
+            "Lick",
+            "Pounce"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Strong Angry Plastic Kitty",
+        "hp": 312,
+        "att": 49,
+        "de": 17,
+        "sp": 1,
+        "acc": 44,
+        "skills": [
+            "Pounce",
+            "Swipe",
+            "Hiss",
+            "Tear",
+            "Lick"
+        ],
+        "tempo": 1,
+        "defeated": false
+    },
+    {
+        "name": "Poor Support Right Kitty",
+        "hp": 281,
+        "att": 30,
+        "de": 17,
+        "sp": 2,
+        "acc": 24,
+        "skills": [
+            "Pounce",
+            "Swipe",
+            "Scratch"
+        ],
+        "tempo": 2,
+        "defeated": false
+    },
+    {
+        "name": "Rusty Small German Generic Kitty",
+        "hp": 404,
+        "att": 27,
+        "de": 18,
+        "sp": 3,
+        "acc": 39,
+        "skills": [
+            "Scratch",
+            "Scratch",
+            "Lick",
+            "Lick"
+        ],
+        "tempo": 3,
         "defeated": false
     }
 ]

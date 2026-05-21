@@ -3,26 +3,4 @@ from datetime import datetime
 
 format_str = "%Y-%m-%d %H:%M:%S"
 
-def catbed():
-
-    plinput = input("Welcome to the cat bed! Sit down and rest with us :3 As your mind clears, you get some Credits!")
-
-    match plinput:
-        case "exit" | "e": return
-        case _: catbedrun()
-
-
-def catbedrun():
-    timestart = datetime.now()
-    input("Slow purrs...")
-    timeend = datetime.now()
-
-    timedif = (timeend - timestart).total_seconds()
-
-    if timedif > 1799:
-        input("Oh, you seem to have overslept...")
-    else:
-        credits = max(1, int( timedif*2 ) )
-        input(f"Thank you for spending time with us! You get {credits} Credits :3")
-
-catbed()
+print( datetime.now().strftime( format_str ))
