@@ -1,293 +1,57 @@
-Kitty|12|1
-Wise Expensive Easy Wrong Kitty|1|2
-Wet Dry Kitty|1|3
-Generic Polite Useless Kitty|1|4
-Iterative Formless Kitty|1|5
-Titanium Woozy Kitty|1|6
-Right Healer Kitty|1|7
-Stupid Wrong Kitty|1|8
-Full Warrior Kitty|1|9
-Ancient Broken Generic Kitty|1|10
-p<0.05 Infected Kitty|1|11
-Shapeless Soft Kitty|1|12
-Godly Small Kitty|1|13
-Scalable Encrypted Kitty|1|14
-Dull Cheap Kitty|1|15
-Abstract Brave Kitty|1|16
-Virtual Noisy Kitty|1|17
-Healer Polish Kitty|1|18
-Asynchronous Merry Kitty|1|19
-Feathered Auric Honest Kitty|1|20
-Full Shattered Kitty|1|21
-Executable Big Cookie Kitty|1|22
-Slow Galvanized Kitty|1|23
-Sick Hungry Kitty|1|24
-Patriotic Quick Kitty|1|25
-Shitty Healthy Kitty|1|26
-Algorithmic Wise Kitty|1|27
-Abstract Complex Kitty|1|28
-Difficult Galvanized Kitty|1|29
-Profaned Supreme Kitty|1|30
-Temporal Honest Recursive Kitty|1|31
-Dynamic Strong Kitty|1|32
-Clever Useless Kitty|1|33
-Encrypted Furry Kitty|1|34
-Dangerous Exciting Kitty|1|35
-Recursive Encrypted Healthy Kitty|1|36
-Furry Shitty Kitty|1|37
-Titanium Dynamic Kitty|1|38
-Titanium Archer Kitty|1|39
-Dirty Temporal Kitty|1|40
-Quiet Adorable Kitty|1|41
-Sad Typical Kitty|1|42
-Formless World-Ending Kitty|1|43
-Formulaic Intemporal Kitty|1|44
-Lubinian p<0.05 Kitty|1|45
-Perseverant Cowardly Kitty|1|46
-Preposterous Calm Kitty|1|47
-Lubinian Stupid Kitty|1|48
-Angry Calamitous Kitty|1|49
-Virtual Intemporal Kitty|1|50
-Calamitous Honest Kitty|1|51
-Wrong Interesting Kitty|1|52
-Virtual Dynamic Useless Kitty|1|53
-Cold Formless Kitty|1|54
-Useless Profaned Kitty|1|55
-Healthy Right Kitty|1|56
-Scary Optimized Kitty|1|57
-Dumb Asynchronous Kitty|1|58
-Unreal Tall Kitty|1|59
-Expensive Expensive Kitty|1|60
-Hungry Calm Kitty|1|61
-Dangerous Cassie Cowardly Kitty|1|62
-Weak Infected Kitty|1|63
-Pix Foolish Pathetic Kitty|1|64
-Foolish Cowardly Kitty|1|65
-Thin Woozy Kitty|1|66
-Cheap Ironic Stupid Kitty|1|67
-Typical Dishonest Kitty|1|68
-Annoying Purring Kitty|1|69
-Rich Furry Brilliant Kitty|1|70
-Hard High Kitty|1|71
-Ugly Galvanized Kitty|1|72
-Cute Healer Kitty|1|73
-Thin Brilliant Kitty|1|74
-Small Calico Kitty|1|75
-Heavy Noisy Kitty|1|76
-Exciting Woozy Kitty|1|77
-False Clever Kitty|1|78
-Dangerous Archer Kitty|1|79
-Intemporal Small Kitty|1|80
-Sick Dry Cheap Kitty|1|81
-Dancing Temporal Kitty|1|82
-Adorable Algorithmic Kitty|1|83
-Ancient Scalable Kitty|1|84
-Happy Simple Kitty|1|85
-Open Algorithmic Kitty|1|86
-Synthetic American Kitty|1|87
-Unreal World-Ending Kitty|1|88
-Brave Cheap Recursive Kitty|1|89
-Galvanized Unreal Therian Kitty|1|90
-Clean Calico Kitty|1|91
-Woozy Kitty|2|92
-Draconic Kitty|3|93
-Annoying Kitty|2|94
-Hard Kitty|2|95
-Snuggly Kitty|6|96
-Optimized Kitty|1|97
-Quick Kitty|1|98
-Dumb Kitty|1|99
-Cute Kitty|2|100
-Support Kitty|4|101
-Polish Kitty|4|102
-Rude Kitty|3|103
-Intemporal Kitty|3|104
-p<0.05 Kitty|5|105
-Dirty Kitty|2|106
-Unreal Kitty|3|107
-Sharp Kitty|3|108
-Foolish Kitty|2|109
-Ascended Kitty|1|110
-Cheap Kitty|1|111
-Abstract Kitty|4|112
-Dynamic Kitty|3|113
-Cookie Kitty|4|114
-Drugged Kitty|2|115
-Scalable Kitty|3|116
-Exciting Kitty|1|117
-Rusty Kitty|1|118
-Short Kitty|2|119
-Dangerous Kitty|2|120
-Mythril Kitty|1|121
-Common Kitty|1|122
-Stoner Kitty|3|123
-Refactored Kitty|3|124
-Dark Kitty|2|125
-Dishonest Kitty|4|126
-Generous Kitty|2|127
-Slow Kitty|3|128
-Warrior Kitty|2|129
-Thick Kitty|4|130
-Stingy Kitty|3|131
-Auric Kitty|2|132
-Synthetic Kitty|4|133
-Merry Kitty|1|134
-Cold Kitty|1|135
-Stinky Kitty|1|136
-Wise Kitty|2|137
-Efficient Happy Kitty|1|138
-Healer Kitty|3|139
-Sick Kitty|3|140
-Iterative Kitty|2|141
-Cobalt Kitty|5|142
-Iron Kitty|4|143
-Calamitous Kitty|3|144
-Therian Kitty|2|145
-Wet Kitty|4|146
-Brilliant Kitty|3|147
-True Kitty|2|148
-Feathered Kitty|2|149
-Calamitous World-Ending Kitty|1|150
-Coding Kitty|1|151
-Purring Kitty|2|152
-Meow Kitty|4|153
-Thin Kitty|3|154
-Furry Kitty|3|155
-Lubinian Kitty|1|156
-Shapeless Kitty|3|157
-Kind Kitty|3|158
-Old Kitty|4|159
-Vishunei Kitty|4|160
-American Kitty|3|161
-Closed Kitty|2|162
-Tall Kitty|2|163
-Cubed Kitty|2|164
-Polite Kitty|3|165
-Bright Kitty|4|166
-Innovative Kitty|1|167
-Calm Kitty|3|168
-Cassie Kitty|2|169
-Executable Kitty|2|170
-Weak Kitty|3|171
-Feline Kitty|2|172
-Modular Kitty|2|173
-Cruel Kitty|2|174
-Happy Kitty|3|175
-Sad Pathetic Kitty|1|176
-Virtual Kitty|2|177
-Robotic Kitty|2|178
-Galvanized Kitty|1|179
-Ranger Kitty|1|180
-Useless Kitty|3|181
-Sphynx Kitty|1|182
-Supreme Kitty|2|183
-Terrarian Kitty|2|184
-Strong Kitty|2|185
-Beautiful Kitty|2|186
-Meowing Kitty|2|187
-Honest Kitty|2|188
-Preposterous Kitty|2|189
-Encrypted Kitty|1|190
-Ancient Kitty|1|191
-Heavy Kitty|2|192
-Scary Kitty|3|193
-Infected Kitty|1|194
-Quiet Kitty|4|195
-Sarcastic Kitty|4|196
-Mythril Closed Kitty|1|197
-Calico Kitty|3|198
-Algorithmic Kitty|2|199
-Full Kitty|3|200
-Godly Kitty|3|201
-Sad Kitty|1|202
-Wrong Kitty|1|203
-Calamitous Old Kitty|1|204
-Healthy Kitty|3|205
-Rich Kitty|2|206
-Recursive Kitty|3|207
-Kitty Kitty|3|208
-Open Kitty|1|209
-Angry Kitty|3|210
-Placeholder Kitty|2|211
-Interesting Kitty|1|212
-Mephedrone Kitty|1|213
-Right Kitty|3|214
-Cowardly Kitty|2|215
-Patriotic Kitty|2|216
-Hungry Kitty|1|217
-New Kitty|2|218
-High Kitty|2|219
-Collector's Kitty|5|220
-Broken Kitty|5|221
-Expensive Kitty|3|222
-Therapeutic Kitty|2|223
-Soft Kitty|2|224
-Interactive Kitty|3|225
-Sour Kitty|1|226
-Pix Kitty|1|227
-Sweet Kitty|1|228
-Useless Cubed Kitty|1|229
-Dull Kitty|1|230
-Perseverant Kitty|2|231
-Shitty Kitty|1|232
-Cookie Siberian Kitty|1|233
-Simple Kitty|2|234
-Clean Kitty|2|235
-Clever Kitty|2|236
-False Kitty|2|237
-Pathetic Kitty|2|238
-Poor Kitty|1|239
-Young Kitty|1|240
-Adorable Kitty|4|241
-Formless Kitty|6|242
-Loud Kitty|1|243
-Stoned Kitty|2|244
-Modern Kitty|2|245
-Typical Stingy Kitty|1|246
-Formless Temporal Kitty|1|247
-Ugly Kitty|1|248
-Hazy Kitty|1|249
-Responsive Kitty|1|250
-Rogue Kitty|1|251
-Siberian Kitty|1|252
-Iron Boring Kitty|1|253
-Collected Right Kitty|1|254
-Difficult Kitty|3|255
-Brave Kitty|2|256
-Noisy Kitty|1|257
-Thirsty Kitty|1|258
-False Calamitous Poor Kitty|1|259
-Archer Kitty|2|260
-Rich Rich Kitty|1|261
-Typical False Kitty|1|262
-Stupid Slow Kitty|1|263
-Slavic Kitty|1|264
-German Kitty|1|265
-Safe Kitty|1|266
-Shapeless Cowardly Kitty|1|267
-Small Kitty|1|268
-Ironic Kitty|1|269
-Wise Calm Kitty|1|270
-Generic Kitty|1|271
-Dry Kitty|2|272
-Asynchronous Kitty|1|273
-Lynxsie Kitty|1|274
-Typical Kitty|1|275
-Old Tall Kitty|1|276
-Psychological Kitty|1|277
-Unusual Kitty|1|278
-Fast Kitty|1|279
-Polite British Kitty|1|280
-Patriotic Scary Kitty|1|281
-Big Kitty|1|282
-British Kitty|1|283
-German Cookie Kitty|1|284
-Pix Cookie Kitty|1|285
-Collected Kitty|1|286
-Efficient Kitty|2|287
-Titanium Kitty|1|288
-Quiet Cruel Kitty|1|289
-Formulaic Kitty|1|290
-Complex Kitty|1|291
-Unusual Brave Kitty|1|292
-Hot Kitty|1|293
+Kitty|1|1
+Small Healthy Kitty|1|2
+Kitty Kitty|2|3
+American Kitty|1|4
+Feathered Kitty|1|5
+Sphynx Kitty|2|6
+Quiet Kitty|1|7
+Beautiful Kitty|1|8
+True Kitty|1|9
+Ascended Kitty|1|10
+Boring Kitty|1|11
+Hazy Kitty|2|12
+Modern Meow Kitty|1|13
+Merry Kitty|1|14
+Wise Kitty|1|15
+Light Kitty|1|16
+Recursive Kitty|1|17
+Small Kitty|2|18
+Cruel Kitty|1|19
+Cheap Kitty|1|20
+Feline Kitty|1|21
+Optimized False Kitty|1|22
+Thin Kitty|1|23
+Streamlined Kitty|1|24
+Common Kitty|1|25
+Ranger Kitty|1|26
+Exciting Kitty|2|27
+Modern Kitty|2|28
+Coding Warrior Kitty|1|29
+Iterative Kitty|2|30
+Pathetic Kitty|1|31
+Drugged Kitty|2|32
+German Kitty|1|33
+Poor Kitty|1|34
+Dirty Kitty|1|35
+Stupid Kitty|1|36
+Kitty Kind Kitty|1|37
+Simple Unreal Kitty|1|38
+Encrypted Kitty|1|39
+Brilliant Kitty|1|40
+Generous Kitty|1|41
+Adorable Kitty|1|42
+Lubinian Kitty|1|43
+Temporal Thin Kitty|1|44
+Warrior Kitty|1|45
+Godly Kitty|1|46
+Complex Kitty|1|47
+Rich Kitty|1|48
+Dry Kitty|1|49
+Efficient Kitty|1|50
+p<0.05 Scary Kitty|1|51
+Polish Kitty|1|52
+Expensive Kitty|1|53
+Sarcastic Kitty|1|54
+Therapeutic Pathetic Poor Kitty|1|55
+Unusual Tall Titanium Kitty|1|56
+Dishonest Sweet Scary Kitty|1|57

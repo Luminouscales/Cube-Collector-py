@@ -15,8 +15,12 @@
 
 damage and heal at the same time
 leech health
+give self speed (high lvl)
 
 
 
 
 *Increases Credits gained from victory
+
+
+There's too much defense creep in contrast to health

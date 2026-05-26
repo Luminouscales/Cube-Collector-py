@@ -70,8 +70,8 @@ def rollcat(name, friendly=True):
 
     # Incremental skill rolls
     while True:
-        numb = random.randint( 0, 100 ) + 5 * pram
-        if numb > 90:
+        numb = random.randint( 0, 100 ) + 10 * pram
+        if numb >= 90:
             kittyskills.append( allskills[ random.randint(0, len(allskills)-1)] )
         else:
             break
@@ -99,7 +99,7 @@ def rollcatenemies():
 
     enemies = []
 
-    for i in range( 10 ):
+    for i in range( 13 ):
         # 0-3: one prefix
         if i < 4:
             prefixes = 1
@@ -109,8 +109,14 @@ def rollcatenemies():
         # 7-8: three pref
         elif i < 9:
             prefixes = 3
-        else:
+        elif i == 9:
             prefixes = 4
+        elif i == 10:
+            prefixes = 5
+        elif i == 11:
+            prefixes = 6
+        else:
+            prefixes = 7
 
         name = rollname( prefixes )
         newenemy = rollcat( name, False )

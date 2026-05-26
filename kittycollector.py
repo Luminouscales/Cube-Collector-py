@@ -83,7 +83,7 @@ player_inputs = {
     "registry": inp_reg, "reg": inp_reg,
     "store": inp_store, "s": inp_store,
     "jobs": jobs,
-    "dailybox": dailybox,
+    "dailybox": dailybox, "db": dailybox,
     "treats": treatsrun, "tr": treatsrun,
     "meow": freecash,
     "gallery": gallery,

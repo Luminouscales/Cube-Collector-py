@@ -40,12 +40,12 @@ def dailybox():
     if eligible:
         print( "You open your daily box. It contains...")
         time.sleep( 2 )
-        randint = random.randint( 1, 100 )
-        match randint:
-            case randint if randint <= 2: # Affix tag drop
+        roll = random.randint( 1, 100 )
+        match roll:
+            case roll if roll <= 2: # Affix tag drop
                 print( "An Affix Tag!" )
                 d.additem( "Affix Tag", 1 )
-            case randint if randint < 25:
+            case roll if roll < 25:
 
                 treats1percent = 1000 # every amount of this increases 4pbox chance by +1%
                 treats1percentbonus = int(curtreats/treats1percent)
@@ -74,26 +74,26 @@ def dailybox():
                     d.additem( "Triple Prefixed Box", count3 )
                     print( f"{joiner2} Triple Prefixed Box{joiner}!" )
 
-            case randint if randint >= 25 and randint <= 100:
+            case roll if roll >= 25 and roll <= 100:
                 # 50% chance for treat tickets
                 if random.randint( 1, 2 ) == 1:
                     if curtreats < 2000:
-                        randint = random.randint( 200, 2000 )
-                        print( f"{randint} credits!" )
-                        d.addcredits( randint )
+                        roll = random.randint( 200, 2000 )
+                        print( f"{roll} credits!" )
+                        d.addcredits( roll )
                     else:
-                        randint = random.randint( curtreats/10, curtreats/4)
-                        print( f"{randint} credits!" )
-                        d.addcredits( randint )
+                        roll = random.randint( int(curtreats/10), int(curtreats/4))
+                        print( f"{roll} credits!" )
+                        d.addcredits( roll )
                 else:
                     if curtreats < 2000:
-                        randint = random.randint( 5, 20 )
-                        print( f"{randint} Treat Tickets!" )
-                        d.additem( "Treat Ticket", randint )
+                        roll = random.randint( 5, 20 )
+                        print( f"{roll} Treat Tickets!" )
+                        d.additem( "Treat Ticket", roll )
                     else:
-                        randint = random.randint( math.floor(curtreats/200), math.floor(curtreats/100) )
-                        print( f"{randint} Treat Tickets!" )
-                        d.additem( "Treat Ticket", randint )
+                        roll = random.randint( int(curtreats/200), int(curtreats/100) )
+                        print( f"{roll} Treat Tickets!" )
+                        d.additem( "Treat Ticket", roll )
         time.sleep( 3 )
     else:
         soondate = int(float((( date1 + timedelta( seconds=daily) ) - date2).total_seconds()))

@@ -52,7 +52,7 @@ def DoTurn( attacker, defender ):
     # EACH skill has a % chance of activating. First one to activate does that instead of basicattack
     skillproc = False
     for skill in attacker.skills:
-        if random.randint( 1, 100 ) < 20:
+        if random.randint( 1, 100 ) <= 20:
             Debug( f"SKILL: {skill}")
             RunSkill( skill, attacker, defender )
             skillproc = True
@@ -110,7 +110,7 @@ def skillTear(attacker, defender):
 
 # Flicker
 def skillFlicker(attacker, defender):
-    Logstack( f"{attacker.name} licks itself...")
+    Logstack( f"{attacker.name} flickers its fur...")
     if skill_hitchance( CalcAcc(attacker, defender) ):
         offset = random.randint( 5, 20 ) / 10
         DealDamage( attacker.name, defender, CalcDamage( attacker, defender, attboost=offset ) )

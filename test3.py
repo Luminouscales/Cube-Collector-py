@@ -1,2 +1,1 @@
-for i in range( 2 ):
-    print(i)
+print( int(1.5))

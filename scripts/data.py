@@ -393,7 +393,7 @@ def ReturnPram( cat ):
 def InvDelete(index, count):
     inventory[index][1] -= count
     # If sold all, delete
-    if inventory[ index [1] ] == 0:
+    if inventory[ index ][1] == 0:
         inventory.pop( index )
 
 #/----------------------------/
