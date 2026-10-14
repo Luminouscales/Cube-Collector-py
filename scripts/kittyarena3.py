@@ -8,8 +8,15 @@ def Debug( msg ):
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-class Cat:
-    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
+global logstack
+logstack = []
+
+#/----------------------------/
+# FUNCTIONS
+#/----------------------------/
+
+class CatFighter:
+    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, maxhp):
         self.name = name
         self.hp = hp
         self.att = att
@@ -17,15 +24,8 @@ class Cat:
         self.sp = sp
         self.acc = acc
         self.skills = skills
-        self.tempo = tempo
-        self.defeated = defeated
-
-global logstack
-logstack = []
-
-#/----------------------------/
-# FUNCTIONS
-#/----------------------------/
+        self.tempo = sp
+        self.maxhp = hp
 
 def leaderboard():
     global kitty1
@@ -119,8 +119,9 @@ def skillFlicker(attacker, defender):
 
 # Lick
 def skillLick(attacker):
+    
     Logstack( f"{attacker.name} licks itself...")
-    HealTarget( attacker, int(attacker.hp/10))
+    HealTarget( attacker, int(attacker.maxhp/5))
 
 # Pounce
 def skillPounce( attacker, defender ):
@@ -177,9 +178,15 @@ def CalcAcc(attacker, defender, force=False):
 def DealDamage( attacker, target, damage ):
     global logstack
     global battle
+    text = f"{attacker} dealt {damage} damage"
+    #if random.randint( 1, 100 ) <= int( attacker.acc / 2 ):
+      #  damage *= 3
+       # text = f"CRIT - {attacker} dealt {damage} damage"
+
     target.hp -= damage
     Debug( f"TOOK DAMAGE: {target.name}")
-    Logstack( f"{attacker} dealt {damage} damage" )
+
+    Logstack( text )
     if target.hp < 1:
         input("battle end")
         battle = False
@@ -221,8 +228,8 @@ def startfight( c1, c2 ):
     global kitty2
     global logstack
 
-    kitty1 = c1
-    kitty2 = c2
+    kitty1 = CatFighter( c1.name, c1.hp, c1.att, c1.de, c1.sp, c1.acc, c1.skills, c1.sp, c1.hp )
+    kitty2 = CatFighter( c2.name, c2.hp, c2.att, c2.de, c2.sp, c2.acc, c2.skills, c2.sp, c2.hp )
 
     global battle
     battle = True

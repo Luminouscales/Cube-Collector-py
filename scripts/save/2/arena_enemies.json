@@ -1,0 +1,186 @@
+[
+    {
+        "name": "Evil Kitty",
+        "hp": 108,
+        "att": 24,
+        "de": 7,
+        "sp": 1,
+        "acc": 4,
+        "skills": [
+            "Flicker"
+        ],
+        "defeated": true
+    },
+    {
+        "name": "Hard Kitty",
+        "hp": 50,
+        "att": 17,
+        "de": 8,
+        "sp": 1,
+        "acc": 29,
+        "skills": [
+            "Tear"
+        ],
+        "defeated": true
+    },
+    {
+        "name": "Cookie Kitty",
+        "hp": 145,
+        "att": 15,
+        "de": 6,
+        "sp": 1,
+        "acc": 2,
+        "skills": [
+            "Hiss"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Encrypted Kitty",
+        "hp": 99,
+        "att": 19,
+        "de": 8,
+        "sp": 1,
+        "acc": 23,
+        "skills": [
+            "Pounce"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Sad Young Kitty",
+        "hp": 147,
+        "att": 21,
+        "de": 8,
+        "sp": 1,
+        "acc": 34,
+        "skills": [
+            "Hiss",
+            "Hiss"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Cowardly Stoner Kitty",
+        "hp": 210,
+        "att": 18,
+        "de": 8,
+        "sp": 1,
+        "acc": 39,
+        "skills": [
+            "Lick",
+            "Swipe"
+        ],
+        "defeated": true
+    },
+    {
+        "name": "Auric Quiet Kitty",
+        "hp": 260,
+        "att": 33,
+        "de": 20,
+        "sp": 1,
+        "acc": 2,
+        "skills": [
+            "Lick",
+            "Swipe"
+        ],
+        "defeated": true
+    },
+    {
+        "name": "Collector's Iterative Full Kitty",
+        "hp": 343,
+        "att": 36,
+        "de": 17,
+        "sp": 1,
+        "acc": 31,
+        "skills": [
+            "Lick",
+            "Lick",
+            "Swipe"
+        ],
+        "defeated": true
+    },
+    {
+        "name": "Refactored Ascended British Kitty",
+        "hp": 301,
+        "att": 44,
+        "de": 23,
+        "sp": 4,
+        "acc": 28,
+        "skills": [
+            "Swipe",
+            "Flicker",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Furry p<0.05 Short Open Kitty",
+        "hp": 385,
+        "att": 37,
+        "de": 21,
+        "sp": 2,
+        "acc": 45,
+        "skills": [
+            "Tear",
+            "Flicker",
+            "Lick",
+            "Scratch"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Sphynx Shitty Complex Dancing Happy Kitty",
+        "hp": 517,
+        "att": 57,
+        "de": 21,
+        "sp": 2,
+        "acc": 36,
+        "skills": [
+            "Swipe",
+            "Pounce",
+            "Scratch",
+            "Scratch",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Sweet Easy Simple Hard German Dirty Kitty",
+        "hp": 589,
+        "att": 66,
+        "de": 36,
+        "sp": 1,
+        "acc": 50,
+        "skills": [
+            "Lick",
+            "Hiss",
+            "Swipe",
+            "Hiss",
+            "Scratch",
+            "Scratch"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Calamitous Heavy Calamitous True Virtual Efficient Big Kitty",
+        "hp": 725,
+        "att": 142,
+        "de": 16,
+        "sp": 1,
+        "acc": 7,
+        "skills": [
+            "Scratch",
+            "Swipe",
+            "Flicker",
+            "Flicker",
+            "Lick",
+            "Pounce",
+            "Swipe",
+            "Swipe",
+            "Pounce",
+            "Pounce"
+        ],
+        "defeated": false
+    }
+]

@@ -17,32 +17,8 @@ import os, json, math
 inventory = d.inventory
 global loaded_cats
 
-catdir = "scripts/save/arena_cats.json"
-endir = "scripts/save/arena_enemies.json"
-
-class Cat:
-    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
-        self.name = name
-        self.hp = hp
-        self.att = att
-        self.de = de
-        self.sp = sp
-        self.acc = acc
-        self.skills = skills
-        self.tempo = tempo
-        self.defeated = defeated
-
-class CatEnemy:
-    def __init__(self, name, hp, att, de, sp, acc, skills, tempo, defeated):
-        self.name = name
-        self.hp = hp
-        self.att = att
-        self.de = de
-        self.sp = sp
-        self.acc = acc
-        self.skills = skills
-        self.tempo = tempo
-        self.defeated = defeated
+catdir = d.savepath + "/arena_cats.json"
+endir = d.savepath + "/arena_enemies.json"
 
 def maincat():
     print("          _W        W_")
@@ -60,56 +36,52 @@ def maincat():
 
 def arenarun():
     global loaded_cats
+    global enemy_cats
 
     while True:
-
         f.clear()
-
         maincat()
-
-        print("FIXME arena text")
-        print("List of fighters, active/time of recovery")
-        print("Enemy list")
         print("use, exit, enemies")
 
+        # Load ally cats if any
+        if os.path.exists(catdir):
+            with open(catdir, "r") as file:
+                data = json.load( file )
+                global loaded_cats
+                loaded_cats = [d.Cat(**cat_data) for cat_data in data]
+            savecats(True)
+
+        if os.path.exists(endir):
+            with open(endir, "r") as file:
+                data = json.load( file )
+            enemy_cats = [d.Cat(**cat_data) for cat_data in data]
+            savecats(False,True)
+
         # Check if to refresh (roll new enemies, heal ally):
-        if d.TimePassedBool( d.dates[4][1], 15 ) or os.path.exists(endir) == False:
+        if d.TimePassedBool( d.dates[4][1], 15 ) or not os.path.exists(endir):
             r.rollcatenemies()
+            with open(endir, "r") as file:
+                data = json.load( file )
+            enemy_cats = [d.Cat(**cat_data) for cat_data in data]
+            savecats(False,True)
             d.dates[4][1] = d.TimeNow()
             d.savetime()
 
             # Refresh all ally cats
             if os.path.exists(catdir):
-                with open(catdir, "r") as file:
-                    data = json.load( file )
-                    loaded_cats = [Cat(**cat_data) for cat_data in data]
                 for cat in loaded_cats:
                     cat.defeated = False
-                
+                savecats(True)
 
         # Read new enemies
         times = d.ReturnTimeUntil( d.dates[4][1] )
         print(f"Time until reset: {times[0]} {times[1]}")
 
-        with open(endir, "r") as file:
-            data = json.load( file )
-        global enemy_cats
-        enemy_cats = [CatEnemy(**cat_data) for cat_data in data]
-        saveall()
-
-        
-
         # Print list of available cats
-        if os.path.exists(catdir) == False:
+        if not os.path.exists(catdir):
             loaded_cats = []
             print("FIXME no cats")
-            saveall()
         else:
-            with open(catdir, "r") as file:
-                data = json.load( file )
-            loaded_cats = [Cat(**cat_data) for cat_data in data]
-            saveall()
-
             i = 0
             for cat in loaded_cats:
                 i += 1
@@ -164,7 +136,7 @@ def gladiatecat(name):
 
     loaded_cats.append( fullcat )
 
-    saveall()
+    savecats(True)
 
 def tryfight():
     global enemy_cats
@@ -177,13 +149,6 @@ def tryfight():
     playercat = loaded_cats[player-1]
     enemycat = enemy_cats[ enemy-1 ]
 
-    hpsave1 = playercat.hp
-    tpsave1 = playercat.tempo
-    attsave1 = playercat.att
-    hpsave2 = enemycat.hp
-    tpsave2 = enemycat.tempo
-    attsave2 = enemycat.att
-
     # Don't let fight if one cat is defeated
     if playercat.defeated or enemycat.defeated:
         input("one cat is unavailable")
@@ -191,52 +156,44 @@ def tryfight():
         import scripts.kittyarena3
         # If True: your cat won, else lost
         if scripts.kittyarena3.startfight( playercat, enemycat ):
-            playercat.hp = hpsave1
-            playercat.tempo = tpsave1
-            playercat.att = attsave1
-            enemycat.hp = hpsave2
-            enemycat.tempo = tpsave2
-            enemycat.att = attsave2
 
             prefixes = enemycat.name.strip().split(' ')
             prefixes.pop( len(prefixes ) - 1 )
-            pram = len(prefixes)
+            pram = d.ReturnPram( enemycat.name )
 
             match pram:
                 case 1: credits = 250
-                case 2: credits = 1000
-                case 3: credits = 2500
-                case 4: credits = 7500
+                case 2: credits = 500
+                case 3: credits = 1000
+                case 4: credits = 4000
+
+            credits = int( ( credits + int(d.dates[2][1])/100 ) * ( pram / d.ReturnPram( playercat.name ) ) )
 
             # Set enemy as defeated
             enemy_cats[ enemy-1 ].defeated = True
-            saveall()
+            savecats(True, True)
 
             input( f"your cat won {credits} credits" )
             d.addcredits( credits )
 
         else:
-            playercat.hp = hpsave1
-            playercat.tempo = tpsave1
-            playercat.att = attsave1
-            enemycat.hp = hpsave2
-            enemycat.tempo = tpsave2
-            enemycat.att = attsave2
-
             loaded_cats[player-1].defeated = True
-            saveall()
+            savecats(True, True)
             input("your cat lost")
 
-def saveall():
+
+# Save cached cats (ally/enemy or both) to json
+def savecats(ally=False, enemy=False):
     global loaded_cats
     global enemy_cats
 
-    if len(loaded_cats) > 0:
+    if ally:
         with open(catdir, "w") as f:
             json.dump([cat.__dict__ for cat in loaded_cats], f, indent=4)
 
-    with open(endir, "w") as f:
-        json.dump([cat.__dict__ for cat in enemy_cats], f, indent=4)
+    if enemy:
+        with open(endir, "w") as f:
+            json.dump([cat.__dict__ for cat in enemy_cats], f, indent=4)
 
 
 # Enemies tab. Display time until reset, given enemies
@@ -260,9 +217,3 @@ def hub_enemies():
         match plinput:
             case "exit" | "e": return
             case "fight": tryfight()
-
-
-
-# FIXME
-# Clean up code
-# Wierd qol bugs

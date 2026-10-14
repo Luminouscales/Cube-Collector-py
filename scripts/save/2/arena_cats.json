@@ -1,0 +1,28 @@
+[
+    {
+        "name": "Ascended Formulaic Kitty",
+        "hp": 248,
+        "att": 36,
+        "de": 15,
+        "sp": 4,
+        "acc": 28,
+        "skills": [
+            "Lick",
+            "Hiss"
+        ],
+        "defeated": true
+    },
+    {
+        "name": "Temporal Dangerous Kitty",
+        "hp": 172,
+        "att": 38,
+        "de": 11,
+        "sp": 3,
+        "acc": 23,
+        "skills": [
+            "Flicker",
+            "Scratch"
+        ],
+        "defeated": true
+    }
+]

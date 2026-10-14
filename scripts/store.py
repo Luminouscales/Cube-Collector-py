@@ -70,7 +70,7 @@ def inp_store_buy_count( pl_input ):
         price = pl_input * store_prices[ setcube ]
         price = int(price)
         locinput = input( str(pl_input) + " of " + setcube + " costs " + str( price ) + " credits. [buy or exit] " )
-        if locinput == "buy":
+        if locinput in {"buy", "b"}:
             if cash >= price:
                 # Add to inv; name and amount; remove cash
                 d.addcredits( -price )

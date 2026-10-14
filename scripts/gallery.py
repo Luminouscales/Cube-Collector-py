@@ -4,7 +4,10 @@ import scripts.data as d
 import scripts.inventory as inv
 import scripts.funcs as f
 
-gallerypath = d.savepath + "gallery.txt"
+gallerypath = d.savepath + "/gallery.txt"
+
+
+global gallery
 
 gallery = []
 with open( gallerypath, 'r' ) as file:

@@ -19,7 +19,7 @@ inventory = d.inventory
 dialogue = [ "Whew! Nothing quite gets me going like sweat soaking my fur. A Prefixsmith never really gets used to the heat.", 
     "All in a day's work! Could you fetch some milk from the fridge? Yes, it's on the house!",
     "...why, of course! The process could never work if the cats didn't want to comply in the first place.",
-    "A reforged cat is always compatible with its... sum elements, even if it take some time for them to adjust.",
+    "A reforged cat is always compatible with its... sum elements, even if it takes some time for them to adjust.",
     "Hey, never ask a lady cat her prefixes! But if you really wanna know... I've had about a thousand. Impressive, right?",
     "Dude, have they reopened the Colosseum yet? I wanna test some of my kitties - better yet, fix my own highscore!",
     ]

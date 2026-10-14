@@ -2,6 +2,7 @@
 
 import random, os
 import scripts.funcs as f
+import scripts.data as d
 import scripts.gallery as gal
 
 verdate = "23.04.2026"
@@ -111,9 +112,8 @@ print(flavtext[0])
 
 # Input def for main inputs
 def inputs1( player_input ):
-    player_input = player_input.lower() # .lower() for ignoring capitalisation
+    player_input = player_input.lower()
     if player_input in player_inputs:
-        # Check if it's inventory to apply its bool correctly
         player_inputs[player_input]()
     else:
         player_input = inputs1( input("Meow, I don't get what you're saying... ") )

@@ -1,0 +1,198 @@
+[
+    {
+        "name": "Poor Kitty",
+        "hp": 105,
+        "att": 20,
+        "de": 8,
+        "sp": 1,
+        "acc": 4,
+        "skills": [
+            "Hiss"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Evil Kitty",
+        "hp": 143,
+        "att": 13,
+        "de": 2,
+        "sp": 1,
+        "acc": 12,
+        "skills": [
+            "Tear"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Heavy Kitty",
+        "hp": 62,
+        "att": 19,
+        "de": 8,
+        "sp": 1,
+        "acc": 28,
+        "skills": [
+            "Flicker"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Cowardly Kitty",
+        "hp": 71,
+        "att": 11,
+        "de": 2,
+        "sp": 1,
+        "acc": 24,
+        "skills": [
+            "Pounce",
+            "Swipe"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Titanium Therapeutic Kitty",
+        "hp": 173,
+        "att": 22,
+        "de": 14,
+        "sp": 4,
+        "acc": 21,
+        "skills": [
+            "Swipe",
+            "Tear"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Slow Purring Kitty",
+        "hp": 209,
+        "att": 17,
+        "de": 11,
+        "sp": 1,
+        "acc": 32,
+        "skills": [
+            "Flicker",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Iron Bright Kitty",
+        "hp": 214,
+        "att": 21,
+        "de": 10,
+        "sp": 2,
+        "acc": 27,
+        "skills": [
+            "Tear",
+            "Pounce"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Streamlined Rude Dangerous Kitty",
+        "hp": 276,
+        "att": 47,
+        "de": 16,
+        "sp": 4,
+        "acc": 24,
+        "skills": [
+            "Swipe",
+            "Swipe",
+            "Lick",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Rude Auric Coding Kitty",
+        "hp": 308,
+        "att": 43,
+        "de": 22,
+        "sp": 1,
+        "acc": 15,
+        "skills": [
+            "Swipe",
+            "Scratch",
+            "Flicker"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Foolish Godly Sick Thick Kitty",
+        "hp": 408,
+        "att": 51,
+        "de": 30,
+        "sp": 1,
+        "acc": 52,
+        "skills": [
+            "Scratch",
+            "Flicker",
+            "Scratch",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Cruel Wrong False Useless Right Kitty",
+        "hp": 516,
+        "att": 58,
+        "de": 19,
+        "sp": 1,
+        "acc": 63,
+        "skills": [
+            "Pounce",
+            "Scratch",
+            "Scratch",
+            "Hiss",
+            "Scratch"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Perseverant Useless Open Healer Encrypted False Kitty",
+        "hp": 600,
+        "att": 54,
+        "de": 36,
+        "sp": 1,
+        "acc": 39,
+        "skills": [
+            "Lick",
+            "Pounce",
+            "Flicker",
+            "Swipe",
+            "Tear",
+            "Hiss",
+            "Pounce",
+            "Flicker",
+            "Swipe",
+            "Hiss",
+            "Hiss",
+            "Tear",
+            "Tear"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Vishunei Full Cobalt Responsive Sphynx Stoned Synthetic Kitty",
+        "hp": 677,
+        "att": 69,
+        "de": 44,
+        "sp": 1,
+        "acc": 87,
+        "skills": [
+            "Hiss",
+            "Scratch",
+            "Lick",
+            "Pounce",
+            "Tear",
+            "Lick",
+            "Hiss",
+            "Flicker",
+            "Pounce",
+            "Tear",
+            "Scratch",
+            "Tear",
+            "Swipe"
+        ],
+        "defeated": false
+    }
+]

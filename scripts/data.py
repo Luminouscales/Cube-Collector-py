@@ -4,19 +4,88 @@
 import os, sys, random, time, math
 from datetime import datetime, timedelta
 
-selfpath = os.path.dirname(sys.argv[0]) + "/scripts/"
-savepath = selfpath + "/save/"
-inventorypath = selfpath + "save/inventory.txt"
-registrypath = selfpath + "save/registry.txt"
-timepath = selfpath + "save/time.txt"
+global savepath
+savepath = os.path.dirname(sys.argv[0]) + "/scripts/save/"
+selfpath = os.path.dirname(sys.argv[0]) + "/scripts/save/"
+contentpath = os.path.dirname(sys.argv[0]) + "/scripts/content/"
+
+#/----------------------------/
+# DATA IO
+#/----------------------------/
+
+# Make a brand new save file
+def NewInit(savename=1):
+    global savenum
+    global savepath
+    savenum = savename
+    savenum = str(savenum)
+    newpath = savepath + savenum + "/"
+    savepath = newpath
+
+    os.makedirs( newpath )
+
+    # Inventory
+    with open( newpath + "inventory.txt", "w" ) as file:
+        file.write( "Credits|100" + "\n" )
+
+    # Reg
+    with open(newpath + "registry.txt","w") as file:
+        file.write("Kitty|1|1" + "\n")
+
+    # Time
+    timedefault = [ "setup|2026-03-02 05:03:12", "dailybox|2026-06-02 22:13:32", "treats|0", "treatsdaily|2026-06-02 22:13:39", "arenarefresh|2026-06-08 09:04:13.723501"]
+    
+    with open( newpath + "time.txt", "w" ) as file:
+        for val in timedefault:
+            file.write(val + "\n")
+
+    # Gallery
+    with open( newpath + "gallery.txt", "w" ) as file:
+        file.write("Testcat\n")
+
+# Let choose or create save file on startup
+def SaveStartup():
+    global savenum
+    global savepath
+
+    # Get list of all savefiles 
+    folders = [
+        name
+        for name in os.listdir(savepath)
+        if os.path.isdir(os.path.join(savepath, name))
+    ]
+
+    # If there's no savefiles at all, create new
+    savesint = len(folders)
+
+    if savesint == 0:
+        NewInit()
+    else:
+        print("Pick save or type new save name\n")
+        for folder in folders:
+            print( folder )
+        print("\n")
+
+        pick = input("")
+        if pick not in folders:
+            NewInit(pick)
+        else:
+            savenum = pick
+            savepath = savepath + savenum
+
+SaveStartup()
+
+
+# Save number
+inventorypath = savepath + "/inventory.txt"
+registrypath = savepath + "/registry.txt"
+timepath = savepath + "/time.txt"
 limit = 20 # For inv/reg pages; how many items per page? 20 fits snugly in normal terminal size
 format_str = "%Y-%m-%d %H:%M:%S.%f"
 # var used for daily rewards
 daily = 3600 * 0.25
 
-#/----------------------------/
-# DATA IO
-#/----------------------------/
+
 # Read the inventory and output it into the "inventory" var
 inventory = []
 if os.path.exists(inventorypath):
@@ -71,13 +140,13 @@ def savereg():
             file.write( row_str + '\n')
 
 # Import list of prefixes
-with open( selfpath + "content/prefixes.txt", 'r' ) as file:
+with open( contentpath + "/prefixes.txt", 'r' ) as file:
     lines = file.readlines()
     prefixtable = [line.strip() for line in lines]
     prefixmax = len(prefixtable) - 1
 
 # Import affixes
-with open( selfpath + "content/affixes.txt", 'r' ) as file:
+with open( contentpath + "/affixes.txt", 'r' ) as file:
     lines = file.readlines()
     affixtable = [line.strip() for line in lines]
     affixmax = len(affixtable) - 1
@@ -423,3 +492,14 @@ inv_inputs = {
     "quadruple prefixed box": [ 1, 1, 1, 1 ],
     "affix tag": affixtag
 }
+
+class Cat:
+    def __init__(self, name, hp, att, de, sp, acc, skills, defeated):
+        self.name = name
+        self.hp = hp
+        self.att = att
+        self.de = de
+        self.sp = sp
+        self.acc = acc
+        self.skills = skills
+        self.defeated = defeated

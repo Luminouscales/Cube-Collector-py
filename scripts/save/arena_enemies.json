@@ -1,213 +1,190 @@
 [
     {
-        "name": "Calamitous Kitty",
-        "hp": 65,
-        "att": 46,
-        "de": -9,
+        "name": "Dancing Kitty",
+        "hp": 81,
+        "att": 15,
+        "de": 2,
+        "sp": 1,
+        "acc": 15,
+        "skills": [
+            "Flicker"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Sweet Kitty",
+        "hp": 128,
+        "att": 14,
+        "de": 8,
+        "sp": 1,
+        "acc": 10,
+        "skills": [
+            "Hiss"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Psychological Kitty",
+        "hp": 87,
+        "att": 12,
+        "de": 5,
+        "sp": 1,
+        "acc": 29,
+        "skills": [
+            "Tear",
+            "Swipe",
+            "Tear"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Strong Kitty",
+        "hp": 134,
+        "att": 19,
+        "de": 6,
         "sp": 1,
         "acc": 1,
         "skills": [
             "Scratch"
         ],
-        "tempo": 1,
         "defeated": false
     },
     {
-        "name": "Polish Kitty",
-        "hp": 93,
-        "att": 19,
-        "de": 6,
+        "name": "Closed Clean Kitty",
+        "hp": 197,
+        "att": 21,
+        "de": 7,
         "sp": 1,
-        "acc": 15,
-        "skills": [
-            "Swipe"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Encrypted Kitty",
-        "hp": 93,
-        "att": 14,
-        "de": 2,
-        "sp": 1,
-        "acc": 25,
-        "skills": [
-            "Hiss"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Coding Kitty",
-        "hp": 94,
-        "att": 12,
-        "de": 6,
-        "sp": 1,
-        "acc": 28,
-        "skills": [
-            "Tear",
-            "Hiss"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Modular Galvanized Kitty",
-        "hp": 154,
-        "att": 26,
-        "de": 8,
-        "sp": 2,
-        "acc": 26,
+        "acc": 5,
         "skills": [
             "Flicker",
-            "Swipe"
-        ],
-        "tempo": 2,
-        "defeated": false
-    },
-    {
-        "name": "Hungry Thick Kitty",
-        "hp": 228,
-        "att": 18,
-        "de": 11,
-        "sp": 1,
-        "acc": 6,
-        "skills": [
-            "Scratch",
-            "Flicker"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Pix Soft Kitty",
-        "hp": 216,
-        "att": 30,
-        "de": 6,
-        "sp": 1,
-        "acc": 15,
-        "skills": [
-            "Swipe",
+            "Pounce",
             "Scratch"
         ],
-        "tempo": 1,
         "defeated": false
     },
     {
-        "name": "Kitty Shitty Stupid Kitty",
-        "hp": 326,
-        "att": 28,
-        "de": 15,
-        "sp": 2,
-        "acc": 13,
+        "name": "Patriotic Big Kitty",
+        "hp": 262,
+        "att": 23,
+        "de": 12,
+        "sp": 1,
+        "acc": 27,
         "skills": [
+            "Lick",
+            "Tear"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Wet Merry Kitty",
+        "hp": 175,
+        "att": 22,
+        "de": 11,
+        "sp": 3,
+        "acc": 17,
+        "skills": [
+            "Flicker",
+            "Swipe"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Bright Old Fast Kitty",
+        "hp": 255,
+        "att": 36,
+        "de": 11,
+        "sp": 1,
+        "acc": 50,
+        "skills": [
+            "Pounce",
+            "Flicker",
+            "Pounce",
+            "Pounce",
+            "Swipe"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Healer Ancient Calamitous Kitty",
+        "hp": 319,
+        "att": 58,
+        "de": -3,
+        "sp": 1,
+        "acc": 17,
+        "skills": [
+            "Swipe",
+            "Pounce",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Hazy German Ugly Therian Kitty",
+        "hp": 354,
+        "att": 43,
+        "de": 22,
+        "sp": 1,
+        "acc": 34,
+        "skills": [
+            "Lick",
+            "Tear",
+            "Tear",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Hazy Cookie Preposterous Sphynx Pix Kitty",
+        "hp": 452,
+        "att": 50,
+        "de": 22,
+        "sp": 1,
+        "acc": 63,
+        "skills": [
+            "Scratch",
+            "Hiss",
+            "Scratch",
+            "Scratch",
+            "Swipe"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Asynchronous Wrong Feathered High Interesting Dumb Kitty",
+        "hp": 548,
+        "att": 60,
+        "de": 31,
+        "sp": 1,
+        "acc": 54,
+        "skills": [
+            "Scratch",
+            "Lick",
+            "Hiss",
             "Tear",
             "Lick",
+            "Lick"
+        ],
+        "defeated": false
+    },
+    {
+        "name": "Interesting Woozy Wise Noisy Supreme Support Ugly Kitty",
+        "hp": 702,
+        "att": 78,
+        "de": 40,
+        "sp": 3,
+        "acc": 101,
+        "skills": [
+            "Swipe",
+            "Pounce",
+            "Hiss",
+            "Tear",
+            "Swipe",
+            "Hiss",
+            "Tear",
+            "Hiss",
             "Hiss"
         ],
-        "tempo": 2,
-        "defeated": false
-    },
-    {
-        "name": "Rude Streamlined Preposterous Kitty",
-        "hp": 283,
-        "att": 35,
-        "de": 12,
-        "sp": 2,
-        "acc": 39,
-        "skills": [
-            "Lick",
-            "Swipe",
-            "Flicker",
-            "Swipe"
-        ],
-        "tempo": 2,
-        "defeated": false
-    },
-    {
-        "name": "Big Responsive Algorithmic Clean Kitty",
-        "hp": 414,
-        "att": 48,
-        "de": 18,
-        "sp": 1,
-        "acc": 40,
-        "skills": [
-            "Flicker",
-            "Swipe",
-            "Swipe",
-            "Scratch",
-            "Tear",
-            "Tear",
-            "Hiss",
-            "Lick",
-            "Flicker"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Woozy Hazy Formulaic Algorithmic Loud Kitty",
-        "hp": 478,
-        "att": 57,
-        "de": 23,
-        "sp": 1,
-        "acc": 60,
-        "skills": [
-            "Swipe",
-            "Scratch",
-            "Hiss",
-            "Swipe",
-            "Swipe",
-            "Lick",
-            "Pounce",
-            "Swipe"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Iron Short Cheap Boring Recursive Temporal Kitty",
-        "hp": 551,
-        "att": 69,
-        "de": 27,
-        "sp": 1,
-        "acc": 70,
-        "skills": [
-            "Hiss",
-            "Tear",
-            "Pounce",
-            "Tear",
-            "Pounce",
-            "Hiss",
-            "Pounce",
-            "Hiss",
-            "Swipe",
-            "Tear",
-            "Flicker"
-        ],
-        "tempo": 1,
-        "defeated": false
-    },
-    {
-        "name": "Happy Executable False Ascended Hard Dangerous Generic Kitty",
-        "hp": 751,
-        "att": 84,
-        "de": 48,
-        "sp": 7,
-        "acc": 82,
-        "skills": [
-            "Tear",
-            "Swipe",
-            "Lick",
-            "Pounce",
-            "Tear",
-            "Pounce",
-            "Flicker",
-            "Pounce",
-            "Flicker"
-        ],
-        "tempo": 7,
         "defeated": false
     }
 ]
